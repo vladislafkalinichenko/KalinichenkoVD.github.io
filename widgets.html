@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — веб-виджеты: погода, курсы валют и внешний поиск.">
+<meta name="keywords" content="сведение музыки, погода, курсы валют, веб-сервисы, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Веб-виджеты — MIXLAB</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar"><div class="container nav">
+<a class="brand" href="index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="index.html">Главная</a><a data-nav href="about.html">О проекте</a><a data-nav href="process.html">Процесс сведения</a><a data-nav href="eq.html">EQ</a><a data-nav href="dynamics.html">Динамика</a><a data-nav href="reverb.html">Пространство</a><a data-nav href="stereo.html">Стерео</a><a data-nav href="references.html">Референсы</a><a data-nav href="glossary.html">Глоссарий</a><a data-nav href="checklist.html">Чек-лист</a><a data-nav href="widgets.html">Виджеты</a><a data-nav href="services/index.html">Сервисы</a>
+</nav></div></header>
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="index.html">Главная</a> / Веб-виджеты</div><div class="eyebrow"><span class="dot"></span> EXTERNAL WEB SERVICES</div><h1>Веб-виджеты</h1><p class="lead">Дополнительные внешние сервисы: погода, курсы валют и внешний поиск. </p></div></section>
+<section class="section"><div class="container grid grid-3">
+<div class="card"><div class="icon">☼</div><h3>Погода</h3><p class="muted small">Текущая температура и ветер.</p><div class="field"><label>Город</label><select id="city"><option value="60.1699,24.9384,Helsinki">Helsinki</option><option value="59.9343,30.3351,Saint Petersburg">Saint Petersburg</option><option value="55.7558,37.6176,Moscow">Moscow</option><option value="52.52,13.405,Berlin">Berlin</option></select></div><button class="btn primary" id="weatherBtn" style="margin-top:12px">Обновить</button><div id="weather" class="result" style="margin-top:12px">Нажми «Обновить».</div></div>
+<div class="card"><div class="icon">€</div><h3>Курсы валют</h3><p class="muted small">Курс между рублём, евро и долларом на последнем доступном обновлении.</p><div class="form-grid"><div class="field"><label>Из</label><select id="from"><option>EUR</option><option>USD</option><option>RUB</option></select></div><div class="field"><label>В</label><select id="to"><option>USD</option><option>EUR</option><option>RUB</option></select></div></div><button class="btn primary" id="rateBtn" style="margin-top:12px">Получить курс</button><div id="rate" class="result" style="margin-top:12px">Курс ещё не загружен.</div></div>
+<div class="card"><div class="icon">⌕</div><h3>Внешний поиск</h3><p class="muted small">Поиск по вебу через поисковую систему в новой вкладке.</p><form id="searchForm"><div class="field"><label>Запрос</label><input id="webq" placeholder="mixing vocal EQ"></div><button class="btn primary" type="submit" style="margin-top:12px">Искать в Яндексе</button></form></div>
+</div></section>
+
+</main>
+<div data-footer></div>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const weather=async()=>{const [lat,lon,name]=document.querySelector('#city').value.split(',');const out=document.querySelector('#weather');out.textContent='Загрузка…';try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,weather_code&timezone=auto`);if(!r.ok)throw new Error('weather');const d=await r.json();out.innerHTML=`<b>${name}</b><br>Температура: <b>${d.current.temperature_2m} °C</b><br>Ветер: ${d.current.wind_speed_10m} км/ч<br><span class="muted small">Данные: Open-Meteo · ${d.current.time}</span>`}catch(e){out.innerHTML='<span class="danger">Не удалось загрузить погоду. Проверь интернет-соединение.</span>'}};
+  const rate=async()=>{const from=document.querySelector('#from').value,to=document.querySelector('#to').value,out=document.querySelector('#rate');if(from===to){out.textContent='Выбраны одинаковые валюты: 1.0000';return}out.textContent='Загрузка…';try{const r=await fetch('https://open.er-api.com/v6/latest/USD');if(!r.ok)throw new Error('rate');const d=await r.json();const usdRate=(c)=>c==='USD'?1:Number(d.rates[c]);const value=usdRate(to)/usdRate(from);if(!Number.isFinite(value)||value<=0)throw new Error('rate');const updated=d.time_last_update_utc?new Date(d.time_last_update_utc).toLocaleDateString('ru-RU'):'';out.innerHTML=`1 ${from} = <b>${value.toFixed(4)} ${to}</b><br><span class="muted small">Обновлено: ${updated} · ExchangeRate-API</span>`}catch(e){out.innerHTML='<span class="danger">Не удалось загрузить курс.</span>'}};
+  document.querySelector('#weatherBtn').onclick=weather;document.querySelector('#rateBtn').onclick=rate;
+  document.querySelector('#searchForm').onsubmit=e=>{e.preventDefault();const q=document.querySelector('#webq').value.trim();if(q)window.open('https://yandex.com/search/?text='+encodeURIComponent(q),'_blank','noopener')};weather();rate();
+});
+</script>
+</body></html>
