@@ -1,0 +1,6 @@
+document.addEventListener('DOMContentLoaded',()=>{
+ const items=['Сделан static balance без лишних плагинов','Есть запас headroom на мастер-шине','Kick и bass не маскируют друг друга','Вокал остаётся разборчивым на тихом уровне','EQ решений достаточно, а не «на всякий случай»','Компрессия слышно улучшает envelope, а не просто делает громче','Реверберация и delay не забивают центр','Панорама переводится в mono без критических провалов','Проверен микс через референсный трек','Экспорт назван и проверен перед отправкой'];
+ const wrap=document.querySelector('#checks'); const saved=MixLab.getJSON('mixlab_checklist',{});
+ wrap.innerHTML=items.map((x,i)=>`<label class="check" style="display:flex;padding:12px 0;border-bottom:1px solid var(--line)"><input type="checkbox" data-i="${i}" ${saved[i]?'checked':''}> <span>${x}</span></label>`).join('');
+ const update=()=>{const n=[...wrap.querySelectorAll('input')].filter(x=>x.checked).length,p=Math.round(n/items.length*100);document.querySelector('#checkScore').textContent=p+'%';document.querySelector('#checkBar').style.width=p+'%'};update();document.querySelector('#saveChecks').onclick=()=>{const s={};wrap.querySelectorAll('input').forEach(x=>s[x.dataset.i]=x.checked);MixLab.setJSON('mixlab_checklist',s);update();alert('Прогресс сохранён.')};wrap.querySelectorAll('input').forEach(x=>x.onchange=update)
+});
