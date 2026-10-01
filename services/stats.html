@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Stats — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Статистика</div><div class="eyebrow"><span class="dot"></span> WEB COUNTER</div><h1>Статистика посещений</h1><p class="lead">Локальный web-counter: считает открытия страниц в браузере и распределяет их по разделам.</p></div></section><section class="section"><div class="container grid grid-3"><div class="card"><div class="kicker">Всего</div><div class="score" id="total">0</div><p class="muted">визитов</p></div><div class="card"><div class="kicker">Сегодня</div><div class="score" id="today">0</div><p class="muted">открытий</p></div><div class="card"><div class="kicker">Страниц</div><div class="score" id="pages">0</div><p class="muted">разделов в логе</p></div></div></section><section class="section"><div class="container card"><h2>По страницам</h2><div id="pageStats"></div><button class="btn" id="reset" style="margin-top:16px">Сбросить локальную статистику</button></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const render=()=>{const s=MixLab.getJSON('mixlab_stats',{total:0,days:{},pages:{}}),d=new Date().toISOString().slice(0,10);document.querySelector('#total').textContent=s.total;document.querySelector('#today').textContent=s.days[d]||0;document.querySelector('#pages').textContent=Object.keys(s.pages||{}).length;const arr=Object.entries(s.pages||{}).sort((a,b)=>b[1]-a[1]);document.querySelector('#pageStats').innerHTML=arr.length?arr.map(([p,n])=>`<div style="display:grid;grid-template-columns:1fr 100px;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)"><span>${MixLab.esc(p)}</span><b>${n}</b></div>`).join(''):'<div class="empty">Пока нет данных.</div>'};document.querySelector('#reset').onclick=()=>{localStorage.removeItem('mixlab_stats');render()};render()});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>

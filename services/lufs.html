@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Lufs — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / LUFS</div><div class="eyebrow"><span class="dot"></span> LOUDNESS</div><h1>LUFS-калькулятор</h1><p class="lead">Ориентировочный калькулятор: показывает разницу между текущим и целевым LUFS.</p></div></section><section class="section"><div class="container grid grid-2"><div class="card"><div class="field"><label>Текущий integrated LUFS</label><input id="current" type="number" value="-14" step="0.1"></div><div class="field" style="margin-top:12px"><label>Целевой LUFS</label><input id="target" type="number" value="-14" step="0.1"></div><button class="btn primary" id="calc" style="margin-top:14px">Рассчитать</button></div><div class="card"><div class="kicker">Результат</div><div class="score" id="diff">0 dB</div><p id="hint" class="muted">Уровни совпадают.</p><div class="notice">Для точного контроля громкости используй LUFS meter в DAW; калькулятор показывает только целевую разницу уровней.</div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const calc=()=>{const c=Number(document.querySelector('#current').value),t=Number(document.querySelector('#target').value),d=t-c;document.querySelector('#diff').textContent=(d>=0?'+':'')+d.toFixed(1)+' dB';document.querySelector('#hint').textContent=d>0?'Нужно ориентировочно поднять уровень.':d<0?'Нужно ориентировочно снизить уровень.':'Уровни совпадают.'};document.querySelector('#calc').onclick=calc;calc()});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>

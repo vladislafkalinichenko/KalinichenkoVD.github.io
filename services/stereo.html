@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Stereo — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Stereo Checker</div><div class="eyebrow"><span class="dot"></span> WIDTH</div><h1>Stereo Checker</h1><p class="lead">Учебная модель для оценки условной стерео-ширины по двум каналам и флагу проверки mono.</p></div></section><section class="section"><div class="container grid grid-2"><div class="card"><div class="range-row"><label>Left level</label><input id="l" type="range" min="0" max="100" value="80"><output>80</output></div><div class="range-row" style="margin-top:14px"><label>Right level</label><input id="r" type="range" min="0" max="100" value="75"><output>75</output></div><label class="check" style="margin-top:18px"><input id="mono" type="checkbox"> Mono compatibility mode</label><button class="btn primary" id="analyze" style="margin-top:18px">Analyze</button></div><div class="card"><div class="kicker">Результат</div><div class="score" id="w">0%</div><p id="msg" class="muted"></p><div class="meter"><span id="bar"></span></div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('input[type=range]').forEach(x=>x.oninput=()=>x.parentElement.querySelector('output').value=x.value);const a=()=>{const l=Number(document.querySelector('#l').value),r=Number(document.querySelector('#r').value),mono=document.querySelector('#mono').checked,spread=Math.abs(l-r),w=Math.round((100-spread)*(mono?.8:1));document.querySelector('#w').textContent=w+'%';document.querySelector('#bar').style.width=Math.max(0,Math.min(100,w))+'%';document.querySelector('#msg').textContent=mono?'Проверка в mono режиме: следи за потерей ключевых элементов.':w>90?'Условно устойчивое L/R распределение.':'Стоит проверить баланс каналов и панораму.'};document.querySelector('#analyze').onclick=a;a()});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>

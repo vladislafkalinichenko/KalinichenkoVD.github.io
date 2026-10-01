@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Rating — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Рейтинг</div><div class="eyebrow"><span class="dot"></span> RATING</div><h1>Рейтинг сайта</h1><p class="lead">Простейшая система оценки интерфейса посетителем.</p></div></section><section class="section"><div class="container grid grid-2"><div class="card center"><div class="kicker">Средняя оценка</div><div class="score" id="avg">—</div><div class="stars" id="stars"></div><p class="muted small" id="count">0 оценок</p></div><div class="card"><h3>Ваша оценка</h3><div class="stars" id="inputStars">★ ★ ★ ★ ★</div><p class="muted">Нажми на звезду. Один браузер = одна актуальная оценка.</p><button class="btn" id="clear">Удалить свою оценку</button></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const get=()=>MixLab.getJSON('mixlab_ratings',{});const render=()=>{const d=get(),vals=Object.values(d),avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;document.querySelector('#avg').textContent=vals.length?avg.toFixed(1)+'/5':'—';document.querySelector('#count').textContent=`${vals.length} оценок`;document.querySelector('#stars').innerHTML=[1,2,3,4,5].map(i=>`<span class="star ${i<=Math.round(avg)?'active':''}">★</span>`).join('')};[...document.querySelectorAll('#inputStars')][0].addEventListener('click',e=>{const r=[...e.currentTarget.textContent.trim()].findIndex(()=>false);});document.querySelector('#inputStars').innerHTML=[1,2,3,4,5].map(i=>`<span class="star" data-star="${i}">★</span>`).join('');document.querySelectorAll('#inputStars .star').forEach(x=>x.onclick=()=>{const d=get();d['this-browser']=Number(x.dataset.star);MixLab.setJSON('mixlab_ratings',d);render()});document.querySelector('#clear').onclick=()=>{const d=get();delete d['this-browser'];MixLab.setJSON('mixlab_ratings',d);render()};render()});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>

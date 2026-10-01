@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Guestbook — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Гостевая книга</div><div class="eyebrow"><span class="dot"></span> GUESTBOOK</div><h1>Гостевая книга</h1><p class="lead">Посетитель оставляет сообщение; записи сохраняются в браузере этого устройства.</p></div></section><section class="section"><div class="container grid grid-2"><div class="card"><h3>Оставить сообщение</h3><div class="field"><label for="name">Имя</label><input id="name" maxlength="40"></div><div class="field" style="margin-top:12px"><label for="msg">Сообщение</label><textarea id="msg" maxlength="400"></textarea></div><button class="btn primary" id="add" style="margin-top:12px">Добавить</button></div><div class="card"><h3>Сообщения</h3><div id="guestList"></div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const render=()=>{const a=MixLab.getJSON('mixlab_guestbook',[]);document.querySelector('#guestList').innerHTML=a.length?a.slice().reverse().map(x=>`<div class="post" style="margin-bottom:16px"><div class="avatar">${MixLab.esc((x.name||'?')[0].toUpperCase())}</div><div class="post-content"><b>${MixLab.esc(x.name||'Гость')}</b><div class="muted small">${MixLab.formatDate(x.ts)}</div><p>${MixLab.esc(x.msg)}</p></div></div>`).join(''):'<div class="empty">Пока нет записей.</div>'};document.querySelector('#add').onclick=()=>{const name=document.querySelector('#name').value.trim()||'Гость',msg=document.querySelector('#msg').value.trim();if(!msg)return alert('Введите сообщение.');const a=MixLab.getJSON('mixlab_guestbook',[]);a.push({name,msg,ts:Date.now()});MixLab.setJSON('mixlab_guestbook',a);document.querySelector('#msg').value='';render()};render()});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>

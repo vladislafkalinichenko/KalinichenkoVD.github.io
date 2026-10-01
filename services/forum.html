@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Forum — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Форум</div><div class="eyebrow"><span class="dot"></span> FORUM</div><h1>Форум</h1><p class="lead">Учебная доска обсуждений: создавай темы и отвечай на них.</p></div></section><section class="section"><div class="container grid grid-2"><div class="card"><h3>Новая тема</h3><div class="field"><label for="topic">Тема</label><input id="topic" maxlength="80"></div><div class="field" style="margin-top:12px"><label for="author">Автор</label><input id="author" maxlength="40"></div><div class="field" style="margin-top:12px"><label for="body">Текст</label><textarea id="body"></textarea></div><button class="btn primary" id="post" style="margin-top:12px">Опубликовать</button></div><div class="card"><h3>Темы</h3><div id="topics"></div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const seed=[{topic:'Какой порядок обработки вокала?',author:'MIXLAB',body:'С чего начать: clip gain, EQ или compression?',ts:Date.now()-86400000},{topic:'Как проверяете mono compatibility?',author:'Vlad',body:'Делитесь своим коротким чек-листом.',ts:Date.now()-43200000}];const render=()=>{let a=MixLab.getJSON('mixlab_forum',null);if(!a){a=seed;MixLab.setJSON('mixlab_forum',a)}document.querySelector('#topics').innerHTML=a.slice().reverse().map(x=>`<div class="card" style="padding:15px;margin-bottom:12px"><b>${MixLab.esc(x.topic)}</b><div class="muted small">${MixLab.esc(x.author||'Гость')} · ${MixLab.formatDate(x.ts)}</div><p>${MixLab.esc(x.body)}</p></div>`).join('')};document.querySelector('#post').onclick=()=>{const topic=document.querySelector('#topic').value.trim(),author=document.querySelector('#author').value.trim()||'Гость',body=document.querySelector('#body').value.trim();if(!topic||!body)return alert('Заполните тему и текст.');const a=MixLab.getJSON('mixlab_forum',[]);a.push({topic,author,body,ts:Date.now()});MixLab.setJSON('mixlab_forum',a);document.querySelector('#topic').value='';document.querySelector('#body').value='';render()};render()});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Mixplanner — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Mix Planner</div><div class="eyebrow"><span class="dot"></span> PLANNER</div><h1>Mix Planner</h1><p class="lead">Собери приоритеты для конкретного микса и экспортируй их в заметки.</p></div></section><section class="section"><div class="container split"><div class="card"><div class="form-grid"><div class="field"><label>Жанр</label><select id="genre"><option>Indie Rock</option><option>Pop</option><option>Alternative</option><option>Electronic</option></select></div><div class="field"><label>Фокус</label><select id="focus"><option>Вокал</option><option>Барабаны</option><option>Бас</option><option>Стерео</option></select></div><div class="field full"><label>Главная проблема</label><textarea id="problem" placeholder="Например: вокал теряется на припеве..."></textarea></div></div><button class="btn primary" id="build" style="margin-top:14px">Сформировать план</button></div><div class="card" id="plan"><div class="empty">План появится здесь.</div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{document.querySelector('#build').onclick=()=>{const g=document.querySelector('#genre').value,f=document.querySelector('#focus').value,p=document.querySelector('#problem').value.trim()||'не задана';const plan=[`Опиши референс для ${g} и зафиксируй 2–3 ключевых признака звучания.`,`Сделай static balance, не трогая плагины первые 10 минут.`,`Прицельно обработай ${f}: сначала EQ, затем dynamics/space по необходимости.`,`Проверь mono и низкую мониторную громкость.`,`Сверь mix с референсом после паузы и запиши одну главную правку.`];document.querySelector('#plan').innerHTML=`<h3>План работы</h3><p><b>Проблема:</b> ${MixLab.esc(p)}</p><ol class="list">${plan.map(x=>`<li>${x}</li>`).join('')}</ol><button class="btn" id="copy">Скопировать план</button>`;document.querySelector('#copy').onclick=()=>navigator.clipboard?.writeText(plan.join('\\n'))}});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>

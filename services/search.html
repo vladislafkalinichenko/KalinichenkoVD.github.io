@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
+<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+<title>Search — MIXLAB</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
+<body><header class="topbar"><div class="container nav">
+<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
+<nav class="navlinks">
+<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
+</nav></div></header>
+
+<main>
+<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Поиск</div><div class="eyebrow"><span class="dot"></span> SEARCH</div><h1>Поиск по сайту</h1><p class="lead">Поиск выполняется по названию страницы, описанию и ключевым словам.</p></div></section><section class="section"><div class="container"><div class="card"><div class="form-grid"><div class="field full"><label for="q">Поисковый запрос</label><input id="q" placeholder="например: компрессия, stereo, LUFS"></div></div><div class="actions"><button class="btn primary" id="go">Искать</button><button class="btn" id="all">Показать всё</button></div><div id="results" style="margin-top:18px"></div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const r=()=>{const q=document.querySelector('#q').value.trim().toLowerCase();const data=MixLab.SITE_PAGES.filter(x=>!q||(`${x.title} ${x.keywords}`).toLowerCase().includes(q));const out=document.querySelector('#results');out.innerHTML=data.length?data.map(x=>`<div class="search-item"><a href="../${x.url}"><b>${x.title}</b></a><div class="muted small">${x.keywords}</div></div>`).join(''):'<div class="empty">Ничего не найдено.</div>'};document.querySelector('#go').onclick=r;document.querySelector('#all').onclick=()=>{document.querySelector('#q').value='';r()};document.querySelector('#q').addEventListener('input',r);r()});</script>
+</main>
+<div data-footer></div>
+<script src="../assets/app.js"></script>
+</body></html>
