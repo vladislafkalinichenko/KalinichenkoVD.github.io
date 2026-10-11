@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Добавь запись и сразу открой её в ленте.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
+<meta name="author" content="Калиниченко Владислав Дмитриевич">
+
+<title>Управление новостями — MIXLAB</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/app.js" defer></script>
+<script src="../assets/news.js" defer></script><script src="../assets/news-admin.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="../index.html" data-nav>Главная</a>
+<a href="../materials.html" data-nav>Материалы</a>
+<a href="../services/index.html" data-nav>Сервисы</a>
+<a href="../xml.html" data-nav>XML</a>
+<a href="../database.html" data-nav>БД</a>
+<a href="../rss.html" data-nav>RSS</a>
+<a href="../about.html" data-nav>О проекте</a>
+<a href="../admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="../services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Управление новостями</h1><p class="lead">Добавь запись и сразу открой её в ленте.</p></section>
+<section class="section "><div class="container"><p id="news-mode" class="notice" role="status">Проверяем режим хранения…</p>
+<div id="server-login" class="card spaced" hidden><h2>Вход для публикации</h2><form id="login-form"><div class="field"><label for="admin-password">Пароль администратора</label><input id="admin-password" type="password" autocomplete="current-password" required></div><button class="btn primary" type="submit">Войти</button></form><p id="login-status" role="status"></p></div>
+<div class="grid grid-2"><div class="card"><h2>Новая запись</h2><form id="news-form"><div class="field"><label for="headline">Заголовок</label><input id="headline" maxlength="160" required></div><div class="field"><label for="newsbody">Текст</label><textarea id="newsbody" maxlength="10000" required></textarea></div><button class="btn primary" id="addNews" type="submit" disabled>Сохранить запись</button></form><p id="news-status" role="status"></p><a id="view-news" class="text-link" href="../services/news.html" hidden>Посмотреть в ленте →</a></div><div class="card"><h2>Последние записи</h2><div data-news-feed data-limit="3"></div></div></div>
+<div class="card spaced"><h2>Выгрузка ленты</h2><p>Файл содержит опубликованные и локальные новости. Чтобы сделать локальные записи видимыми всем на GitHub Pages, замени файл <code>data/news.json</code> в репозитории этой выгрузкой.</p><button class="btn" id="export-news" disabled>Скачать ленту</button><button class="btn" id="logout" hidden>Выйти</button><p id="export-status" role="status"></p></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="../index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="../materials.html">Материалы</a><br><a href="../references.html">Полезные ссылки</a><br><a href="../glossary.html">Словарь</a></div><div><a href="../admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
+</body></html>

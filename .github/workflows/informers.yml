@@ -1,0 +1,54 @@
+name: Обновить информеры и сайт
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '23 */3 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: mixlab-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Получить погоду и курсы
+        id: refresh
+        continue-on-error: true
+        run: python tools/refresh_informers.py
+      - name: Проверить страницы
+        run: python tools/check_site.py
+      - name: Сохранить обновлённые данные
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/weather.json data/currency.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Обновить погоду и курсы валют'
+            git push origin HEAD:main
+          fi
+      - name: Подготовить статическую версию
+        run: python tools/package_pages.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Опубликовать сайт
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Сообщить о сбое источников
+        if: steps.refresh.outcome == 'failure'
+        run: |
+          echo 'Не все источники обновлены. Сайт опубликован с последними доступными данными; информеры показывают дату.' >> "$GITHUB_STEP_SUMMARY"

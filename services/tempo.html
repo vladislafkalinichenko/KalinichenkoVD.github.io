@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="Укажи число ударов в минуту. Получишь время повторения эха и длительность такта из четырёх долей.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>Tempo — MIXLAB</title>
-<link rel="stylesheet" href="../assets/style.css">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / BPM</div><div class="eyebrow"><span class="dot"></span> TEMPO</div><h1>BPM / Такты / Delay</h1><p class="lead">Расчёт длительности четверти, восьмой, четверти с точкой и одного четырёхдольного такта.</p></div></section><section class="section"><div class="container grid grid-2"><div class="card"><div class="field"><label>BPM</label><input id="bpm" type="number" min="20" max="300" value="120"></div><button class="btn primary" id="calc" style="margin-top:14px">Рассчитать</button></div><div class="card" id="out"></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const f=()=>{const bpm=Number(document.querySelector('#bpm').value),q=60000/bpm;document.querySelector('#out').innerHTML=`<h3>Результат</h3><ul class="list"><li>Quarter note: <b>${q.toFixed(1)} ms</b></li><li>Eighth: <b>${(q/2).toFixed(1)} ms</b></li><li>Dotted quarter: <b>${(q*1.5).toFixed(1)} ms</b></li><li>4/4 bar: <b>${(q*4).toFixed(1)} ms</b></li></ul>`};document.querySelector('#calc').onclick=f;f()});</script>
-</main>
-<div data-footer></div>
-<script src="../assets/app.js"></script>
+<title>Темп и время эха — MIXLAB</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/app.js" defer></script>
+<script src="../assets/tools.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="../index.html" data-nav>Главная</a>
+<a href="../materials.html" data-nav>Материалы</a>
+<a href="../services/index.html" data-nav>Сервисы</a>
+<a href="../xml.html" data-nav>XML</a>
+<a href="../database.html" data-nav>БД</a>
+<a href="../rss.html" data-nav>RSS</a>
+<a href="../about.html" data-nav>О проекте</a>
+<a href="../admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="../services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Темп и время эха</h1><p class="lead">Укажи число ударов в минуту. Получишь время повторения эха и длительность такта из четырёх долей.</p></section>
+<section class="section "><div class="container"><div class="grid grid-2"><form class="card" id="tempo-form"><div class="field"><label for="bpm">Ударов в минуту</label><input id="bpm" type="number" value="140" min="20" max="300" step="0.1" required></div><button class="btn primary" type="submit">Рассчитать</button></form><div class="informer weather" id="out" role="status"></div></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="../index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="../materials.html">Материалы</a><br><a href="../references.html">Полезные ссылки</a><br><a href="../glossary.html">Словарь</a></div><div><a href="../admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

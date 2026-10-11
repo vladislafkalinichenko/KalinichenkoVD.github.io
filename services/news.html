@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="Обновления проекта и новые материалы о сведении.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>News — MIXLAB</title>
-<link rel="stylesheet" href="../assets/style.css">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Новости</div><div class="eyebrow"><span class="dot"></span> NEWS BOARD</div><h1>Новости</h1><p class="lead">Доска обновлений сайта. Новые записи можно добавлять без серверной части.</p></div></section><section class="section"><div class="container split"><div class="card"><h3>Добавить новость</h3><div class="field"><label for="headline">Заголовок</label><input id="headline"></div><div class="field" style="margin-top:12px"><label for="newsbody">Текст</label><textarea id="newsbody"></textarea></div><button class="btn primary" id="addNews" style="margin-top:12px">Опубликовать</button></div><div class="card"><h3>Лента</h3><div id="feed"></div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const seed=[{h:'Запущен MIXLAB',b:'Статический проект по сведению музыки собран в едином интерфейсе.',ts:Date.now()-86400000*3},{h:'Добавлены сервисы',b:'В проект включены поиск, гостевая книга, форум, рейтинг, статистика и микс-инструменты.',ts:Date.now()-86400000}];const render=()=>{let a=MixLab.getJSON('mixlab_news',null);if(!a){a=seed;MixLab.setJSON('mixlab_news',a)}document.querySelector('#feed').innerHTML=a.slice().reverse().map(x=>`<div class="search-item"><b>${MixLab.esc(x.h)}</b><div class="muted small">${MixLab.formatDate(x.ts)}</div><p>${MixLab.esc(x.b)}</p></div>`).join('')};document.querySelector('#addNews').onclick=()=>{const h=document.querySelector('#headline').value.trim(),b=document.querySelector('#newsbody').value.trim();if(!h||!b)return alert('Заполните оба поля.');const a=MixLab.getJSON('mixlab_news',[]);a.push({h,b,ts:Date.now()});MixLab.setJSON('mixlab_news',a);document.querySelector('#headline').value='';document.querySelector('#newsbody').value='';render()};render()});</script>
-</main>
-<div data-footer></div>
-<script src="../assets/app.js"></script>
+<title>Новости сайта — MIXLAB</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/app.js" defer></script>
+<script src="../assets/news.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="../index.html" data-nav>Главная</a>
+<a href="../materials.html" data-nav>Материалы</a>
+<a href="../services/index.html" data-nav>Сервисы</a>
+<a href="../xml.html" data-nav>XML</a>
+<a href="../database.html" data-nav>БД</a>
+<a href="../rss.html" data-nav>RSS</a>
+<a href="../about.html" data-nav>О проекте</a>
+<a href="../admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="../services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Новости сайта</h1><p class="lead">Обновления проекта и новые материалы о сведении.</p></section>
+<section class="section "><div class="container"><div class="section-head"><h2>Лента новостей</h2><a class="text-link" href="../admin/news.html">Добавить новость →</a></div><div class="news-list" data-news-feed aria-live="polite">Загружаем новости…</div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="../index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="../materials.html">Материалы</a><br><a href="../references.html">Полезные ссылки</a><br><a href="../glossary.html">Словарь</a></div><div><a href="../admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

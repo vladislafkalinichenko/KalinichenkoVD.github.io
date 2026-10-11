@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/</loc></url>
-  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/about.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/index.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/materials.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/process.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/eq.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/dynamics.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/reverb.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/stereo.html</loc></url>
-  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/references.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/glossary.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/about.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/references.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/checklist.html</loc></url>
-  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/widgets.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/index.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/search.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/news.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/widgets.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/xml.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/database.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/rss.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/lufs.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/compressor.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/tempo.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/stereo.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/mixplanner.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/guestbook.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/forum.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/stats.html</loc></url>
+  <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/rating.html</loc></url>
 </urlset>

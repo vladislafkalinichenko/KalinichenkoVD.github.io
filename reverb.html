@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="Реверберация — это множество отражений звука, как в комнате или зале. Эхо — заметные повторения. Они помогают задать ощущение пространства.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>Reverb — MIXLAB</title>
-<link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="index.html">Главная</a><a data-nav href="about.html">О проекте</a><a data-nav href="process.html">Процесс сведения</a><a data-nav href="eq.html">EQ</a><a data-nav href="dynamics.html">Динамика</a><a data-nav href="reverb.html">Пространство</a><a data-nav href="stereo.html">Стерео</a><a data-nav href="references.html">Референсы</a><a data-nav href="glossary.html">Глоссарий</a><a data-nav href="checklist.html">Чек-лист</a><a data-nav href="widgets.html">Виджеты</a><a data-nav href="services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="index.html">Главная</a> / Пространство</div><div class="hero-mini"><img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=85" alt="Микрофон в студии"><div><div class="eyebrow"><span class="dot"></span> DEPTH</div><h1>Пространство</h1><p class="lead">Depth строится через комбинацию громкости, спектра, early reflections, decay и delay.</p></div></div></div></section><section class="section"><div class="container grid grid-2"><div class="card"><h2>Reverb: что меняем</h2><div class="table-wrap"><table class="table"><thead><tr><th>Параметр</th><th>Идея</th></tr></thead><tbody><tr><td>Pre-delay</td><td>Отделяет прямой сигнал от хвоста.</td></tr><tr><td>Decay</td><td>Определяет длительность пространства.</td></tr><tr><td>Damping</td><td>Формирует затухание верхов.</td></tr><tr><td>Early reflections</td><td>Помогают воспринимать размер и положение.</td></tr><tr><td>EQ return</td><td>Убирает лишний низ/верх уже на посыле.</td></tr></tbody></table></div></div><div class="card"><h2>Принцип aux-return</h2><p>Для прозрачного микса удобно отправлять несколько источников на общие пространственные шины, а не ставить одинаковые «полные» реверы на каждый канал.</p><div class="notice">Попробуй автоматизировать send level вместо бесконечного добавления новых эффектов.</div></div></div></section>
-</main>
-<div data-footer></div>
-<script src="assets/app.js"></script>
+<title>Объём и эхо — MIXLAB</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="index.html" data-nav>Главная</a>
+<a href="materials.html" data-nav>Материалы</a>
+<a href="services/index.html" data-nav>Сервисы</a>
+<a href="xml.html" data-nav>XML</a>
+<a href="database.html" data-nav>БД</a>
+<a href="rss.html" data-nav>RSS</a>
+<a href="about.html" data-nav>О проекте</a>
+<a href="admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Объём и эхо</h1><p class="lead">Реверберация — это множество отражений звука, как в комнате или зале. Эхо — заметные повторения. Они помогают задать ощущение пространства.</p></section>
+<section class="section "><div class="container"><div class="grid grid-3"><article class="card"><h3>Размер и длительность</h3><p class="muted">Короткое затухание напоминает небольшую комнату. Длинное создаёт простор, но может перекрывать следующие слова.</p></article><article class="card"><h3>Пауза перед отражениями</h3><p class="muted">Небольшая задержка между голосом и отражениями помогает сохранить разборчивость.</p></article><article class="card"><h3>Количество эффекта</h3><p class="muted">Начни с небольшого количества. Сравни с исходным звуком и проверь, не стал ли голос слишком далёким.</p></article></div></div></section><section class="section "><div class="container"><div class="card"><h2>Одна комната для нескольких звуков</h2><p>Можно создать отдельную дорожку с реверберацией и направить на неё часть голоса и инструментов. Так они окажутся в похожем пространстве, а количество эффекта для каждого звука можно настроить отдельно.</p><a class="btn primary" href="services/tempo.html">Рассчитать время эха →</a></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="materials.html">Материалы</a><br><a href="references.html">Полезные ссылки</a><br><a href="glossary.html">Словарь</a></div><div><a href="admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="Счётчик открытий страниц на этом устройстве. Это не общая статистика всех посетителей сайта.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>Stats — MIXLAB</title>
-<link rel="stylesheet" href="../assets/style.css">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Статистика</div><div class="eyebrow"><span class="dot"></span> WEB COUNTER</div><h1>Статистика посещений</h1><p class="lead">Локальный web-counter: считает открытия страниц в браузере и распределяет их по разделам.</p></div></section><section class="section"><div class="container grid grid-3"><div class="card"><div class="kicker">Всего</div><div class="score" id="total">0</div><p class="muted">визитов</p></div><div class="card"><div class="kicker">Сегодня</div><div class="score" id="today">0</div><p class="muted">открытий</p></div><div class="card"><div class="kicker">Страниц</div><div class="score" id="pages">0</div><p class="muted">разделов в логе</p></div></div></section><section class="section"><div class="container card"><h2>По страницам</h2><div id="pageStats"></div><button class="btn" id="reset" style="margin-top:16px">Сбросить локальную статистику</button></div></section><script>document.addEventListener('DOMContentLoaded',()=>{const render=()=>{const s=MixLab.getJSON('mixlab_stats',{total:0,days:{},pages:{}}),d=new Date().toISOString().slice(0,10);document.querySelector('#total').textContent=s.total;document.querySelector('#today').textContent=s.days[d]||0;document.querySelector('#pages').textContent=Object.keys(s.pages||{}).length;const arr=Object.entries(s.pages||{}).sort((a,b)=>b[1]-a[1]);document.querySelector('#pageStats').innerHTML=arr.length?arr.map(([p,n])=>`<div style="display:grid;grid-template-columns:1fr 100px;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)"><span>${MixLab.esc(p)}</span><b>${n}</b></div>`).join(''):'<div class="empty">Пока нет данных.</div>'};document.querySelector('#reset').onclick=()=>{localStorage.removeItem('mixlab_stats');render()};render()});</script>
-</main>
-<div data-footer></div>
-<script src="../assets/app.js"></script>
+<title>Статистика посещений — MIXLAB</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/app.js" defer></script>
+<script src="../assets/community.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="../index.html" data-nav>Главная</a>
+<a href="../materials.html" data-nav>Материалы</a>
+<a href="../services/index.html" data-nav>Сервисы</a>
+<a href="../xml.html" data-nav>XML</a>
+<a href="../database.html" data-nav>БД</a>
+<a href="../rss.html" data-nav>RSS</a>
+<a href="../about.html" data-nav>О проекте</a>
+<a href="../admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="../services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Статистика посещений</h1><p class="lead">Счётчик открытий страниц на этом устройстве. Это не общая статистика всех посетителей сайта.</p></section>
+<section class="section "><div class="container"><p><a class="text-link" href="../admin/index.html">← Управление сайтом</a></p><div class="grid grid-3"><div class="informer weather"><h2>Всего</h2><strong class="score" id="total">0</strong><p>открытий страниц</p></div><div class="informer currency"><h2>Сегодня</h2><strong class="score" id="today">0</strong><p>открытий страниц</p></div><div class="informer"><h2>Разделов</h2><strong class="score" id="pages">0</strong><p>посещено</p></div></div><div class="card spaced"><h2>По страницам</h2><div id="pageStats"></div><button class="btn" id="reset">Сбросить статистику устройства</button></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="../index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="../materials.html">Материалы</a><br><a href="../references.html">Полезные ссылки</a><br><a href="../glossary.html">Словарь</a></div><div><a href="../admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

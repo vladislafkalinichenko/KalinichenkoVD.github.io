@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="В наушниках часть звуков может быть левее, часть — правее. Такое расположение помогает инструментам меньше мешать друг другу.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>Stereo — MIXLAB</title>
-<link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="index.html">Главная</a><a data-nav href="about.html">О проекте</a><a data-nav href="process.html">Процесс сведения</a><a data-nav href="eq.html">EQ</a><a data-nav href="dynamics.html">Динамика</a><a data-nav href="reverb.html">Пространство</a><a data-nav href="stereo.html">Стерео</a><a data-nav href="references.html">Референсы</a><a data-nav href="glossary.html">Глоссарий</a><a data-nav href="checklist.html">Чек-лист</a><a data-nav href="widgets.html">Виджеты</a><a data-nav href="services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="index.html">Главная</a> / Стерео</div><div class="eyebrow"><span class="dot"></span> STEREO</div><h1>Стерео-поле</h1><p class="lead">Ширина полезна только тогда, когда центр остаётся устойчивым и микс переводится на другие системы.</p></div></section><section class="section"><div class="container grid grid-3"><div class="card"><h3>Pan</h3><p class="muted">Размещает источник по L/R и создаёт место для соседних элементов.</p></div><div class="card"><h3>Mid / Side</h3><p class="muted">Разделяет центральную и боковую составляющие для точечной обработки.</p></div><div class="card"><h3>Mono check</h3><p class="muted">Быстрый способ заметить фазовые проблемы и слишком «широкие» эффекты.</p></div></div></section><section class="section"><div class="container card"><h2>Контроль перед экспортом</h2><div class="grid grid-2"><div><p><b>1.</b> Снизить мониторную громкость.<br><b>2.</b> Переключить mono.<br><b>3.</b> Проверить вокал, bass, kick, snare.<br><b>4.</b> Слушать эффект на stereo ширине, а не только в solo.</p></div><div><a class="btn primary" href="services/stereo.html">Запустить Stereo Checker →</a></div></div></div></section>
-</main>
-<div data-footer></div>
-<script src="assets/app.js"></script>
+<title>Левый и правый канал — MIXLAB</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="index.html" data-nav>Главная</a>
+<a href="materials.html" data-nav>Материалы</a>
+<a href="services/index.html" data-nav>Сервисы</a>
+<a href="xml.html" data-nav>XML</a>
+<a href="database.html" data-nav>БД</a>
+<a href="rss.html" data-nav>RSS</a>
+<a href="about.html" data-nav>О проекте</a>
+<a href="admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Левый и правый канал</h1><p class="lead">В наушниках часть звуков может быть левее, часть — правее. Такое расположение помогает инструментам меньше мешать друг другу.</p></section>
+<section class="section "><div class="container"><div class="grid grid-3"><article class="card"><h3>Панорама</h3><p class="muted">Регулятор панорамы перемещает звук между левым и правым каналом. Голос и бас часто оставляют ближе к центру.</p></article><article class="card"><h3>Ширина</h3><p class="muted">Широкий звук окружает слушателя. Но чрезмерное расширение иногда делает его слабее при объединении каналов.</p></article><article class="card"><h3>Проверка в одном канале</h3><p class="muted">Включи моно — объединение левого и правого каналов. Если инструмент резко пропал, проверь эффекты расширения.</p></article></div></div></section><section class="section "><div class="container"><div class="card"><h2>Проверяй на слух</h2><p>Сначала слушай всю песню тихо. Затем переключись в один канал и обрати внимание на голос, бас и ударные. Если звук заметно изменился, уменьши расширение и сравни снова.</p><a class="btn primary" href="services/stereo.html">Пройти проверку →</a></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="materials.html">Материалы</a><br><a href="references.html">Полезные ссылки</a><br><a href="glossary.html">Словарь</a></div><div><a href="admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

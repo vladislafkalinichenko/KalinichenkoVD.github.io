@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="Инструменты для работы над песней и общения. Каждый сервис открывается на отдельной странице.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>Сервисы — MIXLAB</title>
-<link rel="stylesheet" href="../assets/style.css">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Сервисы</div><div class="eyebrow"><span class="dot"></span> TOOLS</div><h1>Сервисы MIXLAB</h1><p class="lead">Все инструменты работают на клиентской стороне. Их можно открывать независимо друг от друга.</p></div></section><section class="section"><div class="container"><div id="serviceGrid" class="grid grid-3"></div></div></section><script src="services.js"></script><script>document.addEventListener('DOMContentLoaded',()=>{const el=document.querySelector('#serviceGrid');servicePages.forEach((s,i)=>el.insertAdjacentHTML('beforeend',`<a class="card" href="${s[1]}"><div class="icon">${String(i+1).padStart(2,'0')}</div><h3>${s[0]}</h3><p class="muted">${s[2]}</p><span class="pill">Открыть →</span></a>`))});</script>
-</main>
-<div data-footer></div>
-<script src="../assets/app.js"></script>
+<title>Сервисы — MIXLAB</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/app.js" defer></script>
+
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="../index.html" data-nav>Главная</a>
+<a href="../materials.html" data-nav>Материалы</a>
+<a href="../services/index.html" data-nav>Сервисы</a>
+<a href="../xml.html" data-nav>XML</a>
+<a href="../database.html" data-nav>БД</a>
+<a href="../rss.html" data-nav>RSS</a>
+<a href="../about.html" data-nav>О проекте</a>
+<a href="../admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="../services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Сервисы</h1><p class="lead">Инструменты для работы над песней и общения. Каждый сервис открывается на отдельной странице.</p></section>
+<section class="section "><div class="container"><div class="grid grid-3"><a class="card" href="lufs.html"><span class="icon">01</span><h3>Калькулятор громкости</h3><p class="muted">Вычисли, на сколько децибел изменить уровень записи.</p><span class="text-link">Открыть →</span></a><a class="card" href="compressor.html"><span class="icon">02</span><h3>Настройка компрессора</h3><p class="muted">Выбери исходные параметры для голоса, баса или ударных.</p><span class="text-link">Открыть →</span></a><a class="card" href="stereo.html"><span class="icon">03</span><h3>Проверка стерео</h3><p class="muted">Пройди проверку звучания в одном и двух каналах.</p><span class="text-link">Открыть →</span></a><a class="card" href="tempo.html"><span class="icon">04</span><h3>Темп и время эха</h3><p class="muted">Рассчитай длительность нот и такта по темпу песни.</p><span class="text-link">Открыть →</span></a><a class="card" href="mixplanner.html"><span class="icon">05</span><h3>План сведения</h3><p class="muted">Составь последовательность действий для своего трека.</p><span class="text-link">Открыть →</span></a><a class="card" href="guestbook.html"><span class="icon">06</span><h3>Гостевая книга</h3><p class="muted">Оставь отзыв о сайте. В статической версии записи доступны на этом устройстве.</p><span class="text-link">Открыть →</span></a><a class="card" href="forum.html"><span class="icon">07</span><h3>Форум</h3><p class="muted">Создай тему и добавь ответ. В статической версии обсуждения локальные.</p><span class="text-link">Открыть →</span></a></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="../index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="../materials.html">Материалы</a><br><a href="../references.html">Полезные ссылки</a><br><a href="../glossary.html">Словарь</a></div><div><a href="../admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

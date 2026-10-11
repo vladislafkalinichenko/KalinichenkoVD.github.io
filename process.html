@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="Сведение — это настройка громкости, тембра и расположения отдельных записей, чтобы они звучали как одна песня.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>Процесс сведения — MIXLAB</title>
-<link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="index.html">Главная</a><a data-nav href="about.html">О проекте</a><a data-nav href="process.html">Процесс сведения</a><a data-nav href="eq.html">EQ</a><a data-nav href="dynamics.html">Динамика</a><a data-nav href="reverb.html">Пространство</a><a data-nav href="stereo.html">Стерео</a><a data-nav href="references.html">Референсы</a><a data-nav href="glossary.html">Глоссарий</a><a data-nav href="checklist.html">Чек-лист</a><a data-nav href="widgets.html">Виджеты</a><a data-nav href="services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="index.html">Главная</a> / Процесс сведения</div><div class="eyebrow"><span class="dot"></span> MIXING PROCESS</div><h1>Пайплайн сведения</h1><p class="lead">Последовательность действий, которая помогает не принимать десять решений одновременно.</p></div></section><section class="section"><div class="container"><div class="grid grid-4"><div class="card"><div class="icon">01</div><h3>Prepare</h3><p class="muted">Нейминг, color coding, edit, routing, gain staging.</p></div><div class="card"><div class="icon">02</div><h3>Balance</h3><p class="muted">Static mix: фейдеры, панорама, rough balance.</p></div><div class="card"><div class="icon">03</div><h3>Tone</h3><p class="muted">EQ, saturation, transient shaping, problem solving.</p></div><div class="card"><div class="icon">04</div><h3>Depth</h3><p class="muted">Reverb, delay, automation, stereo field.</p></div><div class="card"><div class="icon">05</div><h3>Control</h3><p class="muted">Bus processing, dynamics, sidechain, glue.</p></div><div class="card"><div class="icon">06</div><h3>Translate</h3><p class="muted">Mono, headphones, small speakers, reference track.</p></div><div class="card"><div class="icon">07</div><h3>Print</h3><p class="muted">Export, naming, sample rate, dither strategy.</p></div><div class="card"><div class="icon">08</div><h3>Review</h3><p class="muted">Pause, fresh ears, revisions and notes.</p></div></div></div></section><section class="section"><div class="container split"><div class="card"><h2>Принцип gain staging</h2><p>Громкость дорожки — это не «качество». На ранних этапах полезно оставить процессорам запас по уровню и управлять динамикой без постоянной работы около 0 dBFS.</p><div class="table-wrap"><table class="table"><thead><tr><th>Шаг</th><th>Что проверяем</th><th>Типичный результат</th></tr></thead><tbody><tr><td>Источник</td><td>Клипы и тишина</td><td>Чистые регионы</td></tr><tr><td>Channel</td><td>Peak / RMS</td><td>Запас headroom</td></tr><tr><td>Bus</td><td>Sum of tracks</td><td>Контролируемый crest factor</td></tr><tr><td>Master</td><td>True Peak / LUFS</td><td>Предсказуемый print</td></tr></tbody></table></div></div><aside class="card"><h3>Полезно</h3><ul class="list"><li><a href="services/lufs.html">→ Проверить громкость</a></li><li><a href="services/tempo.html">→ Посчитать delay по BPM</a></li><li><a href="checklist.html">→ Пройти финальный чек-лист</a></li></ul></aside></div></section>
-</main>
-<div data-footer></div>
-<script src="assets/app.js"></script>
+<title>С чего начать сведение — MIXLAB</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="index.html" data-nav>Главная</a>
+<a href="materials.html" data-nav>Материалы</a>
+<a href="services/index.html" data-nav>Сервисы</a>
+<a href="xml.html" data-nav>XML</a>
+<a href="database.html" data-nav>БД</a>
+<a href="rss.html" data-nav>RSS</a>
+<a href="about.html" data-nav>О проекте</a>
+<a href="admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>С чего начать сведение</h1><p class="lead">Сведение — это настройка громкости, тембра и расположения отдельных записей, чтобы они звучали как одна песня.</p></section>
+<section class="section "><div class="container"><div class="grid grid-4"><article class="card"><span class="icon">01</span><h3>Подготовь записи</h3><p class="muted">Дай дорожкам понятные названия, убери лишние шумы и паузы. Сохрани копию проекта.</p></article><article class="card"><span class="icon">02</span><h3>Выставь громкость</h3><p class="muted">Сначала сделай так, чтобы голос и инструменты были хорошо слышны без эффектов.</p></article><article class="card"><span class="icon">03</span><h3>Настрой тембр</h3><p class="muted">Убери мешающий гул или резкость эквалайзером — инструментом для изменения низких, средних и высоких частот.</p></article><article class="card"><span class="icon">04</span><h3>Выровняй перепады</h3><p class="muted">Если отдельные слова или удары слишком громкие, используй компрессор. Он уменьшает перепады уровня.</p></article><article class="card"><span class="icon">05</span><h3>Добавь объём</h3><p class="muted">Немного реверберации создаёт ощущение комнаты. Эхо добавляй так, чтобы слова оставались понятными.</p></article><article class="card"><span class="icon">06</span><h3>Проверь разные устройства</h3><p class="muted">Послушай песню в наушниках, на колонках и телефоне. Проверь звучание в одном канале.</p></article><article class="card"><span class="icon">07</span><h3>Сохрани результат</h3><p class="muted">Выбери формат файла по задаче, сохрани и прослушай полученный файл от начала до конца.</p></article><article class="card"><span class="icon">08</span><h3>Вернись после паузы</h3><p class="muted">Дай слуху отдохнуть. Запиши несколько конкретных правок вместо бесконечной смены эффектов.</p></article></div></div></section><section class="section "><div class="container"><h2>Не допускай перегрузки</h2><p>Если индикатор уровня доходит до предела и звук искажается, уменьши громкость. Оставь небольшой запас для дальнейшей обработки.</p><div class="table-wrap"><table><thead><tr><th scope="col">Что проверяем</th><th scope="col">Что сделать</th><th scope="col">Зачем</th></tr></thead><tbody><tr><td>Каждую запись</td><td>Убрать щелчки, лишние паузы и шумы</td><td>Чистый исходный звук</td></tr><tr><td>Громкость дорожек</td><td>Снизить слишком громкие сигналы</td><td>Избежать искажений</td></tr><tr><td>Совместное звучание</td><td>Слушать все инструменты вместе</td><td>Услышать, что мешает голосу</td></tr><tr><td>Готовый файл</td><td>Прослушать после сохранения</td><td>Не пропустить ошибку</td></tr></tbody></table></div><div class="actions"><a class="btn primary" href="checklist.html">Проверить готовую песню →</a></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="materials.html">Материалы</a><br><a href="references.html">Полезные ссылки</a><br><a href="glossary.html">Словарь</a></div><div><a href="admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

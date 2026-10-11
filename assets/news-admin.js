@@ -1,0 +1,10 @@
+'use strict';
+(async()=>{
+ const $=s=>document.querySelector(s);const initial=await NewsStore.ready;
+ function state(authenticated){const server=NewsStore.mode==='server';$('#news-mode').textContent=server?'Серверная БД: опубликованные записи доступны всем посетителям этого сервера.':'Режим GitHub Pages: новые записи сохраняются в локальной БД браузера. Они появятся в ленте и на главной только на этом устройстве. Для общей публикации скачай ленту и обнови её в репозитории.';$('#server-login').hidden=!server||authenticated;$('#logout').hidden=!server||!authenticated;$('#addNews').disabled=!NewsStore.canSave||(server&&!authenticated);$('#addNews').textContent=server?'Опубликовать в БД':'Сохранить на этом устройстве';$('#export-news').disabled=false;}
+ state(initial.authenticated||false);if(initial.error)$('#news-status').textContent=initial.error;
+ $('#login-form').onsubmit=async e=>{e.preventDefault();try{await NewsStore.login($('#admin-password').value);$('#admin-password').value='';$('#login-status').textContent='';state(true);}catch(err){$('#login-status').textContent=err.message;}};
+ $('#logout').onclick=async()=>{try{await NewsStore.logout();state(false);}catch(err){$('#news-status').textContent=err.message;}};
+ $('#news-form').onsubmit=async e=>{e.preventDefault();$('#addNews').disabled=true;try{const item=await NewsStore.add($('#headline').value,$('#newsbody').value);$('#news-form').reset();$('#news-status').textContent=NewsStore.mode==='server'?'Новость опубликована в общей ленте.':'Запись сохранена в локальной БД. Её видно в ленте и на главной на этом устройстве.';$('#view-news').href=MixLab.siteURL('services/news.html')+'#news-'+encodeURIComponent(item.id);$('#view-news').hidden=false;await NewsStore.render();}catch(err){$('#news-status').textContent=err.message;}finally{$('#addNews').disabled=false;}};
+ $('#export-news').onclick=async()=>{try{const items=(await NewsStore.list()).map(({local,...x})=>x);MixLab.downloadJSON({version:1,items},'news.json');$('#export-status').textContent='Лента скачана. Выгрузка сама по себе не публикует изменения на GitHub.';}catch(err){$('#export-status').textContent=err.message;}};
+})();

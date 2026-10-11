@@ -3,21 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MIXLAB — материалы и инструменты для сведения музыки.">
-<meta name="keywords" content="сведение музыки, миксинг, эквализация, компрессия, реверберация, stereo, LUFS, MIXLAB">
+<meta name="description" content="Короткая проверка на слух. Этот инструмент не анализирует аудиофайл и не измеряет фазу автоматически.">
+<meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
-<title>Stereo — MIXLAB</title>
-<link rel="stylesheet" href="../assets/style.css">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml"></head>
-<body><header class="topbar"><div class="container nav">
-<a class="brand" href="../index.html"><span class="logo"></span><span>MIXLAB</span></a>
-<nav class="navlinks">
-<a data-nav href="../index.html">Главная</a><a data-nav href="../about.html">О проекте</a><a data-nav href="../process.html">Процесс сведения</a><a data-nav href="../eq.html">EQ</a><a data-nav href="../dynamics.html">Динамика</a><a data-nav href="../reverb.html">Пространство</a><a data-nav href="../stereo.html">Стерео</a><a data-nav href="../references.html">Референсы</a><a data-nav href="../glossary.html">Глоссарий</a><a data-nav href="../checklist.html">Чек-лист</a><a data-nav href="../services/index.html">Сервисы</a>
-</nav></div></header>
 
-<main>
-<section class="service-hero"><div class="container"><div class="breadcrumbs"><a href="../index.html">Главная</a> / Stereo Checker</div><div class="eyebrow"><span class="dot"></span> WIDTH</div><h1>Stereo Checker</h1><p class="lead">Учебная модель для оценки условной стерео-ширины по двум каналам и флагу проверки mono.</p></div></section><section class="section"><div class="container grid grid-2"><div class="card"><div class="range-row"><label>Left level</label><input id="l" type="range" min="0" max="100" value="80"><output>80</output></div><div class="range-row" style="margin-top:14px"><label>Right level</label><input id="r" type="range" min="0" max="100" value="75"><output>75</output></div><label class="check" style="margin-top:18px"><input id="mono" type="checkbox"> Mono compatibility mode</label><button class="btn primary" id="analyze" style="margin-top:18px">Analyze</button></div><div class="card"><div class="kicker">Результат</div><div class="score" id="w">0%</div><p id="msg" class="muted"></p><div class="meter"><span id="bar"></span></div></div></div></section><script>document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('input[type=range]').forEach(x=>x.oninput=()=>x.parentElement.querySelector('output').value=x.value);const a=()=>{const l=Number(document.querySelector('#l').value),r=Number(document.querySelector('#r').value),mono=document.querySelector('#mono').checked,spread=Math.abs(l-r),w=Math.round((100-spread)*(mono?.8:1));document.querySelector('#w').textContent=w+'%';document.querySelector('#bar').style.width=Math.max(0,Math.min(100,w))+'%';document.querySelector('#msg').textContent=mono?'Проверка в mono режиме: следи за потерей ключевых элементов.':w>90?'Условно устойчивое L/R распределение.':'Стоит проверить баланс каналов и панораму.'};document.querySelector('#analyze').onclick=a;a()});</script>
-</main>
-<div data-footer></div>
-<script src="../assets/app.js"></script>
+<title>Проверка стерео — MIXLAB</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/app.js" defer></script>
+<script src="../assets/tools.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">К содержанию</a>
+<header class="topbar">
+<div class="container nav"><a class="brand" href="../index.html"><span class="logo" aria-hidden="true">♪</span>MIXLAB</a>
+<nav class="navlinks" aria-label="Основное меню"><a href="../index.html" data-nav>Главная</a>
+<a href="../materials.html" data-nav>Материалы</a>
+<a href="../services/index.html" data-nav>Сервисы</a>
+<a href="../xml.html" data-nav>XML</a>
+<a href="../database.html" data-nav>БД</a>
+<a href="../rss.html" data-nav>RSS</a>
+<a href="../about.html" data-nav>О проекте</a>
+<a href="../admin/index.html" data-nav>Управление</a></nav></div>
+<div class="search-strip"><form class="container site-search" role="search" action="../services/search.html" method="get">
+<label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
+</form></div>
+</header>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Проверка стерео</h1><p class="lead">Короткая проверка на слух. Этот инструмент не анализирует аудиофайл и не измеряет фазу автоматически.</p></section>
+<section class="section "><div class="container"><div class="grid grid-2"><form class="card" id="stereo-form"><h2>Послушай свою песню</h2><p>Объедини левый и правый каналы в музыкальной программе, затем ответь на вопросы.</p><label class="check"><input type="checkbox" name="vocal"> Голос остаётся отчётливым</label><label class="check"><input type="checkbox" name="bass"> Бас и ударные не пропадают</label><label class="check"><input type="checkbox" name="instruments"> Важные инструменты сохраняют громкость</label><label class="check"><input type="checkbox" name="effects"> Эхо и объём не мешают словам</label><button class="btn primary" type="submit">Показать результат</button></form><div class="informer" id="out" role="status">Отметь результаты проверки.</div></div></div></section></main>
+<footer class="footer"><div class="container footer-grid"><div><a class="brand" href="../index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="../materials.html">Материалы</a><br><a href="../references.html">Полезные ссылки</a><br><a href="../glossary.html">Словарь</a></div><div><a href="../admin/index.html">Управление сайтом</a><p class="small">Открытий страниц на этом устройстве: <strong data-total-visits>—</strong></p></div></div></footer>
+<noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>
