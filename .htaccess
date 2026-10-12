@@ -2,3 +2,9 @@ Options -Indexes
 <FilesMatch "\.(sqlite|db|sql)$">
 Require all denied
 </FilesMatch>
+
+# Keep the shared XML menu URL while executing PHP on Apache hosts.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^xml\.html$ xml.php [L]
+</IfModule>

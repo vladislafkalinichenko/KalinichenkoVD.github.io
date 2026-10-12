@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mixing-news.xsd">
+  <news id="mix-01">
+    <title>Баланс громкости: с чего начать</title>
+    <date>2026-10-01</date>
+    <category>Основы</category>
+    <level>Начальный</level>
+    <minutes>4</minutes>
+    <summary>Собери основу песни без эффектов: сначала выбери главный элемент, затем постепенно добавляй остальные дорожки. Проверяй, не теряется ли голос, когда вступает бас.</summary>
+    <link>process.html</link>
+  </news>
+  <news id="mix-02">
+    <title>Запас громкости перед обработкой</title>
+    <date>2026-10-02</date>
+    <category>Основы</category>
+    <level>Начальный</level>
+    <minutes>3</minutes>
+    <summary>Оставь запас до перегрузки на дорожках и общей шине. Если звук искажается, уменьши уровень перед эффектом, а не только итоговую громкость.</summary>
+    <link>process.html</link>
+  </news>
+  <news id="mix-03">
+    <title>Сравнение с любимым треком</title>
+    <date>2026-10-02</date>
+    <category>Основы</category>
+    <level>Средний</level>
+    <minutes>5</minutes>
+    <summary>Выбери песню с похожим настроением и составом инструментов. Сравнивай при одинаковой воспринимаемой громкости, обращая внимание на баланс, а не на чужие настройки.</summary>
+    <link>checklist.html</link>
+  </news>
+  <news id="mix-04">
+    <title>Как убрать гул в голосе</title>
+    <date>2026-10-03</date>
+    <category>Тембр</category>
+    <level>Начальный</level>
+    <minutes>4</minutes>
+    <summary>Найди область, в которой голос становится мутным. Уменьшай её понемногу и слушай вместе с музыкой: слишком сильная обработка может лишить голос полноты.</summary>
+    <link>eq.html</link>
+  </news>
+  <news id="mix-05">
+    <title>Резкие согласные: слушаем верх</title>
+    <date>2026-10-03</date>
+    <category>Тембр</category>
+    <level>Средний</level>
+    <minutes>5</minutes>
+    <summary>Если свистящие согласные выступают вперёд, сравни несколько фраз на умеренной громкости. Обрабатывай неприятные всплески, сохраняя ясность остальных звуков.</summary>
+    <link>eq.html</link>
+  </news>
+  <news id="mix-06">
+    <title>Бас и бочка: освобождаем место</title>
+    <date>2026-10-04</date>
+    <category>Тембр</category>
+    <level>Средний</level>
+    <minutes>6</minutes>
+    <summary>Реши, какой инструмент задаёт самый глубокий низ. Сравни их вместе и по отдельности, затем проверь длительность звуков и баланс прежде, чем убирать частоты.</summary>
+    <link>eq.html</link>
+  </news>
+  <news id="mix-07">
+    <title>Зачем голосу компрессор</title>
+    <date>2026-10-04</date>
+    <category>Динамика</category>
+    <level>Начальный</level>
+    <minutes>4</minutes>
+    <summary>Компрессор помогает сблизить громкие и тихие фразы. Сначала выровняй явные перепады вручную, затем добавляй обработку до устойчивого звучания без потери выразительности.</summary>
+    <link>dynamics.html</link>
+  </news>
+  <news id="mix-08">
+    <title>Атака: сохраняем удар</title>
+    <date>2026-10-05</date>
+    <category>Динамика</category>
+    <level>Средний</level>
+    <minutes>5</minutes>
+    <summary>Слишком быстрая реакция компрессора может сделать ударные менее выразительными. Меняй время атаки и сравнивай начало удара на одинаковой выходной громкости.</summary>
+    <link>dynamics.html</link>
+  </news>
+  <news id="mix-09">
+    <title>Параллельная обработка ударных</title>
+    <date>2026-10-05</date>
+    <category>Динамика</category>
+    <level>Продвинутый</level>
+    <minutes>7</minutes>
+    <summary>Подмешай к исходным ударным отдельную сильнее сжатую копию. Повышай её уровень постепенно, чтобы добавить плотности и сохранить естественную атаку оригинала.</summary>
+    <link>dynamics.html</link>
+  </news>
+  <news id="mix-10">
+    <title>Один общий объём для инструментов</title>
+    <date>2026-10-06</date>
+    <category>Пространство</category>
+    <level>Начальный</level>
+    <minutes>4</minutes>
+    <summary>Общий посыл на реверберацию помогает связать разные записи. Начни с небольшого количества эффекта и проверяй, остаются ли слова и ритм разборчивыми.</summary>
+    <link>reverb.html</link>
+  </news>
+  <news id="mix-11">
+    <title>Эхо в ритме песни</title>
+    <date>2026-10-06</date>
+    <category>Пространство</category>
+    <level>Начальный</level>
+    <minutes>3</minutes>
+    <summary>Рассчитай время повтора по темпу песни, затем подстрой его на слух. Тихие повторы часто поддерживают фразу лучше, чем громкое эхо на каждом слове.</summary>
+    <link>services/tempo.html</link>
+  </news>
+  <news id="mix-12">
+    <title>Пауза перед отражениями</title>
+    <date>2026-10-07</date>
+    <category>Пространство</category>
+    <level>Средний</level>
+    <minutes>5</minutes>
+    <summary>Небольшая задержка перед реверберацией позволяет отделить исходный голос от отражений. Подбирай её в контексте песни, чтобы сохранить ясность и ощущение пространства.</summary>
+    <link>reverb.html</link>
+  </news>
+  <news id="mix-13">
+    <title>Где разместить инструменты</title>
+    <date>2026-10-07</date>
+    <category>Стерео</category>
+    <level>Начальный</level>
+    <minutes>4</minutes>
+    <summary>Начни с голоса и главных низких звуков в центре. Разведи второстепенные партии в стороны, сохраняя равновесие между левым и правым каналом.</summary>
+    <link>stereo.html</link>
+  </news>
+  <news id="mix-14">
+    <title>Почему звук меняется в моно</title>
+    <date>2026-10-08</date>
+    <category>Стерео</category>
+    <level>Средний</level>
+    <minutes>6</minutes>
+    <summary>При объединении каналов некоторые широкие звуки становятся тише. Сравни стерео и моно, проверь эффекты расширения и оцени, сохраняется ли главная партия.</summary>
+    <link>stereo.html</link>
+  </news>
+  <news id="mix-15">
+    <title>Ширина без потери основы</title>
+    <date>2026-10-08</date>
+    <category>Стерео</category>
+    <level>Продвинутый</level>
+    <minutes>7</minutes>
+    <summary>Оставь устойчивую центральную основу и добавляй ширину дополнительными партиями. Проверяй их отдельно и вместе: расширение не должно скрывать мелодию при прослушивании в моно.</summary>
+    <link>services/stereo.html</link>
+  </news>
+  <news id="mix-16">
+    <title>Проверка на тихой громкости</title>
+    <date>2026-10-09</date>
+    <category>Проверка</category>
+    <level>Начальный</level>
+    <minutes>3</minutes>
+    <summary>Убавь звук и послушай, что остаётся главным. Если голос или ритм пропадают, вернись к балансу дорожек прежде, чем добавлять новые эффекты.</summary>
+    <link>checklist.html</link>
+  </news>
+  <news id="mix-17">
+    <title>Перерыв перед финальным решением</title>
+    <date>2026-10-09</date>
+    <category>Проверка</category>
+    <level>Начальный</level>
+    <minutes>2</minutes>
+    <summary>После долгой работы слух привыкает к звучанию. Сделай перерыв и вернись к песне со списком из нескольких конкретных вопросов: слова, низ, резкость и объём.</summary>
+    <link>checklist.html</link>
+  </news>
+  <news id="mix-18">
+    <title>Сохраняем финальную версию</title>
+    <date>2026-10-10</date>
+    <category>Проверка</category>
+    <level>Средний</level>
+    <minutes>5</minutes>
+    <summary>Прослушай начало и окончание файла, проверь отсутствие случайных пауз и перегрузки. Сохрани понятное имя версии, чтобы не перепутать её с предыдущими вариантами.</summary>
+    <link>checklist.html</link>
+  </news>
+</catalog>

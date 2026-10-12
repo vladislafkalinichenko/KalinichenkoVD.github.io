@@ -29,13 +29,22 @@ jobs:
         id: refresh
         continue-on-error: true
         run: python tools/refresh_informers.py
+      - name: Подготовить PHP и XSL
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y php-cli php-xml
+      - name: Собрать XML-раздел
+        run: |
+          php tools/build_xml.php
+          python tools/build_search.py
+          python tests/xml_catalog.py
       - name: Проверить страницы
         run: python tools/check_site.py
       - name: Сохранить обновлённые данные
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/weather.json data/currency.json
+          git add data/weather.json data/currency.json xml.html assets/search-index.js
           if ! git diff --cached --quiet; then
             git commit -m 'Обновить погоду и курсы валют'
             git push origin HEAD:main
