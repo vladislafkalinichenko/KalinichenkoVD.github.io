@@ -32,12 +32,13 @@ jobs:
       - name: Подготовить PHP и XSL
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y php-cli php-xml
+          sudo apt-get install -y php-cli php-xml php-sqlite3
       - name: Собрать XML-раздел
         run: |
           php tools/build_xml.php
           python tools/build_search.py
           python tests/xml_catalog.py
+          python tests/community.py
       - name: Проверить страницы
         run: python tools/check_site.py
       - name: Сохранить обновлённые данные

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/index.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/materials.html</loc></url>
@@ -27,4 +27,4 @@
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/forum.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/stats.html</loc></url>
   <url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/rating.html</loc></url>
-</urlset>
+<url><loc>https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/admin/community.html</loc></url></urlset>

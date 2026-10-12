@@ -10,8 +10,15 @@ function downloadJSON(value,name){const url=URL.createObjectURL(new Blob([JSON.s
 const pagePath=decodeURIComponent(location.pathname).slice(APP_ROOT.pathname.length)||'index.html';
 document.querySelectorAll('[data-nav]').forEach(a=>{const p=new URL(a.href).pathname.slice(APP_ROOT.pathname.length);const category=pagePath.startsWith('admin/')||['services/stats.html','services/rating.html'].includes(pagePath)?'admin/index.html':pagePath.startsWith('services/')?'services/index.html':['process.html','eq.html','dynamics.html','reverb.html','stereo.html','references.html','glossary.html','checklist.html'].includes(pagePath)?'materials.html':pagePath==='xml.php'?'xml.html':pagePath;if(p===category)a.setAttribute('aria-current','page');});
 const query=new URLSearchParams(location.search).get('q');if(query&&document.querySelector('#site-query'))document.querySelector('#site-query').value=query;
-let stats=getJSON('mixlab_stats',{total:0,days:{},pages:{}});
-if(!stats||typeof stats!=='object'||!stats.days||!stats.pages)stats={total:0,days:{},pages:{}};
-stats.total=(Number(stats.total)||0)+1;stats.days[localDay()]=(Number(stats.days[localDay()])||0)+1;stats.pages[pagePath]=(Number(stats.pages[pagePath])||0)+1;
-setJSON('mixlab_stats',stats);document.querySelectorAll('[data-total-visits]').forEach(e=>e.textContent=stats.total);
 window.MixLab={esc,getJSON,setJSON,formatDate:dateString,localDay,siteURL,downloadJSON,pagePath};
+MixLab.isStatic=location.hostname.endsWith('.github.io')||location.protocol==='file:';
+MixLab.api=async function(action,body){
+ const url=siteURL('api/community.php');let csrf='';
+ if(body!==undefined){const s=await fetch(url+'?action=status',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)});const data=await s.json();if(!s.ok)throw new Error(data.error||'Не удалось выполнить действие.');csrf=data.csrf;}
+ const r=await fetch(url+'?action='+encodeURIComponent(action),{method:body===undefined?'GET':'POST',headers:body===undefined?{}:{'Content-Type':'application/json','X-CSRF-Token':csrf},credentials:'same-origin',cache:'no-store',body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(15000)});
+ const data=await r.json();if(!r.ok)throw new Error(data.error||'Не удалось выполнить действие.');return data;
+};
+MixLab.visitsReady=(async()=>{
+ if(MixLab.isStatic){let s=getJSON('mixlab_stats',{total:0,days:{},pages:{}});s.total++;s.days[localDay()]=(s.days[localDay()]||0)+1;s.pages[pagePath]=(s.pages[pagePath]||0)+1;setJSON('mixlab_stats',s);document.querySelectorAll('[data-total-visits]').forEach(e=>e.textContent=s.total);return;}
+ try{const s=await MixLab.api('visit',{page:pagePath});document.querySelectorAll('[data-total-visits]').forEach(e=>e.textContent=s.total);return s;}catch{document.querySelectorAll('[data-total-visits]').forEach(e=>e.textContent='—');}
+})();

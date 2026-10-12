@@ -1,15 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/server/bootstrap.php';
-ini_set('display_errors', '0');
-header('Content-Type: application/json; charset=utf-8');
-header('Cache-Control: no-store');
-header('X-Content-Type-Options: nosniff');
-session_set_cookie_params(['httponly'=>true,'samesite'=>'Strict','secure'=>!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!=='off']);
-if (!session_start()) {http_response_code(503);echo json_encode(['backend'=>'php-pdo','error'=>'Не удалось войти. Попробуй позже.'],JSON_UNESCAPED_UNICODE);exit;}
-$_SESSION['csrf'] ??= bin2hex(random_bytes(24));
-function respond(array $data,int $status=200): never {http_response_code($status);echo json_encode($data,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);exit;}
-function fail(string $message,int $status): never {respond(['backend'=>'php-pdo','error'=>$message],$status);}
+require dirname(__DIR__).'/server/http.php';
 try {
     $action=$_GET['action']??'list'; $method=$_SERVER['REQUEST_METHOD'];
     if ($method==='GET') {
