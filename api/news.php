@@ -6,7 +6,7 @@ header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
 session_set_cookie_params(['httponly'=>true,'samesite'=>'Strict','secure'=>!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!=='off']);
-if (!session_start()) {http_response_code(503);echo json_encode(['backend'=>'php-pdo','error'=>'Не удалось открыть сессию. Проверь настройки сервера.'],JSON_UNESCAPED_UNICODE);exit;}
+if (!session_start()) {http_response_code(503);echo json_encode(['backend'=>'php-pdo','error'=>'Не удалось войти. Попробуй позже.'],JSON_UNESCAPED_UNICODE);exit;}
 $_SESSION['csrf'] ??= bin2hex(random_bytes(24));
 function respond(array $data,int $status=200): never {http_response_code($status);echo json_encode($data,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);exit;}
 function fail(string $message,int $status): never {respond(['backend'=>'php-pdo','error'=>$message],$status);}
@@ -46,4 +46,4 @@ try {
     if ($title===''||$body===''||$len($title)>160||$len($body)>10000) fail('Заголовок: до 160 символов. Текст: до 10 000.',422);
     $item=['id'=>bin2hex(random_bytes(16)),'title'=>$title,'body'=>$body,'published_at'=>gmdate('Y-m-d\TH:i:s\Z'),'source'=>'Свой сайт','source_url'=>'','category'=>'Обновления'];
     insert_news(db(),$item);respond(['item'=>$item],201);
-} catch (Throwable $e) {error_log('MIXLAB API: '.$e->getMessage());fail('Не удалось обратиться к БД. Проверь настройки сервера.',503);}
+} catch (Throwable $e) {error_log('MIXLAB API: '.$e->getMessage());fail('Не удалось загрузить записи. Попробуй позже.',503);}
