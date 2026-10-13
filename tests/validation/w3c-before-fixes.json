@@ -1,0 +1,349 @@
+{
+  "checker": "https://validator.w3.org/nu/",
+  "base_url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/",
+  "checked_at": "2026-10-12T23:20:36.566021+00:00",
+  "pages": [
+    {
+      "path": "404.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/404.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 26,
+          "firstColumn": 1,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "/section>\n<section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        }
+      ],
+      "errors": 0
+    },
+    {
+      "path": "about.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/about.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 26,
+          "firstColumn": 1,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "/section>\n<section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        },
+        {
+          "type": "error",
+          "lastLine": 33,
+          "lastColumn": 100,
+          "firstColumn": 97,
+          "message": "The heading “h3” (with computed level 3) follows the heading “h1” (with computed level 1), skipping 1 heading level.",
+          "extract": "ss=\"card\"><h3>Для ко",
+          "hiliteStart": 10,
+          "hiliteLength": 4
+        }
+      ],
+      "errors": 1
+    },
+    {
+      "path": "admin/community.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/admin/community.html",
+      "messages": [],
+      "errors": 0
+    },
+    {
+      "path": "admin/index.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/admin/index.html",
+      "messages": [
+        {
+          "type": "error",
+          "lastLine": 33,
+          "lastColumn": 139,
+          "firstColumn": 136,
+          "message": "The heading “h3” (with computed level 3) follows the heading “h1” (with computed level 1), skipping 1 heading level.",
+          "extract": ">01</span><h3>Новост",
+          "hiliteStart": 10,
+          "hiliteLength": 4
+        }
+      ],
+      "errors": 1
+    },
+    {
+      "path": "admin/news.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/admin/news.html",
+      "messages": [],
+      "errors": 0
+    },
+    {
+      "path": "checklist.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/checklist.html",
+      "messages": [],
+      "errors": 0
+    },
+    {
+      "path": "database.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/database.html",
+      "messages": [],
+      "errors": 0
+    },
+    {
+      "path": "dynamics.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/dynamics.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 26,
+          "firstColumn": 1,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "/section>\n<section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        },
+        {
+          "type": "error",
+          "lastLine": 33,
+          "lastColumn": 100,
+          "firstColumn": 97,
+          "message": "The heading “h3” (with computed level 3) follows the heading “h1” (with computed level 1), skipping 1 heading level.",
+          "extract": "ss=\"card\"><h3>Компре",
+          "hiliteStart": 10,
+          "hiliteLength": 4
+        }
+      ],
+      "errors": 1
+    },
+    {
+      "path": "eq.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/eq.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 897,
+          "firstColumn": 872,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "</section><section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        }
+      ],
+      "errors": 0
+    },
+    {
+      "path": "glossary.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/glossary.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 26,
+          "firstColumn": 1,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "/section>\n<section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        }
+      ],
+      "errors": 0
+    },
+    {
+      "path": "index.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/index.html",
+      "messages": [],
+      "errors": 0
+    },
+    {
+      "path": "materials.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/materials.html",
+      "messages": [
+        {
+          "type": "error",
+          "lastLine": 33,
+          "lastColumn": 142,
+          "firstColumn": 139,
+          "message": "The heading “h3” (with computed level 3) follows the heading “h1” (with computed level 1), skipping 1 heading level.",
+          "extract": ">01</span><h3>С чего",
+          "hiliteStart": 10,
+          "hiliteLength": 4
+        }
+      ],
+      "errors": 1
+    },
+    {
+      "path": "process.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/process.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 26,
+          "firstColumn": 1,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "re></div>\n<section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        },
+        {
+          "type": "error",
+          "lastLine": 33,
+          "lastColumn": 128,
+          "firstColumn": 125,
+          "message": "The heading “h3” (with computed level 3) follows the heading “h1” (with computed level 1), skipping 1 heading level.",
+          "extract": ">01</span><h3>Подгот",
+          "hiliteStart": 10,
+          "hiliteLength": 4
+        }
+      ],
+      "errors": 1
+    },
+    {
+      "path": "references.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/references.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 736,
+          "firstColumn": 711,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "</section><section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        },
+        {
+          "type": "error",
+          "lastLine": 33,
+          "lastColumn": 127,
+          "firstColumn": 124,
+          "message": "The heading “h3” (with computed level 3) follows the heading “h1” (with computed level 1), skipping 1 heading level.",
+          "extract": ".ru/prod\"><h3>SAMESO",
+          "hiliteStart": 10,
+          "hiliteLength": 4
+        }
+      ],
+      "errors": 1
+    },
+    {
+      "path": "reverb.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/reverb.html",
+      "messages": [
+        {
+          "type": "info",
+          "lastLine": 33,
+          "lastColumn": 26,
+          "firstColumn": 1,
+          "subType": "warning",
+          "message": "Section lacks heading. Consider using “h2”-“h6” elements to add identifying headings to all sections, or else use a “div” element instead for any cases where no heading is needed.",
+          "extract": "/section>\n<section class=\"section \"><div c",
+          "hiliteStart": 10,
+          "hiliteLength": 26
+        },
+        {
+          "type": "error",
+          "lastLine": 33,
+          "lastColumn": 100,
+          "firstColumn": 97,
+          "message": "The heading “h3” (with computed level 3) follows the heading “h1” (with computed level 1), skipping 1 heading level.",
+          "extract": "ss=\"card\"><h3>Размер",
+          "hiliteStart": 10,
+          "hiliteLength": 4
+        }
+      ],
+      "errors": 1
+    },
+    {
+      "path": "rss.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/rss.html",
+      "messages": [],
+      "errors": 0
+    },
+    {
+      "path": "services/compressor.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/compressor.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/forum.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/forum.html",
+      "messages": [],
+      "errors": 0
+    },
+    {
+      "path": "services/guestbook.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/guestbook.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/index.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/index.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/lufs.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/lufs.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/mixplanner.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/mixplanner.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/news.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/news.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/rating.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/rating.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/search.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/search.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/stats.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/stats.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/stereo.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/stereo.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "services/tempo.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/services/tempo.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "stereo.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/stereo.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "widgets.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/widgets.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "path": "xml.html",
+      "url": "https://vladislafkalinichenko.github.io/KalinichenkoVD.github.io/xml.html",
+      "request_error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "errors": 7,
+  "failed_requests": 14
+}

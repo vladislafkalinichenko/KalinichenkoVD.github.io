@@ -60,6 +60,8 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
    except urllib.error.URLError:time.sleep(.1)
   assert request(client(),'stats')[1]['total']==3
   assert request(client(),'rating')[1]['average']==1
+  if os.environ.get('MIXLAB_UI_TEST'):
+   subprocess.run(['node','tests/community-ui.cjs'],cwd=ROOT,env=dict(os.environ,MIXLAB_TEST_BASE=base),check=True)
   print('OK: shared guestbook, topics/replies, ratings, unique visitors, persistence across restart, admin authentication, moderation/restore, forbidden expressions, host blocks, CSRF, validation and shared news.')
  finally:
   proc.terminate();proc.wait(timeout=5)

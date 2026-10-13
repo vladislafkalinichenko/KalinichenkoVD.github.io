@@ -12,7 +12,13 @@ document.querySelectorAll('[data-nav]').forEach(a=>{const p=new URL(a.href).path
 const query=new URLSearchParams(location.search).get('q');if(query&&document.querySelector('#site-query'))document.querySelector('#site-query').value=query;
 window.MixLab={esc,getJSON,setJSON,formatDate:dateString,localDay,siteURL,downloadJSON,pagePath};
 MixLab.isStatic=location.hostname.endsWith('.github.io')||location.protocol==='file:';
+// Initialize one shared session before the page's parallel requests.
+MixLab.serverReady=MixLab.isStatic?Promise.resolve(null):(async()=>{
+ const r=await fetch(siteURL('api/community.php')+'?action=status',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)});
+ const data=await r.json();if(!r.ok)throw new Error(data.error||'Не удалось загрузить сайт. Попробуй позже.');return data;
+})();
 MixLab.api=async function(action,body){
+ await MixLab.serverReady;
  const url=siteURL('api/community.php');let csrf='';
  if(body!==undefined){const s=await fetch(url+'?action=status',{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)});const data=await s.json();if(!s.ok)throw new Error(data.error||'Не удалось выполнить действие.');csrf=data.csrf;}
  const r=await fetch(url+'?action='+encodeURIComponent(action),{method:body===undefined?'GET':'POST',headers:body===undefined?{}:{'Content-Type':'application/json','X-CSRF-Token':csrf},credentials:'same-origin',cache:'no-store',body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(15000)});

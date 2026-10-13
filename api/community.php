@@ -5,7 +5,7 @@ require dirname(__DIR__).'/server/community.php';
 try {
     $pdo=community_db();$action=$_GET['action']??'status';
     if($_SERVER['REQUEST_METHOD']==='GET'){
-       if($action==='status')respond(['backend'=>'php-pdo','csrf'=>$_SESSION['csrf'],'authenticated'=>!empty($_SESSION['admin'])]);
+       if($action==='status'){visitor_token($pdo);respond(['backend'=>'php-pdo','csrf'=>$_SESSION['csrf'],'authenticated'=>!empty($_SESSION['admin'])]);}
        if($action==='guestbook')respond(['items'=>public_posts($pdo,'guest')]);
        if($action==='forum'){
           $items=public_posts($pdo,'topic');foreach($items as &$item)$item['replies']=array_reverse(public_posts($pdo,'reply',$item['id']));unset($item);respond(['items'=>$items]);
