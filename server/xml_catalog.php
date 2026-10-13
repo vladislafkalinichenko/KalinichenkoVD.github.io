@@ -5,13 +5,19 @@ function catalog_params(array $input): array {
     $allowed = [
         'category' => ['', 'Основы', 'Тембр', 'Динамика', 'Пространство', 'Стерео', 'Проверка'],
         'level' => ['', 'Начальный', 'Средний', 'Продвинутый'],
-        'sort' => ['date', 'title', 'minutes'], 'order' => ['descending', 'ascending']
+        'sort' => ['date', 'title', 'category', 'level', 'minutes', 'summary', 'link'], 'order' => ['descending', 'ascending']
     ];
     $out = [];
     foreach ($allowed as $key => $values) {
         $value = $input[$key] ?? $values[0];
         if (!is_string($value) || !in_array($value, $values, true)) throw new InvalidArgumentException('Проверь параметры отбора.');
         $out[$key] = $value;
+    }
+    if (isset($input['column'])) {
+        $column = $input['column'];
+        if (!is_string($column) || !in_array($column, $allowed['sort'], true)) throw new InvalidArgumentException('Проверь колонку сортировки.');
+        $out['order'] = $out['sort'] === $column && $out['order'] === 'ascending' ? 'descending' : 'ascending';
+        $out['sort'] = $column;
     }
     $query = $input['q'] ?? '';
     if (!is_string($query) || !preg_match('//u', $query) || preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $query) || preg_match_all('/./us', $query) > 120) throw new InvalidArgumentException('Поисковый запрос должен содержать не более 120 символов.');

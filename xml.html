@@ -7,7 +7,7 @@
 <meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
 
-<title>Заметки о сведении — MIXLAB</title>
+<title>Таблица заметок (XML) — MIXLAB</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
@@ -21,6 +21,7 @@
 <nav class="navlinks" aria-label="Основное меню"><a href="index.html" data-nav>Главная</a>
 <a href="materials.html" data-nav>Материалы</a>
 <a href="services/index.html" data-nav>Сервисы</a>
+<a href="services/news.html" data-nav>Новости</a>
 <a href="xml.html" data-nav>XML</a>
 <a href="database.html" data-nav>БД</a>
 <a href="rss.html" data-nav>RSS</a>
@@ -30,12 +31,13 @@
 <label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
 </form></div>
 </header>
-<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Заметки о сведении</h1><p class="lead">Короткие публикации о работе со звуком. Найди подходящую тему и переходи от идеи к практике.</p></section><div class="section"><div class="container">
+<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>Таблица заметок (XML)</h1><p class="lead">18 заметок о сведении из XML-файла. Ищи набор символов во всех семи колонках. Нажми на заголовок колонки, чтобы изменить порядок строк.</p></section><div class="section"><div class="container">
+<div class="card catalog-files"><h2>Исходные файлы</h2><p>Эта таблица формируется из файла <a class="text-link" href="data/mixing-news.xml">mixing-news.xml — открыть XML</a>.</p><div class="actions"><a class="btn" href="data/mixing-news.xml" download>Скачать XML</a><a class="text-link" href="data/mixing-news.xsl">Преобразование XSL</a><a class="text-link" href="data/mixing-news.xsd">Схема XSD</a></div></div>
 <!-- CATALOG:START -->
 <div id="catalog" data-mode="static">
 <form id="catalog-form" class="card catalog-filters" action="xml.html" method="get">
 <div class="field catalog-query">
-<label for="catalog-query">Что тебя интересует?</label><input id="catalog-query" name="q" type="search" maxlength="120" value="" placeholder="Например, голос или бас">
+<label for="catalog-query">Поиск по всем колонкам</label><input id="catalog-query" name="q" type="search" maxlength="120" value="" placeholder="Текст, дата, тема, уровень, минуты или ссылка">
 </div>
 <div class="field">
 <label for="catalog-category">Тема</label><select id="catalog-category" name="category"><option value="" selected>Все темы</option>
@@ -53,9 +55,13 @@
 <option value="Продвинутый">Продвинутый</option></select>
 </div>
 <div class="field">
-<label for="catalog-sort">Сортировать</label><select id="catalog-sort" name="sort"><option value="date" selected>По дате</option>
-<option value="title">По названию</option>
-<option value="minutes">По времени чтения</option></select>
+<label for="catalog-sort">Сортировать</label><select id="catalog-sort" name="sort"><option value="title">Название</option>
+<option value="date" selected>Дата</option>
+<option value="category">Тема</option>
+<option value="level">Уровень</option>
+<option value="minutes">Минуты чтения</option>
+<option value="summary">Текст</option>
+<option value="link">Ссылка</option></select>
 </div>
 <div class="field">
 <label for="catalog-order">Порядок</label><select id="catalog-order" name="order"><option value="descending" selected>По убыванию</option>
@@ -66,117 +72,183 @@
 </div>
 </form>
 <p id="catalog-count" class="spaced" role="status" aria-live="polite">Найдено: 18 из 18</p>
-<div id="catalog-list" class="grid grid-3">
-<article class="card catalog-item" id="mix-18" data-category="Проверка" data-level="Средний" data-date="2026-10-10" data-minutes="5" data-title="Сохраняем финальную версию"><div class="catalog-meta">
-<span class="pill">Проверка</span><time datetime="2026-10-10">10.10.2026</time>
-</div>
-<h2>Сохраняем финальную версию</h2>
-<p class="small muted">Средний · 5 мин чтения</p>
-<p class="catalog-summary">Прослушай начало и окончание файла, проверь отсутствие случайных пауз и перегрузки. Сохрани понятное имя версии, чтобы не перепутать её с предыдущими вариантами.</p>
-<a class="text-link" href="checklist.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-16" data-category="Проверка" data-level="Начальный" data-date="2026-10-09" data-minutes="3" data-title="Проверка на тихой громкости"><div class="catalog-meta">
-<span class="pill">Проверка</span><time datetime="2026-10-09">09.10.2026</time>
-</div>
-<h2>Проверка на тихой громкости</h2>
-<p class="small muted">Начальный · 3 мин чтения</p>
-<p class="catalog-summary">Убавь звук и послушай, что остаётся главным. Если голос или ритм пропадают, вернись к балансу дорожек прежде, чем добавлять новые эффекты.</p>
-<a class="text-link" href="checklist.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-17" data-category="Проверка" data-level="Начальный" data-date="2026-10-09" data-minutes="2" data-title="Перерыв перед финальным решением"><div class="catalog-meta">
-<span class="pill">Проверка</span><time datetime="2026-10-09">09.10.2026</time>
-</div>
-<h2>Перерыв перед финальным решением</h2>
-<p class="small muted">Начальный · 2 мин чтения</p>
-<p class="catalog-summary">После долгой работы слух привыкает к звучанию. Сделай перерыв и вернись к песне со списком из нескольких конкретных вопросов: слова, низ, резкость и объём.</p>
-<a class="text-link" href="checklist.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-14" data-category="Стерео" data-level="Средний" data-date="2026-10-08" data-minutes="6" data-title="Почему звук меняется в моно"><div class="catalog-meta">
-<span class="pill">Стерео</span><time datetime="2026-10-08">08.10.2026</time>
-</div>
-<h2>Почему звук меняется в моно</h2>
-<p class="small muted">Средний · 6 мин чтения</p>
-<p class="catalog-summary">При объединении каналов некоторые широкие звуки становятся тише. Сравни стерео и моно, проверь эффекты расширения и оцени, сохраняется ли главная партия.</p>
-<a class="text-link" href="stereo.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-15" data-category="Стерео" data-level="Продвинутый" data-date="2026-10-08" data-minutes="7" data-title="Ширина без потери основы"><div class="catalog-meta">
-<span class="pill">Стерео</span><time datetime="2026-10-08">08.10.2026</time>
-</div>
-<h2>Ширина без потери основы</h2>
-<p class="small muted">Продвинутый · 7 мин чтения</p>
-<p class="catalog-summary">Оставь устойчивую центральную основу и добавляй ширину дополнительными партиями. Проверяй их отдельно и вместе: расширение не должно скрывать мелодию при прослушивании в моно.</p>
-<a class="text-link" href="services/stereo.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-12" data-category="Пространство" data-level="Средний" data-date="2026-10-07" data-minutes="5" data-title="Пауза перед отражениями"><div class="catalog-meta">
-<span class="pill">Пространство</span><time datetime="2026-10-07">07.10.2026</time>
-</div>
-<h2>Пауза перед отражениями</h2>
-<p class="small muted">Средний · 5 мин чтения</p>
-<p class="catalog-summary">Небольшая задержка перед реверберацией позволяет отделить исходный голос от отражений. Подбирай её в контексте песни, чтобы сохранить ясность и ощущение пространства.</p>
-<a class="text-link" href="reverb.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-13" data-category="Стерео" data-level="Начальный" data-date="2026-10-07" data-minutes="4" data-title="Где разместить инструменты"><div class="catalog-meta">
-<span class="pill">Стерео</span><time datetime="2026-10-07">07.10.2026</time>
-</div>
-<h2>Где разместить инструменты</h2>
-<p class="small muted">Начальный · 4 мин чтения</p>
-<p class="catalog-summary">Начни с голоса и главных низких звуков в центре. Разведи второстепенные партии в стороны, сохраняя равновесие между левым и правым каналом.</p>
-<a class="text-link" href="stereo.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-10" data-category="Пространство" data-level="Начальный" data-date="2026-10-06" data-minutes="4" data-title="Один общий объём для инструментов"><div class="catalog-meta">
-<span class="pill">Пространство</span><time datetime="2026-10-06">06.10.2026</time>
-</div>
-<h2>Один общий объём для инструментов</h2>
-<p class="small muted">Начальный · 4 мин чтения</p>
-<p class="catalog-summary">Общий посыл на реверберацию помогает связать разные записи. Начни с небольшого количества эффекта и проверяй, остаются ли слова и ритм разборчивыми.</p>
-<a class="text-link" href="reverb.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-11" data-category="Пространство" data-level="Начальный" data-date="2026-10-06" data-minutes="3" data-title="Эхо в ритме песни"><div class="catalog-meta">
-<span class="pill">Пространство</span><time datetime="2026-10-06">06.10.2026</time>
-</div>
-<h2>Эхо в ритме песни</h2>
-<p class="small muted">Начальный · 3 мин чтения</p>
-<p class="catalog-summary">Рассчитай время повтора по темпу песни, затем подстрой его на слух. Тихие повторы часто поддерживают фразу лучше, чем громкое эхо на каждом слове.</p>
-<a class="text-link" href="services/tempo.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-08" data-category="Динамика" data-level="Средний" data-date="2026-10-05" data-minutes="5" data-title="Атака: сохраняем удар"><div class="catalog-meta">
-<span class="pill">Динамика</span><time datetime="2026-10-05">05.10.2026</time>
-</div>
-<h2>Атака: сохраняем удар</h2>
-<p class="small muted">Средний · 5 мин чтения</p>
-<p class="catalog-summary">Слишком быстрая реакция компрессора может сделать ударные менее выразительными. Меняй время атаки и сравнивай начало удара на одинаковой выходной громкости.</p>
-<a class="text-link" href="dynamics.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-09" data-category="Динамика" data-level="Продвинутый" data-date="2026-10-05" data-minutes="7" data-title="Параллельная обработка ударных"><div class="catalog-meta">
-<span class="pill">Динамика</span><time datetime="2026-10-05">05.10.2026</time>
-</div>
-<h2>Параллельная обработка ударных</h2>
-<p class="small muted">Продвинутый · 7 мин чтения</p>
-<p class="catalog-summary">Подмешай к исходным ударным отдельную сильнее сжатую копию. Повышай её уровень постепенно, чтобы добавить плотности и сохранить естественную атаку оригинала.</p>
-<a class="text-link" href="dynamics.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-06" data-category="Тембр" data-level="Средний" data-date="2026-10-04" data-minutes="6" data-title="Бас и бочка: освобождаем место"><div class="catalog-meta">
-<span class="pill">Тембр</span><time datetime="2026-10-04">04.10.2026</time>
-</div>
-<h2>Бас и бочка: освобождаем место</h2>
-<p class="small muted">Средний · 6 мин чтения</p>
-<p class="catalog-summary">Реши, какой инструмент задаёт самый глубокий низ. Сравни их вместе и по отдельности, затем проверь длительность звуков и баланс прежде, чем убирать частоты.</p>
-<a class="text-link" href="eq.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-07" data-category="Динамика" data-level="Начальный" data-date="2026-10-04" data-minutes="4" data-title="Зачем голосу компрессор"><div class="catalog-meta">
-<span class="pill">Динамика</span><time datetime="2026-10-04">04.10.2026</time>
-</div>
-<h2>Зачем голосу компрессор</h2>
-<p class="small muted">Начальный · 4 мин чтения</p>
-<p class="catalog-summary">Компрессор помогает сблизить громкие и тихие фразы. Сначала выровняй явные перепады вручную, затем добавляй обработку до устойчивого звучания без потери выразительности.</p>
-<a class="text-link" href="dynamics.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-04" data-category="Тембр" data-level="Начальный" data-date="2026-10-03" data-minutes="4" data-title="Как убрать гул в голосе"><div class="catalog-meta">
-<span class="pill">Тембр</span><time datetime="2026-10-03">03.10.2026</time>
-</div>
-<h2>Как убрать гул в голосе</h2>
-<p class="small muted">Начальный · 4 мин чтения</p>
-<p class="catalog-summary">Найди область, в которой голос становится мутным. Уменьшай её понемногу и слушай вместе с музыкой: слишком сильная обработка может лишить голос полноты.</p>
-<a class="text-link" href="eq.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-05" data-category="Тембр" data-level="Средний" data-date="2026-10-03" data-minutes="5" data-title="Резкие согласные: слушаем верх"><div class="catalog-meta">
-<span class="pill">Тембр</span><time datetime="2026-10-03">03.10.2026</time>
-</div>
-<h2>Резкие согласные: слушаем верх</h2>
-<p class="small muted">Средний · 5 мин чтения</p>
-<p class="catalog-summary">Если свистящие согласные выступают вперёд, сравни несколько фраз на умеренной громкости. Обрабатывай неприятные всплески, сохраняя ясность остальных звуков.</p>
-<a class="text-link" href="eq.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-02" data-category="Основы" data-level="Начальный" data-date="2026-10-02" data-minutes="3" data-title="Запас громкости перед обработкой"><div class="catalog-meta">
-<span class="pill">Основы</span><time datetime="2026-10-02">02.10.2026</time>
-</div>
-<h2>Запас громкости перед обработкой</h2>
-<p class="small muted">Начальный · 3 мин чтения</p>
-<p class="catalog-summary">Оставь запас до перегрузки на дорожках и общей шине. Если звук искажается, уменьши уровень перед эффектом, а не только итоговую громкость.</p>
-<a class="text-link" href="process.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-03" data-category="Основы" data-level="Средний" data-date="2026-10-02" data-minutes="5" data-title="Сравнение с любимым треком"><div class="catalog-meta">
-<span class="pill">Основы</span><time datetime="2026-10-02">02.10.2026</time>
-</div>
-<h2>Сравнение с любимым треком</h2>
-<p class="small muted">Средний · 5 мин чтения</p>
-<p class="catalog-summary">Выбери песню с похожим настроением и составом инструментов. Сравнивай при одинаковой воспринимаемой громкости, обращая внимание на баланс, а не на чужие настройки.</p>
-<a class="text-link" href="checklist.html">Разобраться подробнее →</a></article><article class="card catalog-item" id="mix-01" data-category="Основы" data-level="Начальный" data-date="2026-10-01" data-minutes="4" data-title="Баланс громкости: с чего начать"><div class="catalog-meta">
-<span class="pill">Основы</span><time datetime="2026-10-01">01.10.2026</time>
-</div>
-<h2>Баланс громкости: с чего начать</h2>
-<p class="small muted">Начальный · 4 мин чтения</p>
-<p class="catalog-summary">Собери основу песни без эффектов: сначала выбери главный элемент, затем постепенно добавляй остальные дорожки. Проверяй, не теряется ли голос, когда вступает бас.</p>
-<a class="text-link" href="process.html">Разобраться подробнее →</a></article>
-</div>
+<p class="catalog-table-note">Сортировка работает по каждой колонке в обоих направлениях. На небольшом экране таблицу можно прокрутить вправо.</p>
+<div class="catalog-table-wrap" role="region" aria-label="Таблица заметок" tabindex="0"><table class="catalog-table">
+<caption>Заметки о сведении: семь полей каждой XML-записи</caption>
+<thead><tr>
+<th scope="col"><button type="submit" form="catalog-form" class="sort-button" name="column" value="title">Название ↕</button></th>
+<th scope="col" aria-sort="descending"><button type="submit" form="catalog-form" class="sort-button" name="column" value="date">Дата ↓</button></th>
+<th scope="col"><button type="submit" form="catalog-form" class="sort-button" name="column" value="category">Тема ↕</button></th>
+<th scope="col"><button type="submit" form="catalog-form" class="sort-button" name="column" value="level">Уровень ↕</button></th>
+<th scope="col"><button type="submit" form="catalog-form" class="sort-button" name="column" value="minutes">Минуты чтения ↕</button></th>
+<th scope="col"><button type="submit" form="catalog-form" class="sort-button" name="column" value="summary">Текст ↕</button></th>
+<th scope="col"><button type="submit" form="catalog-form" class="sort-button" name="column" value="link">Ссылка ↕</button></th>
+</tr></thead>
+<tbody id="catalog-list">
+<tr class="catalog-item" id="mix-18" data-category="Проверка" data-level="Средний" data-date="2026-10-10" data-minutes="5" data-title="Сохраняем финальную версию" data-summary="Прослушай начало и окончание файла, проверь отсутствие случайных пауз и перегрузки. Сохрани понятное имя версии, чтобы не перепутать её с предыдущими вариантами." data-link="checklist.html">
+<td><strong>Сохраняем финальную версию</strong></td>
+<td><time datetime="2026-10-10">10.10.2026</time></td>
+<td>Проверка</td>
+<td>Средний</td>
+<td>5</td>
+<td class="catalog-summary">Прослушай начало и окончание файла, проверь отсутствие случайных пауз и перегрузки. Сохрани понятное имя версии, чтобы не перепутать её с предыдущими вариантами.</td>
+<td><a class="text-link" href="checklist.html">checklist.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-16" data-category="Проверка" data-level="Начальный" data-date="2026-10-09" data-minutes="3" data-title="Проверка на тихой громкости" data-summary="Убавь звук и послушай, что остаётся главным. Если голос или ритм пропадают, вернись к балансу дорожек прежде, чем добавлять новые эффекты." data-link="checklist.html">
+<td><strong>Проверка на тихой громкости</strong></td>
+<td><time datetime="2026-10-09">09.10.2026</time></td>
+<td>Проверка</td>
+<td>Начальный</td>
+<td>3</td>
+<td class="catalog-summary">Убавь звук и послушай, что остаётся главным. Если голос или ритм пропадают, вернись к балансу дорожек прежде, чем добавлять новые эффекты.</td>
+<td><a class="text-link" href="checklist.html">checklist.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-17" data-category="Проверка" data-level="Начальный" data-date="2026-10-09" data-minutes="2" data-title="Перерыв перед финальным решением" data-summary="После долгой работы слух привыкает к звучанию. Сделай перерыв и вернись к песне со списком из нескольких конкретных вопросов: слова, низ, резкость и объём." data-link="checklist.html">
+<td><strong>Перерыв перед финальным решением</strong></td>
+<td><time datetime="2026-10-09">09.10.2026</time></td>
+<td>Проверка</td>
+<td>Начальный</td>
+<td>2</td>
+<td class="catalog-summary">После долгой работы слух привыкает к звучанию. Сделай перерыв и вернись к песне со списком из нескольких конкретных вопросов: слова, низ, резкость и объём.</td>
+<td><a class="text-link" href="checklist.html">checklist.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-14" data-category="Стерео" data-level="Средний" data-date="2026-10-08" data-minutes="6" data-title="Почему звук меняется в моно" data-summary="При объединении каналов некоторые широкие звуки становятся тише. Сравни стерео и моно, проверь эффекты расширения и оцени, сохраняется ли главная партия." data-link="stereo.html">
+<td><strong>Почему звук меняется в моно</strong></td>
+<td><time datetime="2026-10-08">08.10.2026</time></td>
+<td>Стерео</td>
+<td>Средний</td>
+<td>6</td>
+<td class="catalog-summary">При объединении каналов некоторые широкие звуки становятся тише. Сравни стерео и моно, проверь эффекты расширения и оцени, сохраняется ли главная партия.</td>
+<td><a class="text-link" href="stereo.html">stereo.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-15" data-category="Стерео" data-level="Продвинутый" data-date="2026-10-08" data-minutes="7" data-title="Ширина без потери основы" data-summary="Оставь устойчивую центральную основу и добавляй ширину дополнительными партиями. Проверяй их отдельно и вместе: расширение не должно скрывать мелодию при прослушивании в моно." data-link="services/stereo.html">
+<td><strong>Ширина без потери основы</strong></td>
+<td><time datetime="2026-10-08">08.10.2026</time></td>
+<td>Стерео</td>
+<td>Продвинутый</td>
+<td>7</td>
+<td class="catalog-summary">Оставь устойчивую центральную основу и добавляй ширину дополнительными партиями. Проверяй их отдельно и вместе: расширение не должно скрывать мелодию при прослушивании в моно.</td>
+<td><a class="text-link" href="services/stereo.html">services/stereo.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-12" data-category="Пространство" data-level="Средний" data-date="2026-10-07" data-minutes="5" data-title="Пауза перед отражениями" data-summary="Небольшая задержка перед реверберацией позволяет отделить исходный голос от отражений. Подбирай её в контексте песни, чтобы сохранить ясность и ощущение пространства." data-link="reverb.html">
+<td><strong>Пауза перед отражениями</strong></td>
+<td><time datetime="2026-10-07">07.10.2026</time></td>
+<td>Пространство</td>
+<td>Средний</td>
+<td>5</td>
+<td class="catalog-summary">Небольшая задержка перед реверберацией позволяет отделить исходный голос от отражений. Подбирай её в контексте песни, чтобы сохранить ясность и ощущение пространства.</td>
+<td><a class="text-link" href="reverb.html">reverb.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-13" data-category="Стерео" data-level="Начальный" data-date="2026-10-07" data-minutes="4" data-title="Где разместить инструменты" data-summary="Начни с голоса и главных низких звуков в центре. Разведи второстепенные партии в стороны, сохраняя равновесие между левым и правым каналом." data-link="stereo.html">
+<td><strong>Где разместить инструменты</strong></td>
+<td><time datetime="2026-10-07">07.10.2026</time></td>
+<td>Стерео</td>
+<td>Начальный</td>
+<td>4</td>
+<td class="catalog-summary">Начни с голоса и главных низких звуков в центре. Разведи второстепенные партии в стороны, сохраняя равновесие между левым и правым каналом.</td>
+<td><a class="text-link" href="stereo.html">stereo.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-10" data-category="Пространство" data-level="Начальный" data-date="2026-10-06" data-minutes="4" data-title="Один общий объём для инструментов" data-summary="Общий посыл на реверберацию помогает связать разные записи. Начни с небольшого количества эффекта и проверяй, остаются ли слова и ритм разборчивыми." data-link="reverb.html">
+<td><strong>Один общий объём для инструментов</strong></td>
+<td><time datetime="2026-10-06">06.10.2026</time></td>
+<td>Пространство</td>
+<td>Начальный</td>
+<td>4</td>
+<td class="catalog-summary">Общий посыл на реверберацию помогает связать разные записи. Начни с небольшого количества эффекта и проверяй, остаются ли слова и ритм разборчивыми.</td>
+<td><a class="text-link" href="reverb.html">reverb.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-11" data-category="Пространство" data-level="Начальный" data-date="2026-10-06" data-minutes="3" data-title="Эхо в ритме песни" data-summary="Рассчитай время повтора по темпу песни, затем подстрой его на слух. Тихие повторы часто поддерживают фразу лучше, чем громкое эхо на каждом слове." data-link="services/tempo.html">
+<td><strong>Эхо в ритме песни</strong></td>
+<td><time datetime="2026-10-06">06.10.2026</time></td>
+<td>Пространство</td>
+<td>Начальный</td>
+<td>3</td>
+<td class="catalog-summary">Рассчитай время повтора по темпу песни, затем подстрой его на слух. Тихие повторы часто поддерживают фразу лучше, чем громкое эхо на каждом слове.</td>
+<td><a class="text-link" href="services/tempo.html">services/tempo.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-08" data-category="Динамика" data-level="Средний" data-date="2026-10-05" data-minutes="5" data-title="Атака: сохраняем удар" data-summary="Слишком быстрая реакция компрессора может сделать ударные менее выразительными. Меняй время атаки и сравнивай начало удара на одинаковой выходной громкости." data-link="dynamics.html">
+<td><strong>Атака: сохраняем удар</strong></td>
+<td><time datetime="2026-10-05">05.10.2026</time></td>
+<td>Динамика</td>
+<td>Средний</td>
+<td>5</td>
+<td class="catalog-summary">Слишком быстрая реакция компрессора может сделать ударные менее выразительными. Меняй время атаки и сравнивай начало удара на одинаковой выходной громкости.</td>
+<td><a class="text-link" href="dynamics.html">dynamics.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-09" data-category="Динамика" data-level="Продвинутый" data-date="2026-10-05" data-minutes="7" data-title="Параллельная обработка ударных" data-summary="Подмешай к исходным ударным отдельную сильнее сжатую копию. Повышай её уровень постепенно, чтобы добавить плотности и сохранить естественную атаку оригинала." data-link="dynamics.html">
+<td><strong>Параллельная обработка ударных</strong></td>
+<td><time datetime="2026-10-05">05.10.2026</time></td>
+<td>Динамика</td>
+<td>Продвинутый</td>
+<td>7</td>
+<td class="catalog-summary">Подмешай к исходным ударным отдельную сильнее сжатую копию. Повышай её уровень постепенно, чтобы добавить плотности и сохранить естественную атаку оригинала.</td>
+<td><a class="text-link" href="dynamics.html">dynamics.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-06" data-category="Тембр" data-level="Средний" data-date="2026-10-04" data-minutes="6" data-title="Бас и бочка: освобождаем место" data-summary="Реши, какой инструмент задаёт самый глубокий низ. Сравни их вместе и по отдельности, затем проверь длительность звуков и баланс прежде, чем убирать частоты." data-link="eq.html">
+<td><strong>Бас и бочка: освобождаем место</strong></td>
+<td><time datetime="2026-10-04">04.10.2026</time></td>
+<td>Тембр</td>
+<td>Средний</td>
+<td>6</td>
+<td class="catalog-summary">Реши, какой инструмент задаёт самый глубокий низ. Сравни их вместе и по отдельности, затем проверь длительность звуков и баланс прежде, чем убирать частоты.</td>
+<td><a class="text-link" href="eq.html">eq.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-07" data-category="Динамика" data-level="Начальный" data-date="2026-10-04" data-minutes="4" data-title="Зачем голосу компрессор" data-summary="Компрессор помогает сблизить громкие и тихие фразы. Сначала выровняй явные перепады вручную, затем добавляй обработку до устойчивого звучания без потери выразительности." data-link="dynamics.html">
+<td><strong>Зачем голосу компрессор</strong></td>
+<td><time datetime="2026-10-04">04.10.2026</time></td>
+<td>Динамика</td>
+<td>Начальный</td>
+<td>4</td>
+<td class="catalog-summary">Компрессор помогает сблизить громкие и тихие фразы. Сначала выровняй явные перепады вручную, затем добавляй обработку до устойчивого звучания без потери выразительности.</td>
+<td><a class="text-link" href="dynamics.html">dynamics.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-04" data-category="Тембр" data-level="Начальный" data-date="2026-10-03" data-minutes="4" data-title="Как убрать гул в голосе" data-summary="Найди область, в которой голос становится мутным. Уменьшай её понемногу и слушай вместе с музыкой: слишком сильная обработка может лишить голос полноты." data-link="eq.html">
+<td><strong>Как убрать гул в голосе</strong></td>
+<td><time datetime="2026-10-03">03.10.2026</time></td>
+<td>Тембр</td>
+<td>Начальный</td>
+<td>4</td>
+<td class="catalog-summary">Найди область, в которой голос становится мутным. Уменьшай её понемногу и слушай вместе с музыкой: слишком сильная обработка может лишить голос полноты.</td>
+<td><a class="text-link" href="eq.html">eq.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-05" data-category="Тембр" data-level="Средний" data-date="2026-10-03" data-minutes="5" data-title="Резкие согласные: слушаем верх" data-summary="Если свистящие согласные выступают вперёд, сравни несколько фраз на умеренной громкости. Обрабатывай неприятные всплески, сохраняя ясность остальных звуков." data-link="eq.html">
+<td><strong>Резкие согласные: слушаем верх</strong></td>
+<td><time datetime="2026-10-03">03.10.2026</time></td>
+<td>Тембр</td>
+<td>Средний</td>
+<td>5</td>
+<td class="catalog-summary">Если свистящие согласные выступают вперёд, сравни несколько фраз на умеренной громкости. Обрабатывай неприятные всплески, сохраняя ясность остальных звуков.</td>
+<td><a class="text-link" href="eq.html">eq.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-02" data-category="Основы" data-level="Начальный" data-date="2026-10-02" data-minutes="3" data-title="Запас громкости перед обработкой" data-summary="Оставь запас до перегрузки на дорожках и общей шине. Если звук искажается, уменьши уровень перед эффектом, а не только итоговую громкость." data-link="process.html">
+<td><strong>Запас громкости перед обработкой</strong></td>
+<td><time datetime="2026-10-02">02.10.2026</time></td>
+<td>Основы</td>
+<td>Начальный</td>
+<td>3</td>
+<td class="catalog-summary">Оставь запас до перегрузки на дорожках и общей шине. Если звук искажается, уменьши уровень перед эффектом, а не только итоговую громкость.</td>
+<td><a class="text-link" href="process.html">process.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-03" data-category="Основы" data-level="Средний" data-date="2026-10-02" data-minutes="5" data-title="Сравнение с любимым треком" data-summary="Выбери песню с похожим настроением и составом инструментов. Сравнивай при одинаковой воспринимаемой громкости, обращая внимание на баланс, а не на чужие настройки." data-link="checklist.html">
+<td><strong>Сравнение с любимым треком</strong></td>
+<td><time datetime="2026-10-02">02.10.2026</time></td>
+<td>Основы</td>
+<td>Средний</td>
+<td>5</td>
+<td class="catalog-summary">Выбери песню с похожим настроением и составом инструментов. Сравнивай при одинаковой воспринимаемой громкости, обращая внимание на баланс, а не на чужие настройки.</td>
+<td><a class="text-link" href="checklist.html">checklist.html</a></td>
+</tr>
+<tr class="catalog-item" id="mix-01" data-category="Основы" data-level="Начальный" data-date="2026-10-01" data-minutes="4" data-title="Баланс громкости: с чего начать" data-summary="Собери основу песни без эффектов: сначала выбери главный элемент, затем постепенно добавляй остальные дорожки. Проверяй, не теряется ли голос, когда вступает бас." data-link="process.html">
+<td><strong>Баланс громкости: с чего начать</strong></td>
+<td><time datetime="2026-10-01">01.10.2026</time></td>
+<td>Основы</td>
+<td>Начальный</td>
+<td>4</td>
+<td class="catalog-summary">Собери основу песни без эффектов: сначала выбери главный элемент, затем постепенно добавляй остальные дорожки. Проверяй, не теряется ли голос, когда вступает бас.</td>
+<td><a class="text-link" href="process.html">process.html</a></td>
+</tr>
+</tbody>
+</table></div>
 <p id="catalog-empty" class="notice" hidden="hidden">Ничего не найдено. Попробуй другую тему или сократи запрос.</p>
 </div>
 

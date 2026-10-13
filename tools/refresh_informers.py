@@ -8,7 +8,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-CITIES = [('moscow','Москва',55.7558,37.6176),('spb','Санкт-Петербург',59.9343,30.3351),('kazan','Казань',55.7961,49.1064),('ekb','Екатеринбург',56.8389,60.6057),('novosibirsk','Новосибирск',55.0084,82.9357),('krasnodar','Краснодар',45.0355,38.9753),('vladivostok','Владивосток',43.1155,131.8855)]
+CITIES = [('obninsk','Обнинск',55.0968,36.6101),('moscow','Москва',55.7558,37.6176),('spb','Санкт-Петербург',59.9343,30.3351),('kazan','Казань',55.7961,49.1064),('ekb','Екатеринбург',56.8389,60.6057),('novosibirsk','Новосибирск',55.0084,82.9357),('krasnodar','Краснодар',45.0355,38.9753),('vladivostok','Владивосток',43.1155,131.8855)]
 def fetch(url):
     request=urllib.request.Request(url,headers={'User-Agent':'MixlabStudentSite/1.0'})
     with urllib.request.urlopen(request,timeout=25) as response:

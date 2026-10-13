@@ -54,6 +54,9 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert request(b,'create',{'title':'Новость','body':'test'},api='news')[0]==401
   status,d=request(admin,'create',{'title':'Новость','body':'Общая публикация'},api='news');assert status==201;news=d['item']['id']
   assert any(x['id']==news for x in request(b,'list',api='news')[1]['items'])
+  with b.open(base+'services/news.html') as response:
+   html=response.read().decode();assert f'id="news-{news}"' in html and 'Общая публикация' in html
+  with b.open(base+'services/news.php') as response:assert 'Общая публикация' in response.read().decode()
   proc.terminate();proc.wait(timeout=5);proc=start()
   for _ in range(50):
    try:assert any(x['id']==guest for x in request(client(),'guestbook')[1]['items']);break

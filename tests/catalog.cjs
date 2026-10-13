@@ -19,11 +19,13 @@ form.elements.namedItem('q').value='ГОЛОС';submit();const upper=ids();asser
 form.elements.namedItem('q').value='голос';submit();assert.deepEqual(ids(),upper);
 form.elements.namedItem('q').value='<script>alert(1)</script>';submit();assert.equal(ids().length,0);assert.equal(document.querySelector('#catalog-empty').hidden,false);
 click();form.elements.namedItem('sort').value='minutes';form.elements.namedItem('order').value='ascending';submit();assert.equal(ids()[0],'mix-17');assert.ok(location.search.includes('sort=minutes'));
-for(const sort of ['date','title','minutes'])for(const order of ['ascending','descending']){
+for(const sort of ['date','title','category','level','minutes','summary','link'])for(const order of ['ascending','descending']){
  form.elements.namedItem('sort').value=sort;form.elements.namedItem('order').value=order;submit();
  const values=[...document.querySelectorAll('.catalog-item')].map(x=>sort==='minutes'?Number(x.dataset[sort]):x.dataset[sort]);
  assert.ok(values.every((x,i)=>i===0||(order==='ascending'?values[i-1]<=x:values[i-1]>=x)));
 }
+for(const query of ['Основы','Продвинутый','eq.html','01.10.2026','2026-10-01','7']){click();form.elements.namedItem('q').value=query;submit();assert.ok(ids().length>0,query);}
+for(const button of document.querySelectorAll('.sort-button')){click();button.dispatchEvent(new window.Event('click',{cancelable:true}));assert.equal(form.elements.namedItem('sort').value,button.value);assert.equal(form.elements.namedItem('order').value,'ascending');button.dispatchEvent(new window.Event('click',{cancelable:true}));assert.equal(form.elements.namedItem('order').value,'descending');}
 location.search='?category='+encodeURIComponent('Тембр');popstate();assert.equal(ids().length,3);
 location.search='?sort=bad&level=bad';popstate();assert.equal(ids().length,18);
-console.log('OK: Pages initial URL, combined filters, case-insensitive search, empty result, reset, six sorts and Back navigation.');
+console.log('OK: Pages initial URL, combined filters, case-insensitive search, empty result, reset, fourteen sorts, all-column search and header toggles and Back navigation.');

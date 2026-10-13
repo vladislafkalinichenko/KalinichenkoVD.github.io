@@ -20,7 +20,7 @@ with tempfile.TemporaryFile() as log:
         try:
             with urllib.request.urlopen(url,timeout=5) as r:return r.status,r.read().decode()
         except urllib.error.HTTPError as e:return e.code,e.read().decode()
-    def ids(html):return re.findall(r'<article[^>]+id="(mix-\d+)"',html)
+    def ids(html):return re.findall(r'<tr[^>]+id="(mix-\d+)"',html)
     try:
         for _ in range(50):
             try:status,body=get();break
@@ -33,16 +33,28 @@ with tempfile.TemporaryFile() as log:
             assert set(ids(body))=={x.get('id') for x in rows if x.findtext('category')==cat}
         for level in ['Начальный','Средний','Продвинутый']:
             assert set(ids(get({'level':level})[1]))=={x.get('id') for x in rows if x.findtext('level')==level}
-        for sort in ['date','title','minutes']:
+        for sort in ['date','title','category','level','minutes','summary','link']:
             for order in ['ascending','descending']:
                 expected=sorted(rows,key=lambda x:int(x.findtext(sort)) if sort=='minutes' else x.findtext(sort),reverse=order=='descending')
                 assert ids(get({'sort':sort,'order':order})[1])==[x.get('id') for x in expected],(sort,order)
+        for column in ['date','title','category','level','minutes','summary','link']:
+            first=get({'column':column,'sort':column,'order':'descending'})[1]
+            assert f'aria-sort="ascending"' in first
+            assert ids(first)==ids(get({'sort':column,'order':'ascending'})[1])
+            assert ids(get({'column':column,'sort':column,'order':'ascending'})[1])==ids(get({'sort':column,'order':'descending'})[1])
+        def normalize(text):return text.lower().replace('ё','е')
+        def allfields(row):
+            date=row.findtext('date');return normalize(' '.join([y.text for y in row]+['.'.join(reversed(date.split('-')))]))
+        for query in ['Основы','Продвинутый','eq.html','01.10.2026','2026-10-01','7','оригинала']:
+            assert set(ids(get({'q':query})[1]))=={x.get('id') for x in rows if normalize(query) in allfields(x)},query
+        assert '<table' in get()[1] and len(re.findall('<th scope=',get()[1]))==7
+        assert 'href="data/mixing-news.xml"' in get()[1]
         assert ids(get({'category':'Стерео','level':'Продвинутый'})[1])==['mix-15']
         assert ids(get({'q':'ГОЛОС'})[1])==ids(get({'q':'голос'})[1]) and ids(get({'q':'голос'})[1])
         assert ids(get({'q':'ПРИЕМ'})[1])==ids(get({'q':'ПРИЁМ'})[1])
         assert not ids(get({'q':'такойзаметкинесуществует'})[1])
         status,body=get({'q':'<script>alert(1)</script>'});assert status==200 and '<script>alert(1)</script>' not in body
-        for params in [{'sort':'../../etc/passwd'},{'category[]':'Тембр'},{'q[]':'x'},{'order':'wrong'},{'q':'a'*121}]:assert get(params)[0]==400,params
+        for params in [{'sort':'../../etc/passwd'},{'column':'bad'},{'column[]':'date'},{'category[]':'Тембр'},{'q[]':'x'},{'order':'wrong'},{'q':'a'*121}]:assert get(params)[0]==400,params
         assert get(path='server/xml_catalog.php')[0]==404
-        print('OK: 18 objects / 7 fields, schema validation, reproducible XSL build, PHP routing, filters, search, six sorts, empty results, escaping and invalid input.')
+        print('OK: 18 objects / 7 fields, schema validation, reproducible XSL build, PHP routing, filters, search, fourteen sorts, empty results, escaping and invalid input.')
     finally:proc.terminate();proc.wait(timeout=5)
