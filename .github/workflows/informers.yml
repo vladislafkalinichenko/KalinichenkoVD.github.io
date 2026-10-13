@@ -39,6 +39,7 @@ jobs:
           python tools/build_search.py
           python tests/xml_catalog.py
           python tests/community.py
+          php tests/weather.php
       - name: Проверить страницы
         run: python tools/check_site.py
       - name: Сохранить обновлённые данные

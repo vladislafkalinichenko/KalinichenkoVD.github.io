@@ -8,6 +8,7 @@ def main():
     if not LIVE.is_dir():raise SystemExit('Existing live directory required.')
     subprocess.run(['php','tools/build_xml.php'],cwd=ROOT,check=True)
     subprocess.run(['python3','tools/build_search.py'],cwd=ROOT,check=True)
+    subprocess.run(['php','tests/weather.php'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/xml_catalog.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tools/refresh_informers.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tools/check_site.py'],cwd=ROOT,check=True)

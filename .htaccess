@@ -9,3 +9,10 @@ RewriteEngine On
 RewriteRule ^xml\.html$ xml.php [L]
 RewriteRule ^services/news\.html$ services/news.php [L]
 </IfModule>
+
+# Revalidate HTML so returning visitors see updated links and resource versions.
+<IfModule mod_headers.c>
+<FilesMatch "\.html$">
+Header set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
+</IfModule>
