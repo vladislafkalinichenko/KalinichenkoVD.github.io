@@ -32,7 +32,7 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   status,d=request(a,'guest_create',{'author':'Первый посетитель','body':'<img src=x onerror=alert(1)>'});assert status==201;guest=d['id']
   assert any(x['id']==guest for x in request(b,'guestbook')[1]['items'])
   status,d=request(a,'topic_create',{'author':'A','title':'Сведение вокала','body':'Как настроить громкость?'});assert status==201;topic=d['id']
-  assert request(b,'reply_create',{'author':'B','parent_id':topic,'body':'Начни с баланса.'})[0]==201
+  status,d=request(b,'reply_create',{'author':'B','parent_id':topic,'body':'Начни с баланса.'});assert status==201;reply=d['id']
   assert request(a,'forum')[1]['items'][0]['replies'][0]['body']=='Начни с баланса.'
   assert request(b,'reply_create',{'author':'B','parent_id':'missing','body':'test'})[0]==404
   request(a,'rate',{'score':5});d=request(b,'rate',{'score':3})[1];assert d['votes']==2 and d['average']==4 and d['mine']==3
@@ -44,6 +44,8 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert request(a,'visit',{'page':'../../etc/passwd'})[0]==422
   assert request(a,'moderation')[0]==401
   assert request(a,'visibility',{'id':guest,'hidden':True})[0]==401
+  assert request(a,'post_delete',{'id':guest})[0]==401
+  assert request(a,'rating_delete',{'id':'0'*64})[0]==401
   assert request(admin,'login',{'password':password},api='news')[0]==200
   assert request(admin,'moderation')[0]==200
   request(admin,'visibility',{'id':guest,'hidden':True});assert not request(b,'guestbook')[1]['items']
@@ -63,9 +65,43 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
    except urllib.error.URLError:time.sleep(.1)
   assert request(client(),'stats')[1]['total']==3
   assert request(client(),'rating')[1]['average']==1
+  # Permanent deletion must require admin + CSRF and a hidden message.
+  assert request(admin,'post_delete',{'id':guest},csrf=False)[0]==403
+  assert request(admin,'post_delete',{'id':guest})[0]==409
+  assert any(x['id']==guest for x in request(b,'guestbook')[1]['items'])
+  request(admin,'visibility',{'id':reply,'hidden':True});assert request(admin,'post_delete',{'id':reply})[0]==200
+  assert not request(b,'forum')[1]['items'][0]['replies']
+  status,d=request(b,'reply_create',{'author':'B','parent_id':topic,'body':'Ответ, который тоже удалится.'});assert status==201;visible_reply=d['id']
+  status,d=request(a,'reply_create',{'author':'A','parent_id':topic,'body':'Скрытый ответ.'});assert status==201;hidden_reply=d['id']
+  request(admin,'visibility',{'id':hidden_reply,'hidden':True})
+  request(admin,'visibility',{'id':topic,'hidden':True});assert request(admin,'post_delete',{'id':topic})[0]==200
+  assert not request(b,'forum')[1]['items']
+  remaining=request(admin,'moderation')[1]['items']
+  assert not any(x['id'] in [topic,reply,visible_reply,hidden_reply] or x['parent_id']==topic for x in remaining)
+  assert request(admin,'post_delete',{'id':topic})[0]==404
+  assert request(b,'reply_create',{'author':'B','parent_id':topic,'body':'После удаления.'})[0]==404
+  request(admin,'visibility',{'id':guest,'hidden':True});assert request(admin,'post_delete',{'id':guest})[0]==200
+  assert not any(x['id']==guest for x in request(admin,'moderation')[1]['items'])
+  # Remove one anonymous vote, preserve other votes, and recalculate aggregates.
+  before=request(admin,'moderation')[1];assert len(before['rating_items'])==1
+  vote=before['rating_items'][0];assert vote['score']==1 and len(vote['id'])==64
+  assert request(admin,'rating_delete',{'id':vote['id']},csrf=False)[0]==403
+  assert request(admin,'rating_delete',{'id':'invalid'})[0]==422
+  assert request(admin,'rating_delete',{'id':'0'*64})[0]==404
+  request(b,'rate',{'score':5})
+  status,d=request(admin,'rating_delete',{'id':vote['id']});assert status==200 and d['rating']['votes']==1 and d['rating']['average']==5
+  assert request(a,'rating')[1]['mine']==0 and request(b,'rating')[1]['mine']==5
+  proc.terminate();proc.wait(timeout=5);proc=start()
+  for _ in range(50):
+   try:assert request(client(),'rating')[1]['average']==5;break
+   except urllib.error.URLError:time.sleep(.1)
+  remaining=request(admin,'moderation')[1];assert not any(x['id'] in [guest,topic,reply,visible_reply,hidden_reply] for x in remaining['items'])
+  assert len(remaining['rating_items'])==1 and remaining['rating_items'][0]['score']==5
+  status,d=request(admin,'rating_delete',{'id':remaining['rating_items'][0]['id']});assert status==200 and d['rating']['votes']==0 and d['rating']['average'] is None
+  assert request(b,'rating')[1]['mine']==0 and not request(admin,'moderation')[1]['rating_items']
   if os.environ.get('MIXLAB_UI_TEST'):
-   subprocess.run(['node','tests/community-ui.cjs'],cwd=ROOT,env=dict(os.environ,MIXLAB_TEST_BASE=base),check=True)
-  print('OK: shared guestbook, topics/replies, ratings, unique visitors, persistence across restart, admin authentication, moderation/restore, forbidden expressions, host blocks, CSRF, validation and shared news.')
+   subprocess.run(['node','tests/community-ui.cjs'],cwd=ROOT,env=dict(os.environ,MIXLAB_TEST_BASE=base,MIXLAB_TEST_PASSWORD=password),check=True)
+  print('OK: shared community, admin/CSRF protection, hidden-only permanent deletion, topic/reply cascade, rating deletion and recalculation, empty rating, persistence across restart, moderation/restore, rules and shared news.')
  finally:
   proc.terminate();proc.wait(timeout=5)
   if __import__('sys').exc_info()[0]:log.seek(0);print(log.read().decode()[-4500:])

@@ -14,7 +14,9 @@ try {
        if($action==='stats')respond(site_stats($pdo));
        if($action==='moderation'){
           require_admin();$items=$pdo->query('SELECT * FROM community_posts ORDER BY created_at DESC,id DESC')->fetchAll();
-          respond(['items'=>$items,'words'=>$pdo->query('SELECT word FROM community_words ORDER BY word')->fetchAll(PDO::FETCH_COLUMN),'blocks'=>$pdo->query('SELECT host_token FROM community_blocks ORDER BY created_at DESC')->fetchAll(PDO::FETCH_COLUMN)]);
+          $votes=$pdo->query('SELECT visitor AS id,score FROM site_ratings ORDER BY score,visitor')->fetchAll();
+          foreach($votes as &$vote)$vote['score']=(int)$vote['score'];unset($vote);
+          respond(['items'=>$items,'words'=>$pdo->query('SELECT word FROM community_words ORDER BY word')->fetchAll(PDO::FETCH_COLUMN),'blocks'=>$pdo->query('SELECT host_token FROM community_blocks ORDER BY created_at DESC')->fetchAll(PDO::FETCH_COLUMN),'rating_items'=>$votes,'rating'=>ratings($pdo)]);
        }
        fail('Такого действия нет.',404);
     }
@@ -41,6 +43,21 @@ try {
         if($score){$q=$pdo->prepare('INSERT INTO site_ratings(visitor,score) VALUES (?,?)');$q->execute([$visitor,$score]);}$pdo->commit();respond(ratings($pdo));
     }
     require_admin();
+    if($action==='post_delete'){
+        $id=text_field($input,'id',40);$q=$pdo->prepare('SELECT kind,hidden FROM community_posts WHERE id=?');$q->execute([$id]);$post=$q->fetch();
+        if(!$post)fail('Сообщение уже удалено или не найдено.',404);
+        if(!(int)$post['hidden'])fail('Сначала скрой сообщение, затем удали его навсегда.',409);
+        $pdo->beginTransaction();$q=$pdo->prepare('DELETE FROM community_posts WHERE id=? AND hidden=1');$q->execute([$id]);
+        if(!$q->rowCount()){$pdo->rollBack();fail('Состояние сообщения изменилось. Обнови страницу.',409);}
+        if($post['kind']==='topic'){$q=$pdo->prepare("DELETE FROM community_posts WHERE kind='reply' AND parent_id=?");$q->execute([$id]);}
+        $pdo->commit();respond(['ok'=>true]);
+    }
+    if($action==='rating_delete'){
+        $id=text_field($input,'id',64);if(!preg_match('/^[a-f0-9]{64}$/D',$id))fail('Некорректный идентификатор оценки.',422);
+        $q=$pdo->prepare('DELETE FROM site_ratings WHERE visitor=?');$q->execute([$id]);
+        if(!$q->rowCount())fail('Оценка уже удалена или не найдена.',404);
+        respond(['ok'=>true,'rating'=>ratings($pdo)]);
+    }
     if($action==='visibility'){
         $id=text_field($input,'id',40);$hidden=$input['hidden']??null;if(!is_bool($hidden))fail('Некорректное действие.',422);
         $q=$pdo->prepare('UPDATE community_posts SET hidden=? WHERE id=?');$q->execute([(int)$hidden,$id]);respond(['ok'=>true]);
