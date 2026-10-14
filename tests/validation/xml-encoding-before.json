@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-10-14T12:34:53Z",
+  "result": "Valid UTF-8 bytes and Cyrillic; explicit HTTP charset and UTF-8 BOM were absent.",
+  "files": [
+    {
+      "path": "data/mixing-news.xml",
+      "sha256": "f979fe22c1741dae0110c4fd8b488f0248373edfb5136eba2e54b5bfaeed7538",
+      "utf8_valid": true,
+      "bom": false,
+      "primary_http_content_type": "application/xml",
+      "charset": null
+    },
+    {
+      "path": "data/mixing-news.xsl",
+      "sha256": "e232c06c4e497aaf2fd7ff91f3201eb99d01084059db63cfe6f98bfa9c10caa3",
+      "utf8_valid": true,
+      "bom": false,
+      "primary_http_content_type": "application/xslt+xml",
+      "charset": null
+    },
+    {
+      "path": "data/mixing-news.xsd",
+      "sha256": "4251dcb2fb3f74bd43522b30c4e87df9f596ac6fa17c5395595dc133494fa15f",
+      "utf8_valid": true,
+      "bom": false,
+      "primary_http_content_type": null,
+      "charset": null
+    }
+  ]
+}

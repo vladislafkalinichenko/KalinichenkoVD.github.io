@@ -1,0 +1,11 @@
+# Match the encoding declarations and UTF-8 bytes of downloadable XML source files.
+<IfModule mod_mime.c>
+AddType application/xml .xml .xsd
+AddType application/xslt+xml .xsl
+AddCharset UTF-8 .xml .xsl .xsd
+</IfModule>
+<IfModule mod_headers.c>
+<FilesMatch "^mixing-news\.(xml|xsl|xsd)$">
+Header set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
+</IfModule>
