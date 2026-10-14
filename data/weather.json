@@ -2,79 +2,79 @@
   "source": "Open-Meteo",
   "source_url": "https://open-meteo.com/",
   "license": "CC BY 4.0",
-  "updated_at": "2026-10-14T19:30:51+00:00",
+  "updated_at": "2026-10-14T23:59:27+00:00",
   "cities": {
     "spb": {
       "name": "Санкт-Петербург",
-      "temperature": 4.7,
-      "feels_like": 1.1,
-      "wind": 3.7,
-      "code": 1,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:50+00:00"
+      "temperature": 5.0,
+      "feels_like": 1.9,
+      "wind": 2.9,
+      "code": 3,
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:25+00:00"
     },
     "moscow": {
       "name": "Москва",
-      "temperature": 7.8,
-      "feels_like": 5.8,
-      "wind": 2.22,
+      "temperature": 7.9,
+      "feels_like": 5.5,
+      "wind": 2.65,
       "code": 61,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:50+00:00"
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:25+00:00"
     },
     "kazan": {
       "name": "Казань",
-      "temperature": 15.5,
-      "feels_like": 13.3,
-      "wind": 3.04,
+      "temperature": 14.4,
+      "feels_like": 12.7,
+      "wind": 2.3,
       "code": 3,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:51+00:00"
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:26+00:00"
     },
     "ekb": {
       "name": "Екатеринбург",
-      "temperature": 6.6,
-      "feels_like": 4.0,
-      "wind": 2.64,
+      "temperature": 7.3,
+      "feels_like": 5.5,
+      "wind": 2.04,
       "code": 3,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:51+00:00"
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:26+00:00"
     },
     "novosibirsk": {
       "name": "Новосибирск",
-      "temperature": 0.5,
-      "feels_like": -3.4,
-      "wind": 2.8,
+      "temperature": 0.3,
+      "feels_like": -4.0,
+      "wind": 3.34,
       "code": 3,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:51+00:00"
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:26+00:00"
     },
     "krasnodar": {
       "name": "Краснодар",
-      "temperature": 19.2,
-      "feels_like": 19.7,
-      "wind": 1.24,
-      "code": 3,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:51+00:00"
+      "temperature": 17.8,
+      "feels_like": 18.5,
+      "wind": 0.85,
+      "code": 61,
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:27+00:00"
     },
     "vladivostok": {
       "name": "Владивосток",
-      "temperature": 6.5,
-      "feels_like": 2.3,
-      "wind": 3.83,
-      "code": 1,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:51+00:00"
+      "temperature": 8.4,
+      "feels_like": 4.7,
+      "wind": 2.95,
+      "code": 2,
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:27+00:00"
     },
     "obninsk": {
       "name": "Обнинск",
-      "temperature": 7.5,
+      "temperature": 7.6,
       "feels_like": 5.7,
-      "wind": 2.0,
-      "code": 3,
-      "observed_at": "2026-10-14T19:30Z",
-      "updated_at": "2026-10-14T19:30:50+00:00"
+      "wind": 2.12,
+      "code": 61,
+      "observed_at": "2026-10-14T23:45Z",
+      "updated_at": "2026-10-14T23:59:25+00:00"
     }
   }
 }
