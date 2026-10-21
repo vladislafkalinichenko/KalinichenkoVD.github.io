@@ -3,15 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="RSS — MIXLAB.">
+<meta name="description" content="Новости MIXLAB и музыкальных технологий в одной ленте. RSS-подписка, скачивание новостей и просмотр RSS-файлов.">
 <meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
 
-<title>RSS — MIXLAB</title>
+<title>Новости и RSS — MIXLAB</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css?v=20261013-weather">
 <script src="assets/app.js?v=20261013-weather" defer></script>
 
+<link rel="stylesheet" href="assets/rss.css?v=20261021">
+<link rel="alternate" type="application/rss+xml" title="Новости MIXLAB" href="feed.php">
 </head>
 <body>
 <a class="skip-link" href="#main">К содержанию</a>
@@ -30,7 +32,12 @@
 <label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
 </form></div>
 </header>
-<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>RSS</h1></section></main>
+<main id="main"><section class="page-heading container"><h1>Новости и RSS</h1><p class="lead">Обновления MIXLAB и новости музыкальных технологий в одной ленте.</p></section>
+<div class="section"><div class="container">
+<!-- RSS:START -->
+<p class="notice"><a class="text-link" href="https://vlad-mixlab.alwaysdata.net/rss.html">Открыть ленту новостей на основном сайте →</a></p>
+<!-- RSS:END -->
+</div></div></main>
 <footer class="footer"><div class="container footer-grid"><div><a class="brand" href="index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="materials.html">Материалы</a><br><a href="services/index.html">Сервисы</a><br><a href="services/news.html">Новости</a></div><div><a href="admin/index.html">Управление сайтом</a><p class="small">Просмотров сайта: <strong data-total-visits>—</strong></p></div></div></footer>
 <noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>

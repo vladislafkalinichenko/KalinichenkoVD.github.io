@@ -85,9 +85,9 @@
     "description": "База данных — MIXLAB."
   },
   {
-    "title": "RSS",
+    "title": "Новости и RSS",
     "url": "rss.html",
-    "description": "RSS — MIXLAB."
+    "description": "Объединённая лента, RSS-подписка, скачивание новостей и просмотр RSS-файлов."
   },
   {
     "title": "Управление сайтом",

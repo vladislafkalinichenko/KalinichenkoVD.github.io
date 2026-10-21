@@ -14,6 +14,7 @@ def main():
     subprocess.run(['python3','tools/check_site.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/community.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/analytics.py'],cwd=ROOT,check=True)
+    subprocess.run(['python3','tests/rss.py'],cwd=ROOT,check=True)
     with tempfile.TemporaryDirectory(prefix='mixlab-release-',dir=ACCOUNT) as temporary:
         staged=Path(temporary)/'site'
         subprocess.run(['python3','tools/package_php.py','--base-url','https://vlad-mixlab.alwaysdata.net/','--output',str(staged)],cwd=ROOT,check=True)
@@ -39,6 +40,7 @@ def main():
                 pending=target.with_name(target.name+'.release-new')
                 shutil.copy2(item,pending);os.replace(pending,target)
     subprocess.run(['php','-r',"require 'server/community.php';require 'server/bootstrap.php';community_db();echo 'Database ready\\n';"],cwd=LIVE,check=True)
+    subprocess.run(['php','-r',"require 'server/exchange.php';$s=rss_external(true);echo 'RSS cache: '.count($s['items']).' items; '.$s['error'].PHP_EOL;"],cwd=LIVE,check=True)
     # The existing three-hour task executes this fixed source path. Keep its city list current.
     updater=ACCOUNT/'mixlab-source/tools/refresh_informers.py'
     if not updater.parent.is_dir():raise RuntimeError('Existing informer source required')
