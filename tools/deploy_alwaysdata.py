@@ -13,6 +13,7 @@ def main():
     subprocess.run(['python3','tools/refresh_informers.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tools/check_site.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/community.py'],cwd=ROOT,check=True)
+    subprocess.run(['python3','tests/analytics.py'],cwd=ROOT,check=True)
     with tempfile.TemporaryDirectory(prefix='mixlab-release-',dir=ACCOUNT) as temporary:
         staged=Path(temporary)/'site'
         subprocess.run(['python3','tools/package_php.py','--base-url','https://vlad-mixlab.alwaysdata.net/','--output',str(staged)],cwd=ROOT,check=True)

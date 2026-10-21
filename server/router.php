@@ -3,6 +3,7 @@
 $path=rawurldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/');
 if (preg_match('~(?:^|/)\.|^/(?:server|database|tools)/|\.(?:sqlite|db|sql)$~i',$path)||str_contains($path,'..')) {http_response_code(404);exit;}
 $root=dirname(__DIR__);
+if ($path==='/database.html') {require $root.'/database.php';return true;}
 if ($path==='/xml.html') {require $root.'/xml.php';return true;}
 if ($path==='/services/news.html') {require $root.'/services/news.php';return true;}
 $file=realpath($root.$path);

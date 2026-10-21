@@ -6,6 +6,7 @@ Require all denied
 # Keep the shared XML menu URL while executing PHP on Apache hosts.
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteRule ^database\.html$ database.php [L]
 RewriteRule ^xml\.html$ xml.php [L]
 RewriteRule ^services/news\.html$ services/news.php [L]
 </IfModule>

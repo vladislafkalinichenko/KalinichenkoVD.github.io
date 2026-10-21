@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="База данных — MIXLAB.">
+<meta name="description" content="Поиск новостей в базе данных, выборки, сводки и диаграммы MIXLAB. PHP-приложение лабораторной работы № 3.">
 <meta name="keywords" content="сведение музыки, звук, вокал, эквалайзер, громкость, музыкальные инструменты">
 <meta name="author" content="Калиниченко Владислав Дмитриевич">
 
-<title>База данных — MIXLAB</title>
+<title>База данных и аналитика — MIXLAB</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css?v=20261013-weather">
 <script src="assets/app.js?v=20261013-weather" defer></script>
 
+<link rel="stylesheet" href="assets/database.css?v=20261021">
 </head>
 <body>
 <a class="skip-link" href="#main">К содержанию</a>
@@ -30,7 +31,13 @@
 <label for="site-query">Поиск по сайту</label><input id="site-query" type="search" name="q" placeholder="Например, как сделать вокал громче" required maxlength="120"><button class="btn primary" type="submit">Найти <span aria-hidden="true">↗</span></button>
 </form></div>
 </header>
-<main id="main"><section class="page-heading container"><p class="eyebrow">Сведение музыки</p><h1>База данных</h1></section></main>
+<main id="main"><section class="page-heading container"><p class="eyebrow">Лабораторная работа № 3 · PHP и база данных</p><h1>База данных и аналитика</h1><p class="lead">Найди публикацию, сравни разделы и посмотри, как посетители оценивают MIXLAB.</p></section>
+<div class="section"><div class="container">
+<!-- DATABASE:START -->
+<p class="notice">Приложение выполняет запросы к общей базе сайта на PHP-сервере. <a class="text-link" href="https://vlad-mixlab.alwaysdata.net/database.html">Открыть приложение на основном сайте →</a></p>
+<!-- DATABASE:END -->
+<section class="spaced" aria-labelledby="lab-description"><h2 id="lab-description">Как устроена работа</h2><p>Пять типов запросов: поиск по тексту, выборка по категории и периоду, сводка по категориям, динамика публикаций и распределение оценок. PHP получает данные через PDO, выполняет SQL-запросы и строит таблицы и диаграммы. Формы работают и без JavaScript.</p><p>Источник — общая серверная база новостей и оценок сайта. Новая публикация или оценка учитывается при следующем открытии отчёта. Новости добавляются в <a class="text-link" href="admin/news.html">разделе управления новостями</a>, а оценки — на <a class="text-link" href="services/rating.html">странице рейтинга</a>.</p><details><summary>Инструменты и соответствие методичке</summary><p>Используются Apache, PHP 8, PDO и SQLite. В основном задании лабораторной № 3 предусмотрен выбор инструментов; приложение методички описывает установку Apache, PHP и MySQL. Здесь используется уже действующая SQLite-база сайта. Все пять запросов выполняются на сервере, данные общие для посетителей и сохраняются между сеансами.</p><p>Визуализация: таблицы, столбчатые диаграммы и график публикаций. Агрегирование: COUNT, AVG, MIN, MAX и GROUP BY. Поиск и фильтры используют подготовленные запросы, сортировка — разрешённый список полей.</p></details></section>
+</div></div></main>
 <footer class="footer"><div class="container footer-grid"><div><a class="brand" href="index.html">MIXLAB</a><p>Понятно о сведении музыки.</p><p class="small">Автор: Калиниченко Владислав Дмитриевич</p></div><div><a href="materials.html">Материалы</a><br><a href="services/index.html">Сервисы</a><br><a href="services/news.html">Новости</a></div><div><a href="admin/index.html">Управление сайтом</a><p class="small">Просмотров сайта: <strong data-total-visits>—</strong></p></div></div></footer>
 <noscript><p class="container notice">Для поиска, расчётов и интерактивных сервисов включи JavaScript. Статьи и меню доступны без него.</p></noscript>
 </body></html>
