@@ -28,13 +28,13 @@ ob_start();
 <?php if(in_array($p['report'],['search','filter'],true)): ?><label for="db-sort">Сортировка<select id="db-sort" name="sort"><?php foreach(['newest'=>'Сначала новые','oldest'=>'Сначала старые','title'=>'По заголовку','category'=>'По категории'] as $key=>$label): ?><option value="<?= $key ?>"<?= $p['sort']===$key?' selected':'' ?>><?= $label ?></option><?php endforeach; ?></select></label><?php endif; ?>
 <label for="db-from">С даты включительно<input id="db-from" name="from" type="date" value="<?= $e($p['from']) ?>"></label>
 <label for="db-to">По дату включительно<input id="db-to" name="to" type="date" value="<?= $e($p['to']) ?>"></label>
-<p class="small wide">Пустые поля не ограничивают выборку. Даты публикаций и границы периода — UTC.</p>
+<p class="small wide">Пустые поля не ограничивают выборку.</p>
 <?php else: ?><p class="wide">Все действующие оценки посетителей. Здесь показаны только обобщённые данные; поставить оценку можно на <a class="text-link" href="services/rating.html">странице рейтинга</a>.</p><?php endif; ?>
 <div class="wide actions"><button class="btn primary" type="submit">Выполнить запрос</button> <a class="btn" href="database.html?report=<?= $e($p['report']) ?>">Сбросить</a></div>
 </form>
 <?php if($result):$rows=$result['rows']; ?>
 <section class="report-result" aria-labelledby="report-title">
-<p class="eyebrow">Результат запроса к серверной БД</p><h2 id="report-title"><?= $e($titles[$p['report']]) ?></h2>
+<p class="eyebrow">Результат запроса</p><h2 id="report-title"><?= $e($titles[$p['report']]) ?></h2>
 <p>Всего <?= $p['report']==='ratings'?'оценок':'публикаций' ?>: <strong id="report-total"><?= $result['total'] ?></strong>. <span class="small">Получено <?= (new DateTimeImmutable('now',new DateTimeZone('Europe/Moscow')))->format('d.m.Y H:i:s') ?> МСК.</span></p>
 <?php if($result['total']===0): ?><p class="notice">По этому запросу данных пока нет. Измени условия или вернись после новых публикаций и оценок.</p><?php endif; ?>
 <?php if(in_array($p['report'],['search','filter'],true)&&$rows): ?>
