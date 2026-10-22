@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/catalog.php';
 function config(): array {
     $private = dirname(__DIR__, 2) . '/mixlab-private';
     $config = ['dsn' => 'sqlite:' . $private . '/news.sqlite', 'user' => '', 'password' => '', 'admin_password_hash' => '', 'private_dir' => $private];
@@ -20,8 +21,7 @@ function db(): PDO {
     $pdo = new PDO($c['dsn'], $c['user'], $c['password'], [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC]);
     $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
     if ($driver === 'sqlite') $pdo->exec('PRAGMA busy_timeout=5000');
-    // Same fields are suitable for an RSS export in laboratory 4.
-    $pdo->exec('CREATE TABLE IF NOT EXISTS news (id VARCHAR(100) PRIMARY KEY, title VARCHAR(160) NOT NULL, body TEXT NOT NULL, published_at VARCHAR(30) NOT NULL, source VARCHAR(100) NOT NULL, source_url VARCHAR(2048) NOT NULL, category VARCHAR(100) NOT NULL)');
+    catalog_schema($pdo);
     $pdo->exec('CREATE TABLE IF NOT EXISTS app_meta (name VARCHAR(50) PRIMARY KEY, value VARCHAR(100) NOT NULL)');
     $marker = $pdo->query("SELECT value FROM app_meta WHERE name='seeded'")->fetchColumn();
     if (!$marker) {
@@ -35,9 +35,10 @@ function db(): PDO {
             $pdo->exec("INSERT INTO app_meta (name,value) VALUES ('seeded','1')"); $pdo->commit();
         } catch (Throwable $e) { $pdo->rollBack(); throw $e; }
     }
+    catalog_seed($pdo);
     return $pdo;
 }
 function insert_news(PDO $pdo, array $item): void {
-    $q=$pdo->prepare('INSERT INTO news (id,title,body,published_at,source,source_url,category) VALUES (?,?,?,?,?,?,?)');
-    $q->execute([$item['id'],$item['title'],$item['body'],$item['published_at'],$item['source'],$item['source_url'],$item['category']]);
+    $q=$pdo->prepare('INSERT INTO news (id,title,body,published_at,source,source_url,category,author_id) VALUES (?,?,?,?,?,?,?,?)');
+    $q->execute([$item['id'],$item['title'],$item['body'],$item['published_at'],$item['source'],$item['source_url'],$item['category'],$item['author_id']??CATALOG_OWNER]);
 }

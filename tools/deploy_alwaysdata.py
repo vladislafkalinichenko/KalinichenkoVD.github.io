@@ -1,6 +1,6 @@
 """Deploy the current checkout to the existing alwaysdata site, preserving private data."""
 from pathlib import Path
-import json,os,shutil,subprocess,sys,tempfile,datetime
+import json,os,shutil,subprocess,sys,tempfile,datetime,sqlite3
 ROOT=Path(__file__).resolve().parents[1]
 ACCOUNT=Path('/home/vlad-mixlab')
 LIVE=ACCOUNT/'mixlab-live'
@@ -15,6 +15,7 @@ def main():
     subprocess.run(['python3','tests/community.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/analytics.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/rss.py'],cwd=ROOT,check=True)
+    subprocess.run(['python3','tests/catalog.py'],cwd=ROOT,check=True)
     with tempfile.TemporaryDirectory(prefix='mixlab-release-',dir=ACCOUNT) as temporary:
         staged=Path(temporary)/'site'
         subprocess.run(['python3','tools/package_php.py','--base-url','https://vlad-mixlab.alwaysdata.net/','--output',str(staged)],cwd=ROOT,check=True)
@@ -32,6 +33,14 @@ def main():
         (staged/'data/release.json').write_text(json.dumps({'commit':commit,'deployed_at':datetime.datetime.now(datetime.timezone.utc).isoformat()})+'\n')
         backup=ACCOUNT/('mixlab-before-'+commit[:12])
         if not backup.exists():shutil.copytree(LIVE,backup)
+        # Back up the live SQLite database before the author-table migration can run.
+        dsn=subprocess.check_output(['php','-r',"require 'server/bootstrap.php';echo config()['dsn'];"],cwd=LIVE,text=True).strip()
+        if not dsn.startswith('sqlite:') or not Path(dsn[7:]).is_file():raise RuntimeError('Existing SQLite database required for backup')
+        saved=ACCOUNT/'mixlab-private/backups'/('news-before-'+commit[:12]+'.sqlite')
+        saved.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
+        if not saved.exists():
+            with sqlite3.connect(dsn[7:]) as source,sqlite3.connect(saved) as target:source.backup(target)
+            saved.chmod(0o600)
         # Atomic replacement of each file; do not delete unknown files or touch the private DB.
         for item in staged.rglob('*'):
             target=LIVE/item.relative_to(staged)

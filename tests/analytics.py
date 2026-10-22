@@ -9,7 +9,7 @@ with tempfile.TemporaryDirectory() as td, tempfile.TemporaryFile() as log:
  subprocess.run(php+['-r',"require 'server/bootstrap.php';require 'server/community.php';community_db();"],cwd=ROOT,env=env,check=True)
  db=sqlite3.connect(td+'/test.sqlite');db.execute('DELETE FROM news')
  fixtures=[('a','ВОКАЛ и Ёлка','Чистый текст','2026-01-01T00:00:00Z','Свой сайт','','Звук'),('b','100%_готово','<script>alert(1)</script>','2026-01-31T23:59:59Z','Свой сайт','','Звук'),('c','Компрессор','Инструменты','2026-03-01T00:00:00Z','Свой сайт','','Техника')]
- db.executemany('INSERT INTO news VALUES (?,?,?,?,?,?,?)',fixtures)
+ db.executemany('INSERT INTO news (id,title,body,published_at,source,source_url,category) VALUES (?,?,?,?,?,?,?)',fixtures)
  db.executemany('INSERT INTO site_ratings VALUES (?,?)',[('a',1),('b',5),('c',3)]);db.commit()
  def run(**p):
   code="require 'server/analytics.php';$p=analytics_params(json_decode(stream_get_contents(STDIN),true));echo json_encode(analytics_run(community_db(),$p));"
@@ -26,7 +26,7 @@ with tempfile.TemporaryDirectory() as td, tempfile.TemporaryFile() as log:
  timeline=run(report='timeline')['rows'];assert [int(x['amount']) for x in timeline]==[2,0,1]
  rating=run(report='ratings');assert rating['total']==3 and float(rating['summary']['average'])==3 and rating['summary']['minimum']==1 and rating['summary']['maximum']==5
  assert len(rating['rows'])==5
- db.executemany('INSERT INTO news VALUES (?,?,?,?,?,?,?)',[(f'n{i}',f'Запись {i}','Текст','2026-04-01T00:00:00Z','Свой сайт','','Техника') for i in range(25)]);db.commit()
+ db.executemany('INSERT INTO news (id,title,body,published_at,source,source_url,category) VALUES (?,?,?,?,?,?,?)',[(f'n{i}',f'Запись {i}','Текст','2026-04-01T00:00:00Z','Свой сайт','','Техника') for i in range(25)]);db.commit()
  assert len(run()['rows'])==20 and len(run(page='2')['rows'])==8
  assert run(page='999')['page']==2
  db.execute('DELETE FROM site_ratings');db.commit();assert run(report='ratings')['summary']['average'] is None

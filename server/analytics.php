@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once __DIR__.'/bootstrap.php';
 require_once __DIR__.'/community.php';
 function analytics_params(array $input): array {
-    $defaults=['report'=>'search','q'=>'','category'=>'','from'=>'','to'=>'','sort'=>'newest','page'=>'1'];
+    $defaults=['report'=>'search','q'=>'','category'=>'','author'=>'','from'=>'','to'=>'','sort'=>'newest','page'=>'1'];
     $p=[];
     foreach($defaults as $key=>$default) {
         $value=$input[$key]??$default;
@@ -28,29 +28,37 @@ function analytics_run(PDO $pdo,array $p): array {
     },1);
     $lower=$pdo->getAttribute(PDO::ATTR_DRIVER_NAME)==='sqlite'?'mix_lower':'LOWER';
     $where=[];$args=[];
+    $join=' FROM news n JOIN authors a ON a.id=n.author_id';
     if($p['report']==='search'&&$p['q']!=='') {
         $like='%'.strtr($p['q'],['!'=>'!!','%'=>'!%','_'=>'!_']).'%';
-        $where[]="($lower(title) LIKE $lower(?) ESCAPE '!' OR $lower(body) LIKE $lower(?) ESCAPE '!' OR $lower(category) LIKE $lower(?) ESCAPE '!' OR $lower(source) LIKE $lower(?) ESCAPE '!')";
+        $where[]="($lower(n.title) LIKE $lower(?) ESCAPE '!' OR $lower(n.body) LIKE $lower(?) ESCAPE '!' OR $lower(n.category) LIKE $lower(?) ESCAPE '!' OR $lower(n.source) LIKE $lower(?) ESCAPE '!')";
         $args=[$like,$like,$like,$like];
     }
     if($p['report']!=='ratings') {
-        if($p['category']!==''){$where[]='category=?';$args[]=$p['category'];}
-        if($p['from']!==''){$where[]='SUBSTR(published_at,1,10)>=?';$args[]=$p['from'];}
-        if($p['to']!==''){$where[]='SUBSTR(published_at,1,10)<=?';$args[]=$p['to'];}
+        if($p['category']!==''){$where[]='n.category=?';$args[]=$p['category'];}
+        if($p['report']==='filter'&&$p['author']!==''){$where[]='a.id=?';$args[]=$p['author'];}
+        if($p['from']!==''){$where[]='SUBSTR(n.published_at,1,10)>=?';$args[]=$p['from'];}
+        if($p['to']!==''){$where[]='SUBSTR(n.published_at,1,10)<=?';$args[]=$p['to'];}
     }
     $clause=$where?' WHERE '.implode(' AND ',$where):'';
     $query=static function(string $sql,array $values=[])use($pdo):array{$q=$pdo->prepare($sql);$q->execute($values);return $q->fetchAll();};
-    $categories=$pdo->query('SELECT DISTINCT category FROM news ORDER BY category')->fetchAll(PDO::FETCH_COLUMN);
-    $result=['categories'=>$categories,'rows'=>[],'total'=>0,'page'=>1,'pages'=>1,'sql'=>'','params'=>$args,'driver'=>$pdo->getAttribute(PDO::ATTR_DRIVER_NAME)];
+    $pairs=$pdo->query('SELECT DISTINCT n.category,a.id AS author_id,a.name AS author_name'.$join.' ORDER BY n.category,a.name,a.id')->fetchAll();
+    $categories=[];$authors=[];
+    foreach($pairs as $pair){
+        if($p['report']!=='filter'||$p['author']===''||$p['author']===$pair['author_id'])$categories[$pair['category']]=$pair['category'];
+        if($p['category']===''||$p['category']===$pair['category'])$authors[$pair['author_id']]=['id'=>$pair['author_id'],'name'=>$pair['author_name']];
+    }
+    $categories=array_values($categories);$authors=array_values($authors);
+    $result=['categories'=>$categories,'authors'=>$authors,'pairs'=>$pairs,'metadata'=>catalog_metadata($pdo),'author_profiles'=>catalog_authors($pdo),'rows'=>[],'total'=>0,'page'=>1,'pages'=>1,'sql'=>'','params'=>$args,'driver'=>$pdo->getAttribute(PDO::ATTR_DRIVER_NAME)];
     if(in_array($p['report'],['search','filter'],true)) {
-        $total=(int)$query('SELECT COUNT(*) AS n FROM news'.$clause,$args)[0]['n'];
+        $total=(int)$query('SELECT COUNT(*) AS n'.$join.$clause,$args)[0]['n'];
         $pages=max(1,(int)ceil($total/20));$page=min($p['page'],$pages);$offset=($page-1)*20;
-        $order=['newest'=>'published_at DESC, id DESC','oldest'=>'published_at ASC, id ASC','title'=>'title ASC, id ASC','category'=>'category ASC, published_at DESC, id ASC'][$p['sort']];
-        $sql='SELECT id,title,body,published_at,category,source FROM news'.$clause.' ORDER BY '.$order.' LIMIT 20 OFFSET '.$offset;
+        $order=['newest'=>'n.published_at DESC, n.id DESC','oldest'=>'n.published_at ASC, n.id ASC','title'=>'n.title ASC, n.id ASC','category'=>'n.category ASC, n.published_at DESC, n.id ASC'][$p['sort']];
+        $sql='SELECT n.id,n.title,n.body,n.published_at,n.category,n.source,a.id AS author_id,a.name AS author_name'.$join.$clause.' ORDER BY '.$order.' LIMIT 20 OFFSET '.$offset;
         return array_merge($result,['rows'=>$query($sql,$args),'total'=>$total,'pages'=>$pages,'page'=>$page,'sql'=>$sql]);
     }
-    if($p['report']==='categories')$sql='SELECT category AS label, COUNT(*) AS amount, MIN(SUBSTR(published_at,1,10)) AS first_date, MAX(SUBSTR(published_at,1,10)) AS last_date FROM news'.$clause.' GROUP BY category ORDER BY amount DESC, category ASC';
-    elseif($p['report']==='timeline')$sql='SELECT SUBSTR(published_at,1,7) AS label, COUNT(*) AS amount FROM news'.$clause.' GROUP BY SUBSTR(published_at,1,7) ORDER BY label ASC';
+    if($p['report']==='categories')$sql='SELECT n.category AS label, COUNT(*) AS amount, MIN(SUBSTR(n.published_at,1,10)) AS first_date, MAX(SUBSTR(n.published_at,1,10)) AS last_date'.$join.$clause.' GROUP BY n.category ORDER BY amount DESC, n.category ASC';
+    elseif($p['report']==='timeline')$sql='SELECT SUBSTR(n.published_at,1,7) AS label, COUNT(*) AS amount'.$join.$clause.' GROUP BY SUBSTR(n.published_at,1,7) ORDER BY label ASC';
     else {
         $sql='SELECT score AS label, COUNT(*) AS amount FROM site_ratings GROUP BY score ORDER BY score ASC';$args=[];
         $summary=$query('SELECT COUNT(*) AS votes, AVG(score) AS average, MIN(score) AS minimum, MAX(score) AS maximum FROM site_ratings')[0];

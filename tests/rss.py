@@ -18,7 +18,7 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
  run('db();')
  db=sqlite3.connect(td+'/test.sqlite');db.execute('DELETE FROM news')
  body='Кириллица: ё, & <b>буквальный тег</b>; "кавычки"\nВторая строка\tи вкладка 😀'
- db.executemany('INSERT INTO news VALUES (?,?,?,?,?,?,?)',[
+ db.executemany('INSERT INTO news (id,title,body,published_at,source,source_url,category) VALUES (?,?,?,?,?,?,?)',[
   ('first','Свой вокал',body,'2026-10-01T10:00:00Z','Свой сайт','','Материалы'),
   ('second','=1+2','Другая запись','2026-10-20T10:00:00Z','Свой сайт','','Обновления')]);db.commit()
  # Parse hostile data as text, deduplicate, omit unsafe links, preserve missing dates.
@@ -83,7 +83,7 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert upload('x'*524289,csrf)[0] in [413,422]
   # Public preview never mutates the common news DB.
   assert db.execute('SELECT COUNT(*) FROM news').fetchone()[0]==2
-  db.execute('INSERT INTO news VALUES (?,?,?,?,?,?,?)',('new','Новая публикация','Сохранено','2026-10-21T13:00:00Z','Свой сайт','','Обновления'));db.commit()
+  db.execute('INSERT INTO news (id,title,body,published_at,source,source_url,category) VALUES (?,?,?,?,?,?,?)',('new','Новая публикация','Сохранено','2026-10-21T13:00:00Z','Свой сайт','','Обновления'));db.commit()
   assert len(ET.fromstring(get('feed.php')[1]).findall('./channel/item'))==3
   assert get('rss.php')[0]==200
   vnu=os.environ.get('VNU_JAR')
