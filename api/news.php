@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require dirname(__DIR__).'/server/http.php';
+require_once dirname(__DIR__).'/server/admin_auth.php';
 try {
     $action=$_GET['action']??'list'; $method=$_SERVER['REQUEST_METHOD'];
     if ($method==='GET') {
@@ -17,19 +18,18 @@ try {
     try {$input=json_decode($raw,true,512,JSON_THROW_ON_ERROR);}catch(JsonException $e){fail('Некорректный запрос.',400);}
     if (!is_array($input)) fail('Некорректный запрос.',400);
     if ($action==='login') {
-        if (($_SESSION['blocked_until']??0)>time()) fail('Слишком много попыток. Повтори через минуту.',429);
-        $hash=config()['admin_password_hash'];
-        if (!$hash) fail('Администратор ещё не настроил пароль сервера.',503);
-        $password=$input['password']??'';
-        if (!is_string($password)||!password_verify($password,$hash)) {
-            $_SESSION['attempts']=($_SESSION['attempts']??0)+1;
-            if ($_SESSION['attempts']>=5) {$_SESSION['blocked_until']=time()+60;$_SESSION['attempts']=0;}
-            fail('Неверный пароль.',401);
-        }
-        session_regenerate_id(true);$_SESSION['admin']=true;$_SESSION['attempts']=0;$_SESSION['csrf']=bin2hex(random_bytes(24));respond(['ok'=>true,'csrf'=>$_SESSION['csrf']]);
+        if($failure=admin_login($input['password']??null))fail($failure[0],$failure[1]);
+        respond(['ok'=>true,'csrf'=>$_SESSION['csrf']]);
     }
     if (empty($_SESSION['admin'])) fail('Сначала войди как администратор.',401);
     if ($action==='logout') {$_SESSION['admin']=false;$_SESSION['csrf']=bin2hex(random_bytes(24));respond(['ok'=>true,'csrf'=>$_SESSION['csrf']]);}
+    if($action==='delete'){
+        $id=$input['id']??null;
+        if(!is_string($id)||!preg_match('/^[a-zA-Z0-9_-]{1,100}$/D',$id))fail('Выбери публикацию для удаления.',422);
+        $q=db()->prepare('DELETE FROM news WHERE id=?');$q->execute([$id]);
+        if(!$q->rowCount())fail('Публикация уже удалена или не найдена.',404);
+        respond(['ok'=>true,'id'=>$id]);
+    }
     $len=static fn(string $s):int=>preg_match_all('/./us',$s);
     if($action==='create_author'){
         $fields=[];foreach(['name'=>160,'role'=>160,'bio'=>1000] as $field=>$max){$v=$input[$field]??null;if(!is_string($v)||!preg_match('//u',$v)||trim($v)===''||$len($v)>$max)fail('Заполни имя, роль и описание автора в пределах указанной длины.',422);$fields[$field]=trim($v);}

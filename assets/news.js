@@ -27,7 +27,7 @@ window.NewsStore=(()=>{
  document.querySelectorAll('[data-news-feed]').forEach(el=>{const max=Number(el.dataset.limit)||items.length;el.innerHTML=items.length?items.slice(0,max).map(x=>`<article class="news-item" id="news-${MixLab.esc(x.id)}"><h3><a href="${MixLab.siteURL('rss.html')}?item=${encodeURIComponent(x.id)}#news-${encodeURIComponent(x.id)}">${MixLab.esc(x.title)}</a></h3><time datetime="${MixLab.esc(x.published_at)}">${MixLab.formatDate(x.published_at)}</time>${x.author_name?`<p class="small">${MixLab.esc(x.category)} · ${MixLab.esc(x.author_name)}</p>`:''}${x.local?'<span class="local-tag">Личная запись</span>':''}<p class="news-body">${MixLab.esc(el.dataset.limit&&x.body.length>150?x.body.slice(0,150)+'…':x.body)}</p></article>`).join(''):'<p>Новостей пока нет.</p>';});
  if(location.hash.startsWith('#news-'))document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
  }
- return {ready,list,add,render,catalog:()=>request('catalog'),addAuthor:fields=>request('create_author',fields),get mode(){return mode;},get canSave(){return (mode==='server'&&!serverUnavailable)||!!db;},login:password=>request('login',{password}),logout:()=>request('logout',{}),status:()=>request('status')};
+ return {ready,list,add,render,remove:id=>request('delete',{id}),catalog:()=>request('catalog'),addAuthor:fields=>request('create_author',fields),get mode(){return mode;},get canSave(){return (mode==='server'&&!serverUnavailable)||!!db;},login:password=>request('login',{password}),logout:()=>request('logout',{}),status:()=>request('status')};
 })();
 NewsStore.render();
 window.addEventListener('pageshow',e=>{if(e.persisted)NewsStore.render();});

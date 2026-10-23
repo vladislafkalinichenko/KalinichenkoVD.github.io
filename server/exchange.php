@@ -78,6 +78,21 @@ function rss_external(bool $force=false,?callable $download=null,?string $url=nu
         return $state;
     }finally{flock($lock,LOCK_UN);fclose($lock);}
 }
+function rss_collection(bool $force=false,bool $fetch=true,?string $only=null):array {
+    $sources=rss_sources();
+    if($only!==null&&$only!==''){
+        $only=rss_validate_url($only);$sources=array_values(array_filter($sources,static fn($source)=>$source['url']===$only));
+        if(!$sources)throw new InvalidArgumentException('Эта RSS-лента не подключена. Выбери источник из списка.');
+    }
+    $items=[];$feeds=[];$seen=[];$deadline=microtime(true)+12;
+    foreach($sources as $source){
+        try{$state=rss_external($force,null,$source['url'],$fetch&&microtime(true)<$deadline);}
+        catch(Throwable $e){$state=['items'=>[],'updated_at'=>'','checked_at'=>'','title'=>$source['title']?:parse_url($source['url'],PHP_URL_HOST),'error'=>'Источник временно недоступен.'];}
+        $feeds[]=array_merge($source,$state);
+        foreach($state['items'] as $item){$key=$item['link']?:$item['id'];if(isset($seen[$key]))continue;$seen[$key]=true;$items[]=$item;}
+    }
+    return ['items'=>$items,'feeds'=>$feeds];
+}
 function exchange_params(array $input):array {
     $p=[];foreach(['source'=>'all','q'=>'','sort'=>'newest','page'=>'1'] as $key=>$default){$v=$input[$key]??$default;if(!is_string($v)||!preg_match('//u',$v)||strlen($v)>400)throw new InvalidArgumentException('Проверь параметры поиска.');$p[$key]=trim($v);}
     if(!in_array($p['source'],['all','own','external'],true)||!in_array($p['sort'],['newest','oldest','title'],true)||!preg_match('/^[1-9][0-9]{0,5}$/D',$p['page']))throw new InvalidArgumentException('Неизвестный источник или порядок сортировки.');

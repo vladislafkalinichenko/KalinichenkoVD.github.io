@@ -69,6 +69,43 @@ function rss_save_default(string $url):void {
     $tmp=tempnam($dir,'default-');if($tmp===false)throw new RuntimeException('RSS settings unavailable');
     try{if(file_put_contents($tmp,json_encode(['url'=>$url],JSON_THROW_ON_ERROR))===false||!rename($tmp,$dir.'/default-source.json'))throw new RuntimeException('RSS settings write failed');}finally{if(is_file($tmp))unlink($tmp);}
 }
+function rss_sources():array {
+    $path=rss_cache_dir().'/sources.json';
+    // Migrate the previous shared default lazily. An explicitly empty list stays empty.
+    if(!is_file($path))return [['url'=>rss_default_url(),'title'=>'','added_at'=>'']];
+    $data=json_decode(file_get_contents($path),true,32,JSON_THROW_ON_ERROR);
+    if(!is_array($data)||!is_array($data['sources']??null)||count($data['sources'])>8)throw new RuntimeException('Invalid RSS source settings');
+    $out=[];
+    foreach($data['sources'] as $source){
+        if(!is_array($source)||!is_string($source['url']??null)||!is_string($source['title']??null))throw new RuntimeException('Invalid RSS source');
+        $source['url']=rss_validate_url($source['url']);$out[$source['url']]=$source;
+    }
+    return array_values($out);
+}
+function rss_change_sources(callable $change):void {
+    $dir=rss_cache_dir();if(!is_dir($dir)&&!mkdir($dir,0700,true)&&!is_dir($dir))throw new RuntimeException('RSS directory unavailable');
+    $lock=fopen($dir.'/sources.lock','c');if(!$lock||!flock($lock,LOCK_EX))throw new RuntimeException('RSS settings locked');
+    try{
+        $sources=$change(rss_sources());$tmp=tempnam($dir,'sources-');if($tmp===false)throw new RuntimeException('RSS settings unavailable');
+        try{chmod($tmp,0600);if(file_put_contents($tmp,json_encode(['sources'=>array_values($sources)],JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR))===false||!rename($tmp,$dir.'/sources.json'))throw new RuntimeException('RSS settings write failed');}finally{if(is_file($tmp))unlink($tmp);}
+    }finally{flock($lock,LOCK_UN);fclose($lock);}
+}
+function rss_add_source(string $url,string $title):void {
+    $url=rss_validate_url($url);
+    rss_change_sources(static function(array $sources)use($url,$title):array{
+        foreach($sources as $source)if($source['url']===$url)throw new InvalidArgumentException('Эта RSS-лента уже подключена.');
+        if(count($sources)>=8)throw new InvalidArgumentException('Можно подключить до 8 лент. Удали ненужный источник перед добавлением нового.');
+        $sources[]=['url'=>$url,'title'=>exchange_plain($title,200),'added_at'=>gmdate('c')];return $sources;
+    });
+}
+function rss_remove_source(string $url):void {
+    $url=rss_validate_url($url);
+    rss_change_sources(static function(array $sources)use($url):array{
+        $filtered=array_values(array_filter($sources,static fn($source)=>$source['url']!==$url));
+        if(count($filtered)===count($sources))throw new InvalidArgumentException('Этот источник уже отключён.');
+        return $filtered;
+    });
+}
 function rss_cache_file(string $url):string {return rss_cache_dir().'/'.hash('sha256',rss_validate_url($url)).'.json';}
 function rss_fetch_budget():void {
     $lock=fopen(rss_cache_dir().'/budget.lock','c+');if(!$lock||!flock($lock,LOCK_EX))throw new RuntimeException('RSS busy');

@@ -16,6 +16,7 @@ def main():
     subprocess.run(['python3','tests/analytics.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/rss.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/rss_sources.py'],cwd=ROOT,check=True)
+    if shutil.which('node'):subprocess.run(['node','tests/news_management.cjs'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/catalog.py'],cwd=ROOT,check=True)
     subprocess.run(['php','-r',"require 'server/exchange.php';foreach([RSS_SOURCE_URL,'https://feeds.bbci.co.uk/news/technology/rss.xml'] as $url){$r=rss_parse(rss_download($url));if(!count($r['items']))throw new RuntimeException('Empty source');echo 'RSS source verified: '.$r['title'].PHP_EOL;}"],cwd=ROOT,check=True)
     with tempfile.TemporaryDirectory(prefix='mixlab-release-',dir=ACCOUNT) as temporary:
@@ -43,6 +44,10 @@ def main():
         if not saved.exists():
             with sqlite3.connect(dsn[7:]) as source,sqlite3.connect(saved) as target:source.backup(target)
             saved.chmod(0o600)
+        rss_settings=ACCOUNT/'mixlab-private/rss'
+        for name in ['sources.json','default-source.json']:
+            existing=rss_settings/name;copy=saved.parent/('rss-before-'+commit[:12]+'-'+name)
+            if existing.is_file() and not copy.exists():shutil.copy2(existing,copy);copy.chmod(0o600)
         # Atomic replacement of each file; do not delete unknown files or touch the private DB.
         for item in staged.rglob('*'):
             target=LIVE/item.relative_to(staged)
@@ -51,7 +56,7 @@ def main():
                 pending=target.with_name(target.name+'.release-new')
                 shutil.copy2(item,pending);os.replace(pending,target)
     subprocess.run(['php','-r',"require 'server/community.php';require 'server/bootstrap.php';community_db();echo 'Database ready\\n';"],cwd=LIVE,check=True)
-    subprocess.run(['php','-r',"require 'server/exchange.php';$s=rss_external(true);echo 'RSS cache: '.count($s['items']).' items; '.$s['error'].PHP_EOL;"],cwd=LIVE,check=True)
+    subprocess.run(['php','-r',"require 'server/exchange.php';$s=rss_collection(true);echo 'RSS caches: '.count($s['feeds']).' sources, '.count($s['items']).' items'.PHP_EOL;"],cwd=LIVE,check=True)
     # The existing three-hour task executes this fixed source path. Keep its city list current.
     updater=ACCOUNT/'mixlab-source/tools/refresh_informers.py'
     if not updater.parent.is_dir():raise RuntimeError('Existing informer source required')

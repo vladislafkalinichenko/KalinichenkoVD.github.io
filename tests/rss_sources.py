@@ -36,35 +36,81 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
    with (c or visitor).open(req,timeout=10) as res:return res.status,res.read().decode(),res.geturl()
   except urllib.error.HTTPError as e:return e.code,e.read().decode(),e.geturl()
  def token(c=None):return re.search(r'name="csrf" value="([a-f0-9]+)"',get('rss.html',c=c)[1]).group(1)
- def connect(url,csrf=None,global_default=False,c=None):
-  data={'action':'source','rss_url':url,'csrf':csrf or token(c)}
-  if global_default:data['site_default']='1'
+ def post(action,url='',password_value=None,csrf=None,c=None):
+  data={'action':action,'rss_url':url,'csrf':csrf or token(c)}
+  if password_value is not None:data['password']=password_value
   return get('rss.html',urllib.parse.urlencode(data).encode(),{'Content-Type':'application/x-www-form-urlencoded'},c)
+ def api(action,body=None,c=None,csrf=None):
+  headers={} if body is None else {'Content-Type':'application/json','X-CSRF-Token':csrf or ''}
+  status,raw,_=get('api/news.php?action='+action,None if body is None else json.dumps(body).encode(),headers,c)
+  return status,json.loads(raw)
  try:
   for _ in range(50):
    try:status,html,_=get('rss.html');break
    except urllib.error.URLError:time.sleep(.1)
-  assert status==200 and 'Адрес RSS-ленты' in html and 'Подключить ленту' in html
-  assert connect(A,csrf='wrong')[0]==403
-  assert connect(A,global_default=True)[0]==401
-  status,html,url=connect(A);assert status==200 and 'rss_url=' in url and 'Источник А' in html and 'alpha' in html and 'bravo' not in html;pages.append(html)
-  assert 'Источник А' in get('rss.html')[1]
-  status,html,_=connect(B);assert status==200 and 'Источник Б' in html and 'bravo' in html and 'alpha' not in html;pages.append(html)
-  status,html,_=connect(C);assert status==422 and 'Прежний источник сохранён' in html and 'Источник Б' in html
-  assert 'Источник Б' in get('rss.html')[1]
-  assert connect('http://127.0.0.1/rss')[0]==422
+  assert status==200 and 'Адрес RSS-ленты' in html and 'Пароль администратора' in html and 'до удаления администратором' in html
+  pages.append(html)
+  assert post('source',A,csrf='wrong')[0]==403
+  assert post('source',A)[0]==401
+  assert post('remove_source',A)[0]==401
+  assert get('rss.html?'+urllib.parse.urlencode({'rss_url':B}))[0]==422
+  assert run('echo count(rss_sources());')=='1'
+  admin=client()
+  status,html,url=post('source',A,password_value=password,c=admin)
+  assert status==200 and 'Источник А' in html and 'alpha' in html and 'default' in html and 'Удалить источник' in html;pages.append(html)
+  assert run('echo count(rss_sources());')=='2'
+  assert post('source',A,c=admin)[0]==422
+  assert run('echo count(rss_sources());')=='2'
+  status,html,_=post('source',B,c=admin);assert status==200 and all(x in html for x in ['alpha','bravo','default']);pages.append(html)
+  fresh=client();public=get('rss.html',c=fresh)[1];assert 'alpha' in public and 'bravo' in public and 'Удалить источник' not in public
+  assert post('source',C,c=admin)[0]==422 and run('echo count(rss_sources());')=='3'
+  assert post('source','http://127.0.0.1/rss',c=admin)[0]==422
+  assert post('source',A,csrf='old-session',c=admin)[0]==403
+  status,raw,_=get('feed.php?source=external');items=ET.fromstring(raw).findall('./channel/item');assert len(items)==3
   status,raw,_=get('feed.php?'+urllib.parse.urlencode({'source':'external','rss_url':A}));items=ET.fromstring(raw).findall('./channel/item');assert len(items)==1 and items[0].findtext('title')=='alpha' and items[0].find('source').attrib['url']==A
-  admin=client();status,raw,_=get('api/news.php?action=status',c=admin);csrf=json.loads(raw)['csrf']
-  status,raw,_=get('api/news.php?action=login',json.dumps({'password':password}).encode(),{'Content-Type':'application/json','X-CSRF-Token':csrf},admin);assert status==200
-  assert connect(B,global_default=True,c=admin)[0]==200 and run('echo rss_default_url();')==B
-  fresh=client();assert 'Источник Б' in get('rss.html',c=fresh)[1]
-  assert 'name="site_default"' in get('rss.html',c=admin)[1] and 'name="site_default"' not in get('rss.html',c=fresh)[1]
+  assert 'bravo' not in get('rss.html?'+urllib.parse.urlencode({'rss_url':A}))[1].split('<h2>Лента новостей</h2>')[1]
+  # Duplicate article links across feeds appear only once in the combined list.
+  run('rss_external(true,fn()=>stream_get_contents(STDIN),"https://duplicate.example.net/rss");rss_add_source("https://duplicate.example.net/rss","Дубль");',fixture('Дубль','alpha'))
+  assert len(ET.fromstring(get('feed.php?source=external')[1]).findall('./channel/item'))==3
+  run('rss_remove_source("https://duplicate.example.net/rss");')
+  status,html,_=post('remove_source',B,c=admin);assert status==200 and 'bravo' not in html and 'Источник А' in html
+  assert post('remove_source',A,c=fresh)[0]==401
+  assert get('feed.php?'+urllib.parse.urlencode({'source':'external','rss_url':B}))[0]==422
+  assert post('logout',c=admin)[0]==200
+  assert post('source',B,c=admin)[0]==401
+  assert post('login',password_value='wrong',c=admin)[0]==401
+  assert post('login',password_value=password,c=admin)[0]==200
+  # A second PHP process and new visitors read the same saved registry.
+  assert json.loads(run('echo json_encode(array_column(rss_sources(),"url"));'))==['https://www.soundonsound.com/latest_news.xml',A]
+  assert 'alpha' in get('rss.html',c=client())[1]
+  # The existing API uses the same administrator session; creation and deletion need CSRF.
+  csrf=api('status',c=admin)[1]['csrf'];article={'title':'Временная публикация','body':'Проверка создания и удаления','category':'Обновления','author_id':'vlad-kalinichenko'}
+  status,data=api('create',article,admin,csrf);assert status==201;created=data['item']['id']
+  assert api('delete',{'id':created},admin,'wrong')[0]==403
+  assert api('delete',{'id':created},fresh,api('status',c=fresh)[1]['csrf'])[0]==401
+  assert created in get('feed.php')[1]
+  assert api('delete',{'id':created},admin,csrf)[0]==200
+  assert all(x['id']!=created for x in api('list')[1]['items']) and created not in get('feed.php')[1]
+  assert get('rss.html?item='+created)[0]==404
+  assert api('delete',{'id':created},admin,csrf)[0]==404
+  assert api('delete',{'id':"x' OR 1=1"},admin,csrf)[0]==422
   own=json.loads(run('echo json_encode(exchange_own(db()));'));selected=own[0]
   status,detail,_=get('rss.html?'+urllib.parse.urlencode({'item':selected['id'],'source':'own'}));assert status==200 and selected['description'] in detail and detail.count('id="news-'+selected['id']+'"')==1;pages.append(detail)
   assert get('rss.html?item=missing')[0]==404
   for old in ['services/news.html','services/news.php']:
-   status,html,url=get(old);assert status==200 and '/rss.html' in url and 'Внешняя RSS-лента' in html
+   status,html,url=get(old);assert status==200 and '/rss.html' in url and 'Внешние RSS-ленты' in html
   assert get('rss.html?rss_url[]=x')[0]==422
+  for url in [A,'https://www.soundonsound.com/latest_news.xml']:assert post('remove_source',url,c=admin)[0]==200
+  assert json.loads(run('echo json_encode(rss_sources());'))==[]
+  assert 'Внешние источники пока не подключены' in get('rss.html',c=client())[1]
+  assert not ET.fromstring(get('feed.php?source=external')[1]).findall('./channel/item')
+  # Restart with the same private storage: neither removed sources nor deleted news reappear.
+  proc.terminate();proc.wait(timeout=5)
+  proc=subprocess.Popen(php+['-d',f'session.save_path={td}','-S',f'127.0.0.1:{port}','server/router.php'],cwd=ROOT,env=env,stdout=log,stderr=log)
+  for _ in range(50):
+   try:status,html,_=get('rss.html',c=client());break
+   except urllib.error.URLError:time.sleep(.1)
+  assert status==200 and 'Внешние источники пока не подключены' in html and created not in get('feed.php')[1];pages.append(html)
   if os.environ.get('VNU_JAR'):
    files=[]
    for i,html in enumerate(pages):
@@ -75,4 +121,6 @@ for path in ROOT.rglob('*.html'):
  if path.name=='nav.html':continue
  nav=path.read_text().split('aria-label="Основное меню"',1)[1].split('</nav>',1)[0]
  assert nav.count('>Новости</a>')==1 and 'RSS-лента</a>' not in nav and 'services/news.html' not in nav,path
-print('OK: URL switching/session; admin default/CSRF; separate caches/failure; DNS/IP pinning/redirects; source exports; one news menu; details and legacy redirects.')
+assert 'href="news.html"><span class="icon">01' in (ROOT/'admin/index.html').read_text()
+assert 'publication-management' in (ROOT/'admin/news.html').read_text() and 'Удалить публикацию' in (ROOT/'assets/news-admin.js').read_text()
+print('OK: administrator-only persistent RSS registry; multi-feed merge/dedup/filter/export; removal/restart/empty registry; shared login/CSRF; publication create/delete; DNS/IP pinning; cache failure preservation; admin navigation and HTML.')
