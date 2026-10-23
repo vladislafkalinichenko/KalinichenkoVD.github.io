@@ -5,9 +5,10 @@ header('X-Content-Type-Options: nosniff');header('Cache-Control: no-cache, must-
 try{
     if(($_SERVER['REQUEST_METHOD']??'GET')!=='GET'&&($_SERVER['REQUEST_METHOD']??'GET')!=='HEAD'){header('Allow: GET, HEAD');http_response_code(405);exit;}
     $format=$_GET['format']??'rss';if(!is_string($format)||!in_array($format,['rss','xml','csv','txt','wrapped'],true))throw new InvalidArgumentException('Неизвестный формат.');
+    if(isset($_GET['rss_url'])&&!is_string($_GET['rss_url']))throw new InvalidArgumentException('Проверь адрес RSS-ленты.');
     $p=exchange_params(array_merge(['source'=>'own'],$_GET));$items=exchange_own(db());
-    if($p['source']!=='own')$items=array_merge($items,rss_external()['items']);$items=exchange_select($items,$p);
-    $self=NEWS_BASE.'feed.php?'.http_build_query(['source'=>$p['source'],'q'=>$p['q'],'sort'=>$p['sort']],'','&',PHP_QUERY_RFC3986);
+    if($p['source']!=='own')$items=array_merge($items,rss_external(false,null,isset($_GET['rss_url'])&&is_string($_GET['rss_url'])?rss_validate_url($_GET['rss_url']):rss_default_url())['items']);$items=exchange_select($items,$p);
+    $self=NEWS_BASE.'feed.php?'.http_build_query(['rss_url'=>isset($_GET['rss_url'])&&is_string($_GET['rss_url'])?$_GET['rss_url']:rss_default_url(),'source'=>$p['source'],'q'=>$p['q'],'sort'=>$p['sort']],'','&',PHP_QUERY_RFC3986);
     $out=match($format){'rss'=>exchange_rss($items,$self),'xml'=>exchange_xml($items),'csv'=>exchange_csv($items),'txt'=>exchange_ascii($items),'wrapped'=>exchange_wrapped($items)};
     $mime=match($format){'rss'=>'application/rss+xml; charset=UTF-8','xml','wrapped'=>'application/xml; charset=UTF-8','csv'=>'text/csv; charset=UTF-8','txt'=>'text/plain; charset=US-ASCII'};
     header('Content-Type: '.$mime);

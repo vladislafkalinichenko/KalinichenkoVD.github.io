@@ -31,7 +31,7 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
  # Shared cache success, TTL, failed-refresh preservation, next success without duplication.
  state=json.loads(run('$raw=stream_get_contents(STDIN);echo json_encode(rss_external(true,fn()=>$raw));',fixture));assert len(state['items'])==3 and not state['error']
  cached=json.loads(run('echo json_encode(rss_external(true,function(){throw new RuntimeException("must not run during cooldown");}));'));assert not cached['error']
- cachepath=pathlib.Path(td)/'rss/source.json';v=json.loads(cachepath.read_text());v['checked_at']='2000-01-01T00:00:00Z';cachepath.write_text(json.dumps(v))
+ cachepath=pathlib.Path(run('echo rss_cache_file(RSS_SOURCE_URL);'));v=json.loads(cachepath.read_text());v['checked_at']='2000-01-01T00:00:00Z';cachepath.write_text(json.dumps(v))
  failed=json.loads(run('echo json_encode(rss_external(true,function(){throw new RuntimeException("offline");}));'));assert failed['items']==state['items'] and failed['updated_at']==state['updated_at'] and failed['error']
  v=failed;v['checked_at']='2000-01-01T00:00:00Z';cachepath.write_text(json.dumps(v));run('$raw=stream_get_contents(STDIN);rss_external(true,fn()=>$raw);',fixture)
  # Every output is based on live DB content, not on a checked-in fixture.

@@ -23,7 +23,7 @@ function exchange_date(string $s):string {
 }
 function exchange_own(PDO $pdo):array {
     $rows=$pdo->query('SELECT id,title,body,published_at,category FROM news ORDER BY published_at DESC,id DESC')->fetchAll();$items=[];
-    foreach($rows as $r)$items[]=['id'=>$r['id'],'title'=>$r['title'],'description'=>$r['body'],'published_at'=>$r['published_at'],'link'=>NEWS_BASE.'services/news.html#news-'.rawurlencode($r['id']),'source'=>'MIXLAB','category'=>$r['category'],'origin'=>'own'];
+    foreach($rows as $r)$items[]=['id'=>$r['id'],'title'=>$r['title'],'description'=>$r['body'],'published_at'=>$r['published_at'],'link'=>NEWS_BASE.'rss.html?item='.rawurlencode($r['id']).'#news-'.rawurlencode($r['id']),'source'=>'MIXLAB','category'=>$r['category'],'origin'=>'own'];
     return $items;
 }
 function rss_parse(string $raw,string $source='Загруженный файл',bool $external=false):array {
@@ -53,36 +53,28 @@ function rss_parse(string $raw,string $source='Загруженный файл',
     return ['title'=>$title,'items'=>$items,'skipped'=>$skipped];
 }
 function rss_cache_dir():string {return getenv('MIXLAB_RSS_CACHE_DIR')?:config()['private_dir'].'/rss';}
-function rss_download():string {
-    // No user-controlled URL, redirects, cookies or credentials: a single fixed public feed.
-    $context=stream_context_create(['http'=>['timeout'=>8,'follow_location'=>0,'max_redirects'=>0,'ignore_errors'=>true,'header'=>"User-Agent: MIXLAB-RSS/1.0 (+".NEWS_BASE.")\r\nAccept: application/rss+xml, application/xml, text/xml\r\nConnection: close\r\n"],'ssl'=>['verify_peer'=>true,'verify_peer_name'=>true]]);
-    $stream=@fopen(RSS_SOURCE_URL,'rb',false,$context);
-    if(!$stream)throw new RuntimeException('RSS source unavailable');
-    try{
-        $meta=stream_get_meta_data($stream);$headers=$meta['wrapper_data']??[];
-        if(!isset($headers[0])||!preg_match('~^HTTP/\S+ 200(?: |$)~',$headers[0]))throw new RuntimeException('RSS HTTP error');
-        $raw=stream_get_contents($stream,RSS_MAX_BYTES+1);$meta=stream_get_meta_data($stream);
-        if($raw===false||$meta['timed_out']||strlen($raw)>RSS_MAX_BYTES)throw new RuntimeException('RSS size or timeout');
-        return $raw;
-    }finally{fclose($stream);}
-}
-function rss_external(bool $force=false,?callable $download=null):array {
-    $dir=rss_cache_dir();if(!is_dir($dir)&&!mkdir($dir,0700,true)&&!is_dir($dir))throw new RuntimeException('RSS cache unavailable');
-    $lock=fopen($dir.'/source.lock','c');if(!$lock)throw new RuntimeException('RSS lock unavailable');
-    $load=static function()use($dir):array{$raw=@file_get_contents($dir.'/source.json');$v=$raw===false?null:json_decode($raw,true);return is_array($v)?$v:['items'=>[],'checked_at'=>'','updated_at'=>'','error'=>''];};
-    $state=$load();
-    // Concurrent visitors read the last complete snapshot instead of waiting on the remote source.
+require_once __DIR__.'/rss_sources.php';
+function rss_external(bool $force=false,?callable $download=null,?string $url=null,bool $fetch=true):array {
+    $url=rss_validate_url($url??rss_default_url());$dir=rss_cache_dir();
+    if(!is_dir($dir)&&!mkdir($dir,0700,true)&&!is_dir($dir))throw new RuntimeException('RSS cache unavailable');
+    $path=rss_cache_file($url);$lock=fopen($path.'.lock','c');if(!$lock)throw new RuntimeException('RSS lock unavailable');
+    $load=static function()use($path,$url):array{$v=json_decode(@file_get_contents($path)?:'null',true);return is_array($v)&&($v['source_url']??'')===$url?$v:['items'=>[],'checked_at'=>'','updated_at'=>'','error'=>'','source_url'=>$url,'title'=>parse_url($url,PHP_URL_HOST)];};
+    $state=$load();if(!$fetch){fclose($lock);return $state;}
     if(!flock($lock,LOCK_EX|LOCK_NB)){fclose($lock);$state['refreshing']=true;return $state;}
     try{
-        $state=$load();$age=time()-(strtotime($state['checked_at'])?:0);
-        if($age<($force?60:900))return $state;
+        $state=$load();$age=time()-(strtotime($state['checked_at'])?:0);if($age<(($force||$state['error']!=='')?60:900))return $state;
         $state['checked_at']=gmdate('c');
         try{
-            $parsed=rss_parse(($download??'rss_download')(),RSS_SOURCE_NAME,true);
+            if(!$download)rss_fetch_budget();
+            $parsed=rss_parse(($download??'rss_download')($url),parse_url($url,PHP_URL_HOST),true);
+            $state['title']=$parsed['title']?:parse_url($url,PHP_URL_HOST);
+            foreach($parsed['items'] as &$item){$item['source']=$state['title'];$item['feed_url']=$url;}unset($item);
             $state['items']=$parsed['items'];$state['updated_at']=$state['checked_at'];$state['error']='';
-        }catch(Throwable $e){$state['error']='Источник сейчас недоступен. Показана последняя сохранённая лента.';error_log('MIXLAB RSS: refresh failed');}
+        }catch(Throwable $e){$state['error']='Не удалось обновить этот источник. Если лента уже загружалась, показана её сохранённая копия. Проверь адрес RSS и повтори позже.';error_log('MIXLAB RSS: refresh failed');}
         $tmp=tempnam($dir,'rss-');if($tmp===false)throw new RuntimeException('RSS temp file unavailable');
-        try{if(file_put_contents($tmp,json_encode($state,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR))===false||!rename($tmp,$dir.'/source.json'))throw new RuntimeException('RSS cache write failed');}finally{if(is_file($tmp))unlink($tmp);}
+        try{if(file_put_contents($tmp,json_encode($state,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR))===false||!rename($tmp,$path))throw new RuntimeException('RSS cache write failed');}finally{if(is_file($tmp))unlink($tmp);}
+        // Bound disposable source snapshots; saved site settings are outside this pattern.
+        $files=glob($dir.'/'.str_repeat('[a-f0-9]',64).'.json')?:[];if(count($files)>100){usort($files,static fn($a,$b)=>filemtime($b)<=>filemtime($a));foreach(array_slice($files,100) as $old)if($old!==$path)@unlink($old);}
         return $state;
     }finally{flock($lock,LOCK_UN);fclose($lock);}
 }
@@ -109,7 +101,7 @@ function exchange_rss(array $items,string $self=NEWS_BASE.'feed.php'):string {
         $guid=exchange_element($doc,$item,'guid',$x['link']!==''?$x['link']:'urn:mixlab:'.hash('sha256',$x['id']));$guid->setAttribute('isPermaLink',$x['link']!==''?'true':'false');
         if($x['published_at']!=='')exchange_element($doc,$item,'pubDate',gmdate(DATE_RSS,strtotime($x['published_at'])));
         if($x['category']!=='')exchange_element($doc,$item,'category',$x['category']);
-        if($x['origin']==='external'){$source=exchange_element($doc,$item,'source',$x['source']);$source->setAttribute('url',RSS_SOURCE_URL);}
+        if($x['origin']==='external'){$source=exchange_element($doc,$item,'source',$x['source']);$source->setAttribute('url',$x['feed_url']??RSS_SOURCE_URL);}
     }
     return $doc->saveXML();
 }

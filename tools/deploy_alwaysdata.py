@@ -15,7 +15,9 @@ def main():
     subprocess.run(['python3','tests/community.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/analytics.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/rss.py'],cwd=ROOT,check=True)
+    subprocess.run(['python3','tests/rss_sources.py'],cwd=ROOT,check=True)
     subprocess.run(['python3','tests/catalog.py'],cwd=ROOT,check=True)
+    subprocess.run(['php','-r',"require 'server/exchange.php';foreach([RSS_SOURCE_URL,'https://feeds.bbci.co.uk/news/technology/rss.xml'] as $url){$r=rss_parse(rss_download($url));if(!count($r['items']))throw new RuntimeException('Empty source');echo 'RSS source verified: '.$r['title'].PHP_EOL;}"],cwd=ROOT,check=True)
     with tempfile.TemporaryDirectory(prefix='mixlab-release-',dir=ACCOUNT) as temporary:
         staged=Path(temporary)/'site'
         subprocess.run(['python3','tools/package_php.py','--base-url','https://vlad-mixlab.alwaysdata.net/','--output',str(staged)],cwd=ROOT,check=True)
