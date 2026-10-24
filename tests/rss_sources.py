@@ -68,7 +68,7 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert post('source',A,csrf='old-session',c=admin)[0]==403
   status,raw,_=get('feed.php?source=external');items=ET.fromstring(raw).findall('./channel/item');assert len(items)==3
   status,raw,_=get('feed.php?'+urllib.parse.urlencode({'source':'external','rss_url':A}));items=ET.fromstring(raw).findall('./channel/item');assert len(items)==1 and items[0].findtext('title')=='alpha' and items[0].find('source').attrib['url']==A
-  assert 'bravo' not in get('rss.html?'+urllib.parse.urlencode({'rss_url':A}))[1].split('<h2>Лента новостей</h2>')[1]
+  assert 'bravo' not in get('rss.html?'+urllib.parse.urlencode({'rss_url':A}))[1].split('id="news-list-title"')[1]
   # Duplicate article links across feeds appear only once in the combined list.
   run('rss_external(true,fn()=>stream_get_contents(STDIN),"https://duplicate.example.net/rss");rss_add_source("https://duplicate.example.net/rss","Дубль");',fixture('Дубль','alpha'))
   assert len(ET.fromstring(get('feed.php?source=external')[1]).findall('./channel/item'))==3

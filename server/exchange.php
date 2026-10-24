@@ -23,7 +23,7 @@ function exchange_date(string $s):string {
 }
 function exchange_own(PDO $pdo):array {
     $rows=$pdo->query('SELECT id,title,body,published_at,category FROM news ORDER BY published_at DESC,id DESC')->fetchAll();$items=[];
-    foreach($rows as $r)$items[]=['id'=>$r['id'],'title'=>$r['title'],'description'=>$r['body'],'published_at'=>$r['published_at'],'link'=>NEWS_BASE.'rss.html?item='.rawurlencode($r['id']).'#news-'.rawurlencode($r['id']),'source'=>'MIXLAB','category'=>$r['category'],'origin'=>'own'];
+    foreach($rows as $r)$items[]=['id'=>$r['id'],'title'=>$r['title'],'description'=>$r['body'],'published_at'=>$r['published_at'],'link'=>NEWS_BASE.'rss.html#news-'.rawurlencode($r['id']),'source'=>'MIXLAB','category'=>$r['category'],'origin'=>'own'];
     return $items;
 }
 function rss_parse(string $raw,string $source='Загруженный файл',bool $external=false):array {
@@ -48,7 +48,6 @@ function rss_parse(string $raw,string $source='Загруженный файл',
         if(isset($seen[$dedup])){$skipped++;continue;}$seen[$dedup]=true;
         $items[]=['id'=>$id,'title'=>$headline!==''?$headline:exchange_text($description,100),'description'=>$external?'':$description,'published_at'=>exchange_date($get('pubDate')),'link'=>$url,'source'=>$source,'category'=>exchange_plain($get('category'),100),'origin'=>$external?'external':'upload'];
         // External publications retain attribution and original links, without copying article bodies.
-        if($external&&count($items)>=15)break;
     }
     return ['title'=>$title,'items'=>$items,'skipped'=>$skipped];
 }
@@ -62,14 +61,14 @@ function rss_external(bool $force=false,?callable $download=null,?string $url=nu
     $state=$load();if(!$fetch){fclose($lock);return $state;}
     if(!flock($lock,LOCK_EX|LOCK_NB)){fclose($lock);$state['refreshing']=true;return $state;}
     try{
-        $state=$load();$age=time()-(strtotime($state['checked_at'])?:0);if($age<(($force||$state['error']!=='')?60:900))return $state;
+        $state=$load();$age=time()-(strtotime($state['checked_at'])?:0);if($age<(($force||$state['error']!=='')?60:900)&&(($state['parser_version']??0)===2||$state['error']!==''))return $state;
         $state['checked_at']=gmdate('c');
         try{
             if(!$download)rss_fetch_budget();
             $parsed=rss_parse(($download??'rss_download')($url),parse_url($url,PHP_URL_HOST),true);
             $state['title']=$parsed['title']?:parse_url($url,PHP_URL_HOST);
             foreach($parsed['items'] as &$item){$item['source']=$state['title'];$item['feed_url']=$url;}unset($item);
-            $state['items']=$parsed['items'];$state['updated_at']=$state['checked_at'];$state['error']='';
+            $state['items']=$parsed['items'];$state['updated_at']=$state['checked_at'];$state['error']='';$state['parser_version']=2;
         }catch(Throwable $e){$state['error']='Не удалось обновить этот источник. Если лента уже загружалась, показана её сохранённая копия. Проверь адрес RSS и повтори позже.';error_log('MIXLAB RSS: refresh failed');}
         $tmp=tempnam($dir,'rss-');if($tmp===false)throw new RuntimeException('RSS temp file unavailable');
         try{if(file_put_contents($tmp,json_encode($state,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR))===false||!rename($tmp,$path))throw new RuntimeException('RSS cache write failed');}finally{if(is_file($tmp))unlink($tmp);}
@@ -100,7 +99,7 @@ function exchange_params(array $input):array {
 }
 function exchange_select(array $items,array $p):array {
     $items=array_values(array_filter($items,static function($x)use($p){return ($p['source']==='all'||$p['source']===$x['origin'])&&($p['q']===''||preg_match('/'.preg_quote($p['q'],'/').'/iu',implode(' ',[$x['title'],$x['description'],$x['source'],$x['category']]))); }));
-    usort($items,static function($a,$b)use($p){if($p['sort']==='title')return strcmp($a['title'],$b['title'])?:strcmp($a['id'],$b['id']);if($a['published_at']===''||$b['published_at']==='')return ($a['published_at']===''?1:0)<=>($b['published_at']===''?1:0);$cmp=strcmp($a['published_at'],$b['published_at'])?:strcmp($a['id'],$b['id']);return $p['sort']==='oldest'?$cmp:-$cmp;});return $items;
+    usort($items,static function($a,$b)use($p){if($p['sort']==='title')return strcmp($a['title'],$b['title'])?:strcmp($a['id'],$b['id']);if($a['published_at']===''||$b['published_at']==='')return ($a['published_at']===''?1:0)<=>($b['published_at']===''?1:0);$cmp=(strtotime($a['published_at'])<=>strtotime($b['published_at']))?:strcmp($a['id'],$b['id']);return $p['sort']==='oldest'?$cmp:-$cmp;});return $items;
 }
 function exchange_element(DOMDocument $doc,DOMNode $parent,string $name,string $value):DOMElement {
     $el=$doc->createElement($name);$el->appendChild($doc->createTextNode(exchange_text($value,100000)));$parent->appendChild($el);return $el;
