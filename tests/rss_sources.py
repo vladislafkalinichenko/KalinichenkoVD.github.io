@@ -102,6 +102,31 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   draft={'title':'Новость из RSS-раздела','body':'Прямой ввод & <script>проверка</script>','category':'Обновления','author_id':'vlad-kalinichenko'}
   assert 'id="rss-news-form"' in get('rss.html')[1]
   assert publish(draft)[0]==401 and len(api('list')[1]['items'])==before
+  # Login from the news form needs no article fields and creates no DB record.
+  manager=client()
+  def news_auth(action,fields=None,csrf_value=None):
+   data={'action':action,'auth_section':'news-entry','csrf':csrf_value or token(manager),**(fields or {})}
+   return get('rss.html#news-entry',urllib.parse.urlencode(data).encode(),{'Content-Type':'application/x-www-form-urlencoded'},manager)
+  assert news_auth('login',{'password':password},'wrong')[0]==403
+  status,page,_=news_auth('login',{'password':'wrong'})
+  assert status==401 and page.index('Неверный пароль.')<page.index('id="source-heading"')
+  status,page,location=news_auth('login',{'password':password})
+  assert status==200 and location.endswith('#news-entry') and len(api('list')[1]['items'])==before
+  assert 'id="own-password"' not in page and 'name="action" value="login"' not in page
+  assert 'Выйти из управления' in page.split('id="source-heading"')[0]
+  assert api('status',c=manager)[1]['authenticated'] is True
+  pages.append(page)
+  assert news_auth('logout',csrf_value='wrong')[0]==403 and api('status',c=manager)[1]['authenticated'] is True
+  status,page,location=news_auth('logout');assert status==200 and location.endswith('#news-entry')
+  assert 'id="own-password"' in page and api('status',c=manager)[1]['authenticated'] is False
+  assert api('create',draft,manager,api('status',c=manager)[1]['csrf'])[0]==401
+  # Entered text survives login; password is never echoed into the HTML.
+  status,page,_=news_auth('login',dict(draft,password=password))
+  assert status==200 and '&lt;script&gt;проверка&lt;/script&gt;' in page and password not in page
+  assert len(api('list')[1]['items'])==before
+  news_auth('logout')
+  assert '<a class="btn" href="#news-entry">Добавить новость</a>' not in page
+  assert 'name="action" value="login" type="submit" formnovalidate' in get('rss.html')[1]
   assert publish(dict(draft,password=password),csrf_value='wrong')[0]==403
   assert publish(dict(draft,password='wrong'))[0]==401
   assert publish(dict(draft,password=password,author_id='missing'))[0]==422

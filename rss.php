@@ -9,6 +9,9 @@ $error='';$uploadError='';$sourceError='';$preview=null;$detail=null;$inputUrl='
 $notice=$_SESSION['rss_notice']??'';unset($_SESSION['rss_notice']);
 $publicationError='';$publicationFields=['title'=>'','body'=>'','category'=>'Обновления','author_id'=>CATALOG_OWNER];$authors=[];$categories=[];
 $publicationNotice=$_SESSION['publication_notice']??'';unset($_SESSION['publication_notice']);
+$newsAuth=($_POST['auth_section']??'')==='news-entry';
+if(isset($_SESSION['publication_draft'])&&is_array($_SESSION['publication_draft'])){foreach($publicationFields as $key=>$default)if(is_string($_SESSION['publication_draft'][$key]??null))$publicationFields[$key]=$_SESSION['publication_draft'][$key];unset($_SESSION['publication_draft']);}
+if($_SERVER['REQUEST_METHOD']==='POST'&&$newsAuth)foreach($publicationFields as $key=>$default)if(is_string($_POST[$key]??null))$publicationFields[$key]=$_POST[$key];
 if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['action']??'')==='publish'){
     foreach($publicationFields as $key=>$default)if(is_string($_POST[$key]??null))$publicationFields[$key]=$_POST[$key];
     try{
@@ -25,11 +28,11 @@ try {
     $action=$_POST['action']??'upload';
     if($_SERVER['REQUEST_METHOD']==='POST'&&in_array($action,['source','remove_source','login','logout'],true)){
         if(!is_string($_POST['csrf']??null)||!hash_equals($_SESSION['rss_csrf'],$_POST['csrf'])){http_response_code(403);throw new InvalidArgumentException('Обнови страницу и повтори действие.');}
-        if($action==='logout'){$_SESSION['admin']=false;$_SESSION['csrf']=bin2hex(random_bytes(24));$_SESSION['rss_csrf']=bin2hex(random_bytes(24));header('Location: rss.html',true,303);exit;}
+        if($action==='logout'){$_SESSION['admin']=false;$_SESSION['csrf']=bin2hex(random_bytes(24));$_SESSION['rss_csrf']=bin2hex(random_bytes(24));header('Location: rss.html#'.($newsAuth?'news-entry':'source-heading'),true,303);exit;}
         if(empty($_SESSION['admin'])){
             if($failure=admin_login($_POST['password']??null)){http_response_code($failure[1]);throw new InvalidArgumentException($failure[0]);}
         }
-        if($action==='login'){header('Location: rss.html#source-heading',true,303);exit;}
+        if($action==='login'){if($newsAuth)$_SESSION['publication_draft']=$publicationFields;header('Location: rss.html#'.($newsAuth?'news-entry':'source-heading'),true,303);exit;}
         $rawUrl=$_POST['rss_url']??null;if(!is_string($rawUrl))throw new InvalidArgumentException('Введи адрес RSS-ленты.');$inputUrl=$rawUrl;$newUrl=rss_validate_url($rawUrl);
         if($action==='remove_source'){
             rss_remove_source($newUrl);$_SESSION['rss_notice']='Источник отключён. Его новости больше не входят в общую ленту.';
@@ -41,8 +44,8 @@ try {
         }
         header('Location: rss.html#source-heading',true,303);exit;
     }
-}catch(InvalidArgumentException $ex){if(http_response_code()===200)http_response_code(422);$sourceError=$ex->getMessage();}
-catch(Throwable $ex){http_response_code(503);$sourceError='Не удалось сохранить источник. Повтори позже.';error_log('MIXLAB RSS source change failed');}
+}catch(InvalidArgumentException $ex){if(http_response_code()===200)http_response_code(422);if($newsAuth)$publicationError=$ex->getMessage();else $sourceError=$ex->getMessage();}
+catch(Throwable $ex){http_response_code(503);if($newsAuth)$publicationError='Не удалось войти в управление. Повтори позже.';else $sourceError='Не удалось сохранить источник. Повтори позже.';error_log('MIXLAB RSS source change failed');}
 try{
     $p=exchange_params($_GET);$own=exchange_own(db());
     $collection=rss_collection(($_GET['refresh']??'')==='1',$p['source']!=='own');$feeds=$collection['feeds'];$external=$collection['items'];
@@ -76,17 +79,18 @@ function rss_cards(array $items,callable $e,callable $fmtdate):void { ?>
 <div class="rss-grid"><?php foreach($items as $x): ?><article class="rss-item"<?= $x['origin']==='own'?' id="news-'.$e($x['id']).'"':'' ?> data-origin="<?= $e($x['origin']) ?>"><div class="rss-meta"><span class="rss-source"><?= $e($x['source']) ?></span><?php if($x['published_at']!==''): ?><time datetime="<?= $e($x['published_at']) ?>"><?= $e($fmtdate($x['published_at'])) ?></time><?php else: ?><span>Дата не указана</span><?php endif; ?></div><h3><?php if($x['link']!==''): ?><a href="<?= $e($x['link']) ?>"<?= $x['origin']!=='own'?' rel="noopener noreferrer"':'' ?>><?= $e($x['title']) ?></a><?php else: ?><?= $e($x['title']) ?><?php endif; ?></h3><?php if($x['description']!==''): ?><p class="news-body"><?= $e($x['description']) ?></p><?php endif; ?><?php if($x['link']!==''&&$x['origin']!=='own'): ?><a class="text-link" href="<?= $e($x['link']) ?>" rel="noopener noreferrer">Открыть источник →</a><?php endif; ?></article><?php endforeach; ?></div>
 <?php }
 ob_start(); ?>
-<div class="rss-toolbar"><a class="btn primary" href="#news-list">Общая лента</a><a class="btn" href="#news-entry">Добавить новость</a><a class="btn" href="#rss-export">Скачать новости ↓</a><a class="btn" href="#rss-file">Открыть RSS-файл ↓</a><a class="btn" href="feed.php">RSS-подписка MIXLAB</a><a class="btn" href="<?= $e($url(['refresh'=>'1'])) ?>">Обновить ленту</a></div>
+<div class="rss-toolbar"><a class="btn primary" href="#news-list">Общая лента</a><a class="btn" href="#rss-export">Скачать новости ↓</a><a class="btn" href="#rss-file">Открыть RSS-файл ↓</a><a class="btn" href="feed.php">RSS-подписка MIXLAB</a><a class="btn" href="<?= $e($url(['refresh'=>'1'])) ?>">Обновить ленту</a></div>
 <section id="news-entry" class="rss-settings" aria-labelledby="news-entry-title"><h2 id="news-entry-title">Добавить новость сайта</h2><p>Новая публикация появится здесь вместе с новостями RSS. Публиковать может администратор.</p>
 <?php if($publicationNotice): ?><p class="notice" role="status"><?= $e($publicationNotice) ?></p><?php endif; ?>
 <?php if($publicationError): ?><p class="notice" role="alert"><?= $e($publicationError) ?></p><?php endif; ?>
-<form id="rss-news-form" class="rss-publication" action="rss.html#news-entry" method="post"><input type="hidden" name="action" value="publish"><input type="hidden" name="csrf" value="<?= $e($_SESSION['rss_csrf']) ?>">
+<form id="rss-news-form" class="rss-publication" action="rss.html#news-entry" method="post"><input type="hidden" name="auth_section" value="news-entry"><input type="hidden" name="csrf" value="<?= $e($_SESSION['rss_csrf']) ?>">
 <label for="own-title">Заголовок<input id="own-title" name="title" maxlength="160" required value="<?= $e($publicationFields['title']) ?>"></label>
 <label for="own-category">Категория<input id="own-category" name="category" list="own-categories" maxlength="100" required value="<?= $e($publicationFields['category']) ?>"></label><datalist id="own-categories"><?php foreach($categories as $category): ?><option value="<?= $e($category) ?>"></option><?php endforeach; ?></datalist>
 <label for="own-author">Автор<select id="own-author" name="author_id" required><option value="">Выбери автора</option><?php foreach($authors as $author): ?><option value="<?= $e($author['id']) ?>"<?= $publicationFields['author_id']===$author['id']?' selected':'' ?>><?= $e($author['name']) ?></option><?php endforeach; ?></select><a class="text-link" href="admin/news.html#author-management">Добавить автора →</a></label>
 <?php if(empty($_SESSION['admin'])): ?><label for="own-password">Пароль администратора<input id="own-password" name="password" type="password" autocomplete="current-password" required></label><?php endif; ?>
 <label class="rss-publication-body" for="own-body">Текст новости<textarea id="own-body" name="body" rows="5" maxlength="10000" required><?= $e($publicationFields['body']) ?></textarea></label>
-<div class="actions"><button class="btn primary" type="submit">Опубликовать новость</button><a class="text-link" href="admin/news.html">Управление публикациями →</a></div></form></section>
+<div class="actions"><button class="btn primary" name="action" value="publish" type="submit">Опубликовать новость</button><?php if(empty($_SESSION['admin'])): ?><button class="btn" name="action" value="login" type="submit" formnovalidate>Войти для управления</button><?php endif; ?><a class="text-link" href="admin/news.html">Управление публикациями →</a></div></form>
+<?php if(!empty($_SESSION['admin'])): ?><form class="rss-admin-actions" action="rss.html#news-entry" method="post"><input type="hidden" name="action" value="logout"><input type="hidden" name="auth_section" value="news-entry"><input type="hidden" name="csrf" value="<?= $e($_SESSION['rss_csrf']) ?>"><span>Ты вошёл как администратор.</span><button class="btn" type="submit">Выйти из управления</button></form><?php endif; ?></section>
 <section class="rss-settings" aria-labelledby="source-heading"><h2 id="source-heading">Внешние RSS-ленты</h2><p>Подключённые источники сохраняются на сайте для всех посетителей до удаления администратором. Их новости дополняют публикации MIXLAB.</p>
 <form action="rss.html#source-heading" method="post" class="rss-connect"><input type="hidden" name="csrf" value="<?= $e($_SESSION['rss_csrf']) ?>"><label for="rss-url">Адрес RSS-ленты<input id="rss-url" name="rss_url" type="url" required maxlength="2048" value="<?= $e($inputUrl) ?>" placeholder="https://example.org/rss.xml"></label><?php if(empty($_SESSION['admin'])): ?><label for="rss-password">Пароль администратора<input id="rss-password" name="password" type="password" autocomplete="current-password" required></label><?php endif; ?><button class="btn primary" name="action" value="source" type="submit">Подключить ленту</button><?php if(empty($_SESSION['admin'])): ?><button class="btn" name="action" value="login" type="submit" formnovalidate>Войти для управления</button><?php endif; ?></form>
 <?php if($sourceError): ?><p class="notice" role="alert"><?= $e($sourceError) ?></p><?php endif; ?>
