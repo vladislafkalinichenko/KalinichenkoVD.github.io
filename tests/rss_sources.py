@@ -49,6 +49,13 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
    try:status,html,_=get('rss.html');break
    except urllib.error.URLError:time.sleep(.1)
   assert status==200 and 'Адрес RSS-ленты' in html and 'Пароль администратора' in html and 'до удаления администратором' in html
+  assert html.count('type="password"')==1 and html.count('>Войти для управления</button>')==1
+  auth_form=html.split('id="rss-auth-form"',1)[1].split('</form>',1)[0]
+  own_form=html.split('id="rss-news-form"',1)[1].split('</form>',1)[0]
+  source_form=html.split('id="rss-source-form"',1)[1].split('</form>',1)[0]
+  assert 'name="title"' not in auth_form and 'name="rss_url"' not in auth_form
+  assert 'name="rss_url"' not in own_form and 'name="title"' not in source_form
+  assert 'disabled aria-describedby="rss-login-hint"' in own_form and 'disabled aria-describedby="rss-login-hint"' in source_form
   pages.append(html)
   assert post('source',A,csrf='wrong')[0]==403
   assert post('source',A)[0]==401
@@ -112,13 +119,15 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert status==401 and page.index('Неверный пароль.')<page.index('id="source-heading"')
   status,page,location=news_auth('login',{'password':password})
   assert status==200 and location.endswith('#news-entry') and len(api('list')[1]['items'])==before
-  assert 'id="own-password"' not in page and 'name="action" value="login"' not in page
+  assert 'id="management-password"' not in page and 'name="action" value="login"' not in page
   assert 'Выйти из управления' in page.split('id="source-heading"')[0]
+  assert page.count('>Выйти из управления</button>')==1 and 'disabled aria-describedby="rss-login-hint"' not in page
+  assert page.count('type="password"')==0
   assert api('status',c=manager)[1]['authenticated'] is True
   pages.append(page)
   assert news_auth('logout',csrf_value='wrong')[0]==403 and api('status',c=manager)[1]['authenticated'] is True
   status,page,location=news_auth('logout');assert status==200 and location.endswith('#news-entry')
-  assert 'id="own-password"' in page and api('status',c=manager)[1]['authenticated'] is False
+  assert 'id="management-password"' in page and api('status',c=manager)[1]['authenticated'] is False
   assert api('create',draft,manager,api('status',c=manager)[1]['csrf'])[0]==401
   # Entered text survives login; password is never echoed into the HTML.
   status,page,_=news_auth('login',dict(draft,password=password))
@@ -126,7 +135,7 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert len(api('list')[1]['items'])==before
   news_auth('logout')
   assert '<a class="btn" href="#news-entry">Добавить новость</a>' not in page
-  assert 'name="action" value="login" type="submit" formnovalidate' in get('rss.html')[1]
+  assert 'id="rss-auth-form"' in get('rss.html')[1]
   assert publish(dict(draft,password=password),csrf_value='wrong')[0]==403
   assert publish(dict(draft,password='wrong'))[0]==401
   assert publish(dict(draft,password=password,author_id='missing'))[0]==422
@@ -136,8 +145,8 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert created_item['body']==draft['body'] and created_item['author_id']=='vlad-kalinichenko'
   assert page.count('id="news-'+created_item['id']+'"')==1 and 'alpha' in page
   assert '&lt;script&gt;проверка&lt;/script&gt;' in page and '<script>проверка</script>' not in page
-  assert 'Опубликовать новость' in page and 'id="own-password"' not in page;pages.append(page)
-  fresh_page=get('rss.html',c=client())[1];assert draft['title'] in fresh_page and 'id="own-password"' in fresh_page
+  assert 'Опубликовать новость' in page and 'id="management-password"' not in page;pages.append(page)
+  fresh_page=get('rss.html',c=client())[1];assert draft['title'] in fresh_page and 'id="management-password"' in fresh_page
   assert len(api('list')[1]['items'])==before+1
   get('rss.html',c=poster);assert len(api('list')[1]['items'])==before+1
   csrf_poster=api('status',c=poster)[1]['csrf'];assert api('delete',{'id':created_item['id']},poster,csrf_poster)[0]==200
