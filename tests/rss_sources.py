@@ -94,6 +94,28 @@ with tempfile.TemporaryDirectory() as td,tempfile.TemporaryFile() as log:
   assert get('rss.html?item='+created)[0]==404
   assert api('delete',{'id':created},admin,csrf)[0]==404
   assert api('delete',{'id':"x' OR 1=1"},admin,csrf)[0]==422
+  # The RSS section has its own real HTML publication form, with no JavaScript dependency.
+  poster=client();before=len(api('list')[1]['items'])
+  def publish(fields,client_used=poster,csrf_value=None):
+   data={'action':'publish','csrf':csrf_value or token(client_used),**fields}
+   return get('rss.html',urllib.parse.urlencode(data).encode(),{'Content-Type':'application/x-www-form-urlencoded'},client_used)
+  draft={'title':'Новость из RSS-раздела','body':'Прямой ввод & <script>проверка</script>','category':'Обновления','author_id':'vlad-kalinichenko'}
+  assert 'id="rss-news-form"' in get('rss.html')[1]
+  assert publish(draft)[0]==401 and len(api('list')[1]['items'])==before
+  assert publish(dict(draft,password=password),csrf_value='wrong')[0]==403
+  assert publish(dict(draft,password='wrong'))[0]==401
+  assert publish(dict(draft,password=password,author_id='missing'))[0]==422
+  assert publish(dict(draft,title=''))[0]==422
+  status,page,location=publish(draft);assert status==200 and '#news-' in location
+  created_item=next(x for x in api('list')[1]['items'] if x['title']==draft['title'])
+  assert created_item['body']==draft['body'] and created_item['author_id']=='vlad-kalinichenko'
+  assert page.count('id="news-'+created_item['id']+'"')==1 and 'alpha' in page
+  assert '&lt;script&gt;проверка&lt;/script&gt;' in page and '<script>проверка</script>' not in page
+  assert 'Опубликовать новость' in page and 'id="own-password"' not in page;pages.append(page)
+  fresh_page=get('rss.html',c=client())[1];assert draft['title'] in fresh_page and 'id="own-password"' in fresh_page
+  assert len(api('list')[1]['items'])==before+1
+  get('rss.html',c=poster);assert len(api('list')[1]['items'])==before+1
+  csrf_poster=api('status',c=poster)[1]['csrf'];assert api('delete',{'id':created_item['id']},poster,csrf_poster)[0]==200
   own=json.loads(run('echo json_encode(exchange_own(db()));'));selected=own[0]
   status,detail,_=get('rss.html?'+urllib.parse.urlencode({'item':selected['id'],'source':'own'}));assert status==200 and selected['description'] in detail and detail.count('id="news-'+selected['id']+'"')==1;pages.append(detail)
   assert get('rss.html?item=missing')[0]==404
@@ -123,4 +145,4 @@ for path in ROOT.rglob('*.html'):
  assert nav.count('>Новости</a>')==1 and 'RSS-лента</a>' not in nav and 'services/news.html' not in nav,path
 assert 'href="news.html"><span class="icon">01' in (ROOT/'admin/index.html').read_text()
 assert 'publication-management' in (ROOT/'admin/news.html').read_text() and 'Удалить публикацию' in (ROOT/'assets/news-admin.js').read_text()
-print('OK: administrator-only persistent RSS registry; multi-feed merge/dedup/filter/export; removal/restart/empty registry; shared login/CSRF; publication create/delete; DNS/IP pinning; cache failure preservation; admin navigation and HTML.')
+print('OK: administrator-only persistent RSS registry; multi-feed merge/dedup/filter/export; removal/restart/empty registry; shared login/CSRF; RSS HTML form publication/auth/CSRF/validation/PRG; publication create/delete; DNS/IP pinning; cache failure preservation; admin navigation and HTML.')

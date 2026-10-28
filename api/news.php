@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require dirname(__DIR__).'/server/http.php';
 require_once dirname(__DIR__).'/server/admin_auth.php';
+require_once dirname(__DIR__).'/server/news_input.php';
 try {
     $action=$_GET['action']??'list'; $method=$_SERVER['REQUEST_METHOD'];
     if ($method==='GET') {
@@ -36,13 +37,6 @@ try {
         $author=['id'=>bin2hex(random_bytes(16)),...$fields];$q=db()->prepare('INSERT INTO authors(id,name,role,bio) VALUES (?,?,?,?)');$q->execute(array_values($author));respond(['author'=>$author],201);
     }
     if ($action!=='create') fail('Такого действия нет.',404);
-    $title=$input['title']??null;$body=$input['body']??null;
-    if (!is_string($title)||!is_string($body)) fail('Нужны заголовок и текст.',422);
-    $title=trim($title);$body=trim($body);
-    if ($title===''||$body===''||$len($title)>160||$len($body)>10000) fail('Заголовок: до 160 символов. Текст: до 10 000.',422);
-    $category=$input['category']??'Обновления';$author=$input['author_id']??CATALOG_OWNER;
-    if(!is_string($category)||!preg_match('//u',$category)||trim($category)===''||$len($category)>100||!is_string($author))fail('Выбери автора и категорию до 100 символов.',422);
-    $q=db()->prepare('SELECT id FROM authors WHERE id=?');$q->execute([$author]);if(!$q->fetchColumn())fail('Выбери существующего автора.',422);
-    $item=['id'=>bin2hex(random_bytes(16)),'title'=>$title,'body'=>$body,'published_at'=>gmdate('Y-m-d\TH:i:s\Z'),'source'=>'Свой сайт','source_url'=>'','category'=>trim($category),'author_id'=>$author];
-    insert_news(db(),$item);respond(['item'=>$item],201);
-} catch (Throwable $e) {error_log('MIXLAB API: '.$e->getMessage());fail('Не удалось загрузить записи. Попробуй позже.',503);}
+    respond(['item'=>news_create(db(),$input)],201);
+} catch (InvalidArgumentException $e) {fail($e->getMessage(),422);}
+catch (Throwable $e) {error_log('MIXLAB API: '.$e->getMessage());fail('Не удалось загрузить записи. Попробуй позже.',503);}
