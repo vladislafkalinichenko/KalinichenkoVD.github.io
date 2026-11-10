@@ -1,11 +1,11 @@
 {
   "source": "Банк России",
   "source_url": "https://www.cbr.ru/currency_base/daily/",
-  "effective_date": "2026-11-10",
-  "updated_at": "2026-11-10T07:31:59+00:00",
+  "effective_date": "2026-11-11",
+  "updated_at": "2026-11-10T17:10:26+00:00",
   "rates": {
-    "USD": 82.7536,
-    "EUR": 92.3944,
-    "CNY": 12.3098
+    "USD": 82.5486,
+    "EUR": 92.3966,
+    "CNY": 12.3845
   }
 }
