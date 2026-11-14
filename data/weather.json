@@ -2,7 +2,7 @@
   "source": "Open-Meteo",
   "source_url": "https://open-meteo.com/",
   "license": "CC BY 4.0",
-  "updated_at": "2026-11-14T18:20:38+00:00",
+  "updated_at": "2026-11-14T22:39:14+00:00",
   "cities": {
     "spb": {
       "name": "Санкт-Петербург",
@@ -51,21 +51,21 @@
     },
     "krasnodar": {
       "name": "Краснодар",
-      "temperature": 11.4,
-      "feels_like": 8.8,
-      "wind": 4.58,
-      "code": 80,
-      "observed_at": "2026-11-14T18:15Z",
-      "updated_at": "2026-11-14T18:20:38+00:00"
+      "temperature": 7.9,
+      "feels_like": 4.7,
+      "wind": 3.72,
+      "code": 3,
+      "observed_at": "2026-11-14T22:30Z",
+      "updated_at": "2026-11-14T22:39:14+00:00"
     },
     "vladivostok": {
       "name": "Владивосток",
-      "temperature": 0.4,
-      "feels_like": -4.7,
-      "wind": 4.92,
+      "temperature": -0.0,
+      "feels_like": -5.4,
+      "wind": 5.25,
       "code": 3,
-      "observed_at": "2026-11-14T18:15Z",
-      "updated_at": "2026-11-14T18:20:38+00:00"
+      "observed_at": "2026-11-14T22:30Z",
+      "updated_at": "2026-11-14T22:39:14+00:00"
     },
     "obninsk": {
       "name": "Обнинск",
